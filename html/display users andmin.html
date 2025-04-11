@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - User Display</title>
+  <link rel="stylesheet" href="display user admin.css" />
+</head>
+<body>
+
+  <h2 style="text-align:center; padding: 20px 0;">User Display</h2>
+
+  <div class="container" id="userContainer"></div>
+
+  <!-- Popup for user details -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup" id="popupContent">
+      <button class="close-btn" onclick="closePopup()">×</button>
+      <img id="popupImage" src="" alt="User Image"/>
+      <h3 id="popupName"></h3>
+      <p id="popupEmail"></p>
+      <p id="popupStatus"></p>
+
+      <!-- Rental History -->
+      <div class="history">
+        <h4>Rental History:</h4>
+        <ul id="historyList"></ul>
+      </div>
+
+      <!-- Cash Deposit -->
+      <p id="popupDeposit"></p>
+
+      <!-- Rating -->
+      <div class="rating">
+        <span>Rating: <span id="popupRating"></span> / 5</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="display user admin.js"></script>
+
+</body>
+</html>

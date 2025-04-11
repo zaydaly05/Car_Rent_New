@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Display Cars</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Link to the external CSS -->
+</head>
+<body>
+
+  <h2 style="text-align:center; padding: 20px 0;">Display Cars</h2>
+
+  <div class="container" id="carContainer"></div>
+
+  <!-- Popup -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup" id="popupContent">
+      <button class="close-btn" onclick="closePopup()">×</button>
+      <img id="popupImage" src="" alt="Car Image"/>
+      <h3 id="popupTitle"></h3>
+      <p id="popupDetails"></p>
+    </div>
+  </div>
+
+  <script>
+    const cars = [
+      {
+        name: "Toyota Corolla",
+        type: "Sedan",
+        price: "200 SAR/day",
+        status: "Available",
+        image: "https://github.com/zaydaly05/Car_rent/blob/main/Images/car1.jpg?raw=true", // <-- Place the image link here
+        details: "Plate: 1234 - Seats: 5 - Fuel: 6L/100km - Added: 2024-05-10"
+      },
+      {
+        name: "Hyundai Tucson",
+        type: "SUV",
+        price: "250 SAR/day",
+        status: "Unavailable",
+        image: "https://github.com/zaydaly05/Car_rent/blob/main/Images/car2.jpg?raw=true", // <-- Place the image link here
+        details: "Plate: 5678 - Seats: 5 - Fuel: 8L/100km - Added: 2024-04-01"
+      },
+      // Add more cars as needed...
+    ];
+
+    const carContainer = document.getElementById("carContainer");
+
+    cars.forEach((car, index) => {
+      const card = document.createElement("div");
+      card.className = "car-card";
+      card.innerHTML = `
+        <img src="${car.image}" alt="${car.name}" />
+        <div class="car-info">
+          <h3>${car.name}</h3>
+          <p>Type: ${car.type}</p>
+          <p>Price: ${car.price}</p>
+          <p>Status: ${car.status}</p>
+          <button class="details-btn" onclick="openPopup(${index})">View Details</button>
+        </div>
+      `;
+      carContainer.appendChild(card);
+    });
+
+    function openPopup(index) {
+      const car = cars[index];
+      document.getElementById("popupImage").src = car.image;
+      document.getElementById("popupTitle").innerText = car.name;
+      document.getElementById("popupDetails").innerText = car.details;
+      document.getElementById("popupOverlay").style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("popupOverlay").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>

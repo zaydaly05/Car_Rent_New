@@ -10,14 +10,48 @@ body{
     justify-content:center;
     align-items: center;
     min-height:100vh ;
-background:black;
+background: black;
 background-size: cover;
 background-position: center;
 }
+.backg {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.wrapper {
+    position: relative;
+    background: rgba(255, 255, 255, 0.9); 
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden; 
+}
+
+.wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(../images/wal.jpg) no-repeat center center/cover; 
+    filter: blur(10px); 
+    z-index: -1;
+}
+
 .wrapper{
+    
 width: 420px;
 background-color: transparent ;
-backdrop-filter: blur(30px);
+backdrop-filter: blur(40px);
 box-shadow: 0 0 20px black;
 
 border: 2px solid white;

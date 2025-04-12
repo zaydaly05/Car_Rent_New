@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/forms.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrapper">
+        <h2>Car Rental Signup</h2>
+        <form method="post" class="form">
+            <div class="inputbox">
+                <input type="text" id="name" name="name" placeholder="Name" required>
+            </div>
+            <div class="inputbox">
+                <input type="email" id="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="inputbox">
+                <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
+            </div>
+            <div class="inputbox">
+                <input type="text" id="s2" name="car" value="Sedan" placeholder="Car Type">
+            </div>
+            <div class="inputbox">
+                <input type="number" id="rent-days" name="rent-days" placeholder="Rental Days" min="1" required>
+            </div>
+            <div >
+                Male: <input type="radio" id="male" name="gender" value="male"> 
+                <br><br>
+                Female: <input type="radio" id="female" name="gender" value="female"> 
+            </div>
+            <div class="inputbox">
+                <input type="number" id="Km out" name="Km out" placeholder="Km OUT" required>
+            </div>
+            <div class="inputbox">
+                <input type="date" class="date" id="date" name="date" placeholder="Date OUT" required>
+            </div>
+            
+            <a href="car_contract_submit.html" >
+                <button type="button" class="btn">Submit</button>
+            </a>
+        </form>
+    </div>
+</body>
+</html>

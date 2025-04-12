@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Car</title>
+  <link rel="stylesheet" href="car.css">
+</head>
+<body>
+  <div class="form-container">
+    <h2>Add Car</h2>
+    <form id="addCarForm" enctype="multipart/form-data">
+
+      <label for="carModel">Car Model:</label>
+      <input type="text" id="carModel" name="carModel" placeholder="e.g., Toyota Corolla">
+      <span class="error-message" id="modelError"></span>
+
+      <label for="carCategory">Car Category:</label>
+      <select id="carCategory" name="carCategory">
+        <option value="">Select Category</option>
+        <option value="Sedan">Sedan</option>
+        <option value="SUV">SUV</option>
+        <option value="Hatchback">Hatchback</option>
+        <option value="Truck">Truck</option>
+        <option value="Coupe">Coupe</option>
+      </select>
+      <span class="error-message" id="categoryError"></span>
+
+      <label for="enginePower">Engine Power (CC):</label>
+      <input type="number" id="enginePower" name="enginePower" placeholder="e.g., 1600">
+      <span class="error-message" id="powerError"></span>
+
+      <label for="colorsAvailable">Colors Available:</label>
+      <input type="text" id="colorsAvailable" name="colorsAvailable" placeholder="e.g., Red, Blue, Black">
+      <span class="error-message" id="colorsError"></span>
+
+      <label for="carPhotos">Upload Car Photos:</label>
+      <input type="file" id="carPhotos" name="carPhotos[]" multiple accept="image/*">
+
+      <button type="submit">Add Car</button>
+    </form>
+
+    <div id="preview"></div>
+  </div>
+
+  <script src="car.js"></script>
+</body>
+</html>

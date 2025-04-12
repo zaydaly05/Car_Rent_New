@@ -1,0 +1,174 @@
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fff;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Header */
+.header {
+  background-color: #e86c06;
+  color: #fff;
+  padding: 20px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.header h1 {
+  font-size: 28px;
+}
+
+.header nav ul {
+  display: flex;
+  gap: 20px;
+}
+
+.header nav a {
+  color: white;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.header nav a:hover {
+  color: #222;
+}
+
+/* Main content */
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.main h1 {
+  font-size: 2.8em;
+  color: #e86c06;
+  margin-bottom: 20px;
+}
+
+.main p {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+.button {
+  background-color: #e86c06;
+  color: white;
+  padding: 12px 25px;
+  margin: 0 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+}
+
+.button:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+/* Footer */
+.footer {
+  background-color: #222;
+  color: #fff;
+  padding: 40px 20px 20px;
+  text-align: center;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+  margin: 10px;
+}
+
+.footer-section h3 {
+  margin-bottom: 15px;
+  color: #e86c06;
+}
+
+.footer-section a {
+  display: block;
+  color: #ccc;
+  margin-bottom: 8px;
+  transition: color 0.3s;
+}
+
+.footer-section a:hover {
+  color: #fff;
+}
+
+.social-icons a {
+  font-size: 20px;
+  margin-right: 10px;
+  color: #e86c06;
+}
+
+.social-icons a:hover {
+  color: #fff;
+}
+
+.footer p {
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #aaa;
+}
+
+@media (max-width: 768px) {
+  .header-container,
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .header nav ul {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .button {
+    margin: 10px 0;
+  }
+}

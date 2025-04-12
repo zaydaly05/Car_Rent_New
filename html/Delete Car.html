@@ -3,38 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/Delete Car OR User.css"/>
-    <script src="./js/Delete Car OR User.js"></script>
-    <link rel="stylesheet" href="./css/User Dashboard Styling.css"/>
-
+    <link rel="stylesheet" href="../css/forms.css">
     <title>Delete Car</title>
 </head>
 <body>
-
-    <div class="delete-form">
-        <div id="errorMessage" class="error-message" style="display: none;">All fields are required.</div>
-      
-        <div class="form-group">
+<div class="wrapper">
+    <form action="post" class="form">
+        <h1>Delete Car</h1>
+        <div class="inputbox">
           <label for="carCategory">Category:</label>
           <input type="text" id="carCategory" name="carCategory">
         </div>
       
-        <div class="form-group">
+        <div class="inputbox">
           <label for="carName">Name:</label>
           <input type="text" id="carName" name="carName">
         </div>
       
-        <div class="form-group">
+        <div class="inputbox">
           <label for="carColor">Color:</label>
           <input type="text" id="carColor" name="carColor">
         </div>
-      
-        <div class="button-group">
-          <button type="button" class="delete-submit-button" onclick="submitDeleteCar()">Delete</button>
-          <button type="button" class="cancel-button" onclick="closeModal()">Cancel</button>
-        </div>
-      </div>
-            
-    
+        <button type="submit" class="btn">Delete </button>
+    </form>           
+    </div>
 </body>
 </html>

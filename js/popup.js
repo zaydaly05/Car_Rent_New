@@ -32,5 +32,7 @@ document.getElementById('editCarBtn').addEventListener('click', () => openPopup(
 document.getElementById('deleteCarBtn').addEventListener('click', () => openPopup('../html/Delete Car.html'));
 document.getElementById('displayCarsBtn').addEventListener('click', () => openPopup('../html/display_cars.html')); // Add this file if needed
 ////////////////////////////////////////////////////////////////////////////
-
+function addopenPopup() {
+    window.open("../html/add user.html", "PopupWindow", "width=600,height=400");
+}
 closePopupButton.addEventListener('click', closePopup);

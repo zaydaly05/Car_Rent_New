@@ -2,13 +2,14 @@ document.getElementById('addCarForm').addEventListener('submit', function (e) {
     e.preventDefault();
   
     let isValid = true;
-  
+  const carid=document.getElementById('carId').value.trim();
     const model = document.getElementById('carModel').value.trim();
     const category = document.getElementById('carCategory').value;
     const enginePower = document.getElementById('enginePower').value.trim();
     const colors = document.getElementById('colorsAvailable').value.trim();
   
     // Clear errors
+    document.getElementById('carIdError').textContent = "";
     document.getElementById('modelError').textContent = "";
     document.getElementById('categoryError').textContent = "";
     document.getElementById('powerError').textContent = "";
@@ -37,6 +38,11 @@ document.getElementById('addCarForm').addEventListener('submit', function (e) {
       document.getElementById('colorsError').textContent = "Please enter available colors.";
       isValid = false;
     }
+    if(!carid) {
+      document.getElementById('carIdError').textContent = "Please enter car ID.";
+      isValid = false;
+    }
+
   
     if (isValid) {
       alert("✅ Car added successfully!");

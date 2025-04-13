@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User</title>
+
+
+    <link rel="stylesheet" href="../css/forms.css">
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Edit User</h1>
+        <form id="form" method="post">
+            <div class="inputbox">
+                <input type="text" id="userid" name="userid" placeholder="User Id:">
+                <small class="error" id="id-error"></small>
+            </div>
+            <div class="inputbox">
+                <input type="text" id="name" name="name" placeholder="Full Name">
+                <small class="error" id="name-error"></small>
+            </div>
+            <div class="inputbox">
+                <input type="email" id="email" name="email" placeholder="Email">
+                <small class="error" id="email-error"></small>
+            </div>
+            <div class="inputbox">
+                <input type="password" id="password" placeholder="Password"  minlength="6">
+                <small class="error" id="password-error"></small>
+            </div>
+            <div class="inputbox">
+                <input type="tel" id="phone" name="phone" placeholder="Phone Number" >
+                <small class="error" id="phone-error"></small>
+            </div>
+            <div class="inputbox">
+                <input type="text" id="license" name="license" placeholder="Driver's License Number">
+                <small class="error" id="license-error"></small>
+            </div>
+            <div class="inputbox">
+                <label for="car">Preferred Car Type</label>
+                <select id="car" name="car" class="select">
+                    <option value="">-- Select a car type --</option>
+                    <option value="sedan">Sedan</option>
+                    <option value="4x4">4x4</option>
+                    <option value="sports">Sports Car</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Add User</button>
+        </form>
+    </div>
+    <script src="../js/add user.js"></script>
+</body>
+</html>

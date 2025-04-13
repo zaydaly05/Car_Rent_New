@@ -6,6 +6,7 @@
   <title>Admin Dashboard - Car Rental</title>
   <link rel="stylesheet" href="../css/User Dashboard Styling.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
 
@@ -16,13 +17,11 @@
         <li><a href="#"><i class="fas fa-car"></i> Cars Rented</a></li>
         <li><a href="#"><i class="fas fa-user"></i> Edit Profile</a></li>
         <li><a href="./Welcome Page.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-        
       </ul>
     </nav>
   </header>
 
   <main>
-    
     <section class="welcome">
       <h2>Welcome back, Manager!</h2>
       <p>Here's a summary of your activity.</p>
@@ -30,41 +29,34 @@
 
     <section class="cards">
       <div class="card">
-        
-      <a href="#" class="rC" style="text-decoration: none; font-size: 30px;"><h3>Rental Requests</h3></a>
-      </div>
-     
-
-      <div class="card">
-        <h3>Total Rentals</h3>
-        <p>8 Rentals</p>
-      </div>
-
-      <div class="card">
-        <h3>Total Income</h3>
-        <p>$320 - Last Month</p>
-      </div>
-    </section>
-    
-    <section class="cards">
-      <div class="card">
         <h3>Users' Control</h3>
         <br>
-        <a href= "Add User Form.html" class="button">Add User</a>
-        <a href="Edit User.html"class="button">Edit User</a>
-        <a href="Delete User.html"class="button">Delete User</a>
-        <a href="Display Users.html"class="button">Display All Users</a>
+        <a href="#" class="button" id="addUserBtn">Add User</a>
+        <a href="#" class="button" id="editUserBtn">Edit User</a>
+        <a href="#" class="button" id="deleteUserBtn">Delete User</a>
+        <a href="#" class="button" id="displayUsersBtn">Display All Users</a>
       </div>
     
-        <div class="card">
-          <h3>Cars' Control</h3>
-          <br>
-          <a href="Add Car.html"class="button">Add Car</a>
-          <a href="Edit Car.html"class="button">Edit Car</a>
-          <a href="Delete Car.html"class="button">Delete Car</a>
-          <a href="Display Cars.html"class="button">Display All Cars</a>
-        </div>
+      <div class="card">
+        <h3>Cars' Control</h3>
+        <br>
+        <a href="#" class="button" id="addCarBtn">Add Car</a>
+        <a href="#" class="button" id="editCarBtn">Edit Car</a>
+        <a href="#" class="button" id="deleteCarBtn">Delete Car</a>
+        <a href="#" class="button" id="displayCarsBtn">Display All Cars</a>
+      </div>
+    </section>
   </main>
+
+  <!-- Popup Container -->
+  <div id="popup" class="backg" style="display: none;">
+    <div>
+        <div id="popupContent">
+            
+        </div>
+        <button  id="closePopup" class="clsbtn"><strong style="font-style:italic;">Close :</strong><i class='bx bx-x-circle'></i></button>
+    </div>
+  </div>
 
   <footer class="footer">
     <div class="footer-container">
@@ -89,7 +81,8 @@
         </div>
     </div>
     <p>&copy; 2025 Gulf Limousine Travel. All Rights Reserved.</p>
-</footer>
+  </footer>
 
+  <script src="../js/popup.js"></script>
 </body>
 </html>

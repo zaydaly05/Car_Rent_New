@@ -3,20 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <title>Add Car</title>
-  <link rel="stylesheet" href="../css/add car.css">
+  <link rel="stylesheet" href="../css/forms.css">
 
 </head>
 <body>
-  <div class="form-container">
-    <h2>Add Car</h2>
+  <div class="wrapper">
+    <h1>Add Car</h1>
     <form id="addCarForm" method="post" enctype="multipart/form-data">
-
+<div class="inputbox">
       <label for="carModel">Car Model:</label>
       <input type="text" id="carModel" name="carModel" placeholder="e.g., Toyota Corolla">
       <span class="error-message" id="modelError"></span>
-
+</div>
+<div>
       <label for="carCategory">Car Category:</label>
-      <select id="carCategory" name="carCategory">
+      <select id="carCategory" name="carCategory" class="select">
         <option value="">Select Category</option>
         <option value="Sedan">Sedan</option>
         <option value="SUV">SUV</option>
@@ -24,20 +25,23 @@
         <option value="Truck">Truck</option>
         <option value="Coupe">Coupe</option>
       </select>
+  </div>
+<div class="inputbox" style="margin-top: -1px;">
       <span class="error-message" id="categoryError"></span>
-
       <label for="enginePower">Engine Power (CC):</label>
-      <input type="number" id="enginePower" name="enginePower" placeholder="e.g., 1600">
+      <input type="number" id="enginePower"  name="enginePower" placeholder="e.g., 1600">
       <span class="error-message" id="powerError"></span>
-
+</div>
+<div class="inputbox">
       <label for="colorsAvailable">Colors Available:</label>
       <input type="text" id="colorsAvailable" name="colorsAvailable" placeholder="e.g., Red, Blue, Black">
       <span class="error-message" id="colorsError"></span>
-
+</div>
+<div class="inputbox">
       <label for="carPhotos">Upload Car Photos:</label>
       <input type="file" id="carPhotos" name="carPhotos[]" multiple accept="image/*">
-
-      <button type="submit">Add Car</button>
+</div>
+      <button type="submit" class="btn">Add Car</button>
     </form>
 
     <div id="preview"></div>

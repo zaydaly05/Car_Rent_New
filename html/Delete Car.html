@@ -12,8 +12,14 @@
         <h1>Delete Car</h1>
         <div class="inputbox">
           <label for="carCategory">Category:</label>
-          <input type="text" id="carCategory" name="carCategory">
+          <select id="carCategory" name="carCategory" class="select">
+            <option value="">-- Select Category --</option>
+            <option value="Luxury">Luxury</option>
+            <option value="Sports">Sports</option>
+            <option value="Economy">Economy</option>
+          </select>
         </div>
+        
       
         <div class="inputbox">
           <label for="carName">Name:</label>

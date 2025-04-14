@@ -6,6 +6,8 @@
   <title>Gulf Limousine Travel</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   <link rel="stylesheet" href="../css/Welcome Page.css">
+  <link rel="stylesheet" href="../css/forms.css" />
+  <script src="../js/Login&SignUp PopUp.js"></script>
 
  
 </head>
@@ -25,15 +27,43 @@
     </div>
   </header>
 
+
+
   <!-- Main Content -->
   <main class="main">
     <div>
       <h1>Welcome to Gulf Limousine Travel!</h1>
       <p>Your journey begins here. Discover our wide range of vehicles for your next adventure!</p>
-      <a href="./login.html" class="button">Login</a>
-      <a href="./Sign up Form.html" class="button">Sign Up</a>
+        <!-- Modal for Login -->
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="logincloseModal()">&times;</span>
+        <div class="wrapper">
+          <h1>login</h1>
+          <form method="post"id="form">
+          
+              <div class="inputbox">
+                <input type="email" id="email" name="email" placeholder="Email">
+                <small class="error" id="email-error"></small>
+                <i class='bx bx-envelope'></i>
+              </div>
+          
+                  <div class="inputbox">
+                    <input type="password" id="password" placeholder="Password"  minlength="6">
+                    <small class="error" id="password-error"></small>
+                    <i class='bx bxs-lock'></i> 
+                </div>
+                
+              </div>
+              <button type="submit" class="btn">Login</button>
+            </form>
+      </div>
+      </div>
+      <button class="button" onclick="loginopenModal()">Login</button>
+      <button class="button" onclick="signupopenModal()">Sign Up</button>
     </div>
   </main>
+
 
   <!-- Footer -->
   <footer class="footer">
@@ -60,5 +90,7 @@
     </div>
     <p>&copy; 2025 Gulf Limousine Travel. All Rights Reserved.</p>
   </footer>
+
+  
 </body>
 </html>

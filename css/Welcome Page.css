@@ -85,19 +85,17 @@ ul {
 }
 
 .button {
-  background-color: #e86c06;
-  color: white;
-  padding: 12px 25px;
-  margin: 0 10px;
-  border-radius: 5px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+  background-color: orange;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
   display: inline-block;
-}
-
-.button:hover {
-  background-color: #000;
-  color: #fff;
+  margin: 5px;
 }
 
 /* Footer */
@@ -172,3 +170,35 @@ ul {
     margin: 10px 0;
   }
 }
+
+    /* The modal (hidden by default) */
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1; 
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100vh; 
+      overflow:auto;
+      background-color: rgba(0,0,0,0.5); 
+    }
+
+    /* Modal content */
+    .modal-content {
+      background-color: transparent;
+      margin: 15% auto; 
+      padding: 20px;
+      border-radius: 2px;
+      width: 50%;
+      max-width: 500px;
+    }
+  
+    /* Close button */
+    .close {
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+    }
+ 
+    

@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="../css/User Dashboard Styling.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="../css/forms.css">
+
+  <script src="../js/pop up better.js"></script>
 </head>
 <body>
 
@@ -26,12 +29,11 @@
       <h2>Welcome back, Manager!</h2>
       <p>Here's a summary of your activity.</p>
     </section>
-
+<!--Modals-->
     <div id="addUserModal" class="modal">
       <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <body>
-          <link rel="stylesheet" href="../css/forms.css">
+        <span class="close" onclick="addUsercloseModal()">&times;</span>
+        
           <div class="wrapper">
               <h1>Add User</h1>
               <form id="form" method="post">
@@ -71,42 +73,110 @@
               </form>
           </div>
           <script src="../js/add user.js"></script>
-      </body>
-      </div>
+      
+      
+        </div>
     </div>
-
+    <div id="editUserModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="editUsercloseModal()">&times;</span>
+        
+        <div class="wrapper">
+          <h1>Edit User</h1>
+          <form id="form" method="post">
+              <div class="inputbox">
+                  <input type="text" id="userid" name="userid" placeholder="User Id:">
+                  <small class="error" id="id-error"></small>
+              </div>
+              <div class="inputbox">
+                  <input type="text" id="name" name="name" placeholder="Full Name">
+                  <small class="error" id="name-error"></small>
+              </div>
+              <div class="inputbox">
+                  <input type="email" id="email" name="email" placeholder="Email">
+                  <small class="error" id="email-error"></small>
+              </div>
+              <div class="inputbox">
+                  <input type="password" id="password" placeholder="Password"  minlength="6">
+                  <small class="error" id="password-error"></small>
+              </div>
+              <div class="inputbox">
+                  <input type="tel" id="phone" name="phone" placeholder="Phone Number" >
+                  <small class="error" id="phone-error"></small>
+              </div>
+              <div class="inputbox">
+                  <input type="text" id="license" name="license" placeholder="Driver's License Number">
+                  <small class="error" id="license-error"></small>
+              </div>
+              <div class="inputbox">
+                  <label for="car">Preferred Car Type</label>
+                  <select id="car" name="car" class="select">
+                      <option value="">-- Select a car type --</option>
+                      <option value="sedan">Sedan</option>
+                      <option value="4x4">4x4</option>
+                      <option value="sports">Sports Car</option>
+                  </select>
+              </div>
+              <button type="submit" class="btn">Add User</button>
+          </form>
+      </div>
+      <script src="../js/add user.js"></script>
+      
+      
+        </div>
+    </div>
+     <div id="deleteUserModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="deleteUsercloseModal()">&times;</span>
+        
+        <div class="wrapper">
+          <h1>Delete User</h1>
+          <form id="form" method="post">
+              <div class="inputbox">
+                  <input type="text" id="name" name="name" placeholder="Username">
+                  <small class="error" id="name-error"></small>
+              </div>
+            
+              <div class="inputbox">
+                  <input type="email" id="email" name="email" placeholder="Email">
+                  <small class="error" id="email-error"></small>
+              </div>
+           
+             
+              <button type="submit" class="btn">Delete</button>
+              <button type="submit" class="btn">Cancel</button>
+          </form>
+      </div>
+      <script src="../js/Delete Car OR User.js"></script>
+      
+      
+        </div>
+    </div>
+      
+        
     <section class="cards">
       <div class="card">
         <h3>Users' Control</h3>
         <br>
-        <button class="button" onclick="openModal()">Add User</button>
-
-        <a href="#" class="button" id="editUserBtn">Edit User</a>
-        <a href="#" class="button" id="deleteUserBtn">Delete User</a>
-        <a href="#" class="button" id="displayUsersBtn">Display All Users</a>
+        <button class="button" onclick="addUseropenModal()">Add User</button>
+        <button class="button" onclick="editUseropenModal()">Edit User</button>
+        <button class="button" onclick="deleteUseropenModal()">Delete User</button>
+        <button class="button" onclick="displayUseropenModal()">Display All Users</button>
       </div>
       
 
       <div class="card">
         <h3>Cars' Control</h3>
         <br>
-        <a href="#" class="button" id="addCarBtn">Add Car</a>
-        <a href="#" class="button" id="editCarBtn">Edit Car</a>
-        <a href="#" class="button" id="deleteCarBtn">Delete Car</a>
-        <a href="#" class="button" id="displayCarsBtn">Display All Cars</a>
+        <button class="button" onclick="addCaropenModal()">Add Car</button>
+        <button class="button" onclick="editCaropenModal()">Edit Car</button>
+        <button class="button" onclick="deleteCaropenModal()">Delete Car</button>
+        <button class="button" onclick="displayCaropenModal()">Display All Car</button>
       </div>
     </section>
   </main>
 
-  <!-- Popup Container -->
-  <div id="popup" class="backg" style="display: none;">
-    <div>
-        <div id="popupContent">
-            
-        </div>
-        <button  id="closePopup" class="clsbtn"><strong style="font-style:italic;">Close :</strong><i class='bx bx-x-circle'></i></button>
-    </div>
-  </div>
+
 
   <footer class="footer">
     <div class="footer-container">
@@ -133,6 +203,6 @@
     <p>&copy; 2025 Gulf Limousine Travel. All Rights Reserved.</p>
   </footer>
 
-  <script src="../js/pop up better.js"></script>
+  
 </body>
 </html>

@@ -29,7 +29,7 @@
       <h2>Welcome back, Manager!</h2>
       <p>Here's a summary of your activity.</p>
     </section>
-<!--Modals-->
+<!--Users Modals-->
     <div id="addUserModal" class="modal">
       <div class="modal-content">
         <span class="close" onclick="addUsercloseModal()">&times;</span>
@@ -164,6 +164,152 @@
         <button class="button" onclick="displayUseropenModal()">Display All Users</button>
       </div>
       
+<!--Cars Modals-->
+<div id="addCarModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="addCarcloseModal()">&times;</span>
+    <div class="wrapper">
+      <h1>Add Car</h1>
+      <form id="form" method="post">
+  <div class="inputbox">
+        <label for="carModel">Car Model:</label>
+        <input type="text" id="carModel" name="carModel" placeholder="e.g., Toyota Corolla">
+        <span class="error-message" id="modelError"></span>
+  </div>
+  <div>
+        <label for="carCategory">Car Category:</label>
+        <select id="carCategory" name="carCategory" class="select">
+          <option value="">Select Category</option>
+          <option value="Sedan">Sedan</option>
+          <option value="SUV">SUV</option>
+          <option value="Hatchback">Hatchback</option>
+          <option value="Truck">Truck</option>
+          <option value="Coupe">Coupe</option>
+        </select>
+    </div>
+  <div class="inputbox" style="margin-top: -1px;">
+        <span class="error-message" id="categoryError"></span>
+        <label for="enginePower">Engine Power (CC):</label>
+        <input type="number" id="enginePower"  name="enginePower" placeholder="e.g., 1600">
+        <span class="error-message" id="powerError"></span>
+  </div>
+  <div class="inputbox">
+        <label for="colorsAvailable">Colors Available:</label>
+        <input type="text" id="colorsAvailable" name="colorsAvailable" placeholder="e.g., Red, Blue, Black">
+        <span class="error-message" id="colorsError"></span>
+  </div>
+  <div class="inputbox">
+        <label for="carPhotos">Upload Car Photos:</label>
+        <input type="file" id="carPhotos" name="carPhotos[]" multiple accept="image/*">
+  </div>
+        <button type="submit" class="btn">Add Car</button>
+      </form>
+  
+      <div id="preview"></div>
+    </div>
+  
+    <script src="../js/add car.js"></script>
+  
+  
+    </div>
+</div>
+
+<div id="editCarModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="editCarcloseModal()">&times;</span>
+    
+    <div class="wrapper">
+      <h1>Edit car</h1>
+      <form id="form" method="post">
+      <div class="inputbox">
+        <label for="carid">Car ID:</label>
+        <input type="text" id="carid" name="carid" placeholder="Enter special car id you want to edit" required>
+        <span class="error-message" id="caridError"></span>
+        
+  </div>
+  <div class="inputbox">
+        <label for="carModel">Car Model:</label>
+        <input type="text" id="carModel" name="carModel" placeholder="e.g., Toyota Corolla">
+        <span class="error-message" id="modelError"></span>
+  </div>
+  <div>
+        <label for="carCategory">Car Category:</label>
+        <select id="carCategory" name="carCategory" class="select">
+          <option value="">Select Category</option>
+          <option value="Sedan">Sedan</option>
+          <option value="SUV">SUV</option>
+          <option value="Hatchback">Hatchback</option>
+          <option value="Truck">Truck</option>
+          <option value="Coupe">Coupe</option>
+        </select>
+    </div>
+  <div class="inputbox" style="margin-top: -1px;">
+        <span class="error-message" id="categoryError"></span>
+        <label for="enginePower">Engine Power (CC):</label>
+        <input type="number" id="enginePower"  name="enginePower" placeholder="e.g., 1600">
+        <span class="error-message" id="powerError"></span>
+  </div>
+  <div class="inputbox">
+        <label for="colorsAvailable">Colors Available:</label>
+        <input type="text" id="colorsAvailable" name="colorsAvailable" placeholder="e.g., Red, Blue, Black">
+        <span class="error-message" id="colorsError"></span>
+  </div>
+  <div class="inputbox">
+        <label for="carPhotos">Upload Car Photos:</label>
+        <input type="file" id="carPhotos" name="carPhotos[]" multiple accept="image/*">
+  </div>
+        <button type="submit" class="btn">Add Car</button>
+      </form>
+  
+      <div id="preview"></div>
+    </div>
+  
+  
+  
+    </div>
+</div>
+
+
+
+
+
+ <div id="deleteCarModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="deleteCarcloseModal()">&times;</span>
+    
+    <div class="wrapper">
+      <form method="post" id="form">
+          <h1>Delete Car</h1>
+          <div class="inputbox">
+            <label for="carCategory">Category:</label>
+            <select id="carCategory" name="carCategory" class="select">
+              <option value="">-- Select Category --</option>
+              <option value="Luxury">Luxury</option>
+              <option value="Sports">Sports</option>
+              <option value="Economy">Economy</option>
+            </select>
+          </div>
+          
+        
+          <div class="inputbox">
+            <label for="carName">Name:</label>
+            <input type="text" id="carName" name="carName">
+          </div>
+        
+          <div class="inputbox">
+            <label for="carColor">Color:</label>
+            <input type="text" id="carColor" name="carColor">
+          </div>
+          <button type="submit" class="btn">Delete </button>
+      </form>           
+      </div>
+     
+  
+  
+    </div>
+</div>
+
+
 
       <div class="card">
         <h3>Cars' Control</h3>
@@ -171,7 +317,7 @@
         <button class="button" onclick="addCaropenModal()">Add Car</button>
         <button class="button" onclick="editCaropenModal()">Edit Car</button>
         <button class="button" onclick="deleteCaropenModal()">Delete Car</button>
-        <button class="button" onclick="displayCaropenModal()">Display All Car</button>
+        <button class="button" onclick="displayCaropenModal()">Display All Cars</button>
       </div>
     </section>
   </main>

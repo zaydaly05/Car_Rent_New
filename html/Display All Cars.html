@@ -1,0 +1,32 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Car Dashboard</title>
+  <link rel="stylesheet" href="style.css"> <!-- ربط ملف الـ CSS -->
+</head>
+<body>
+
+  <h2 style="text-align: center; padding: 20px 0;">Available Cars</h2>
+
+  <div class="container" id="carContainer">
+    <!-- Cars will be injected here -->
+  </div>
+
+  <!-- Popup -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup" id="popup">
+      <button class="close-btn" onclick="closePopup()">×</button>
+      <img id="popupImage" src="" alt="Car image">
+      <h3 id="popupTitle"></h3>
+      <p id="popupModel"></p>
+      <p id="popupBrand"></p>
+      <p id="popupStatus"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script> <!-- ربط ملف الـ JavaScript -->
+</body>
+</html>

@@ -10,7 +10,123 @@
 
   <h2 style="text-align:center; padding: 20px 0;">User Display</h2>
 
-  <div class="container" id="userContainer"></div>
+  <div class="container" id="userContainer">
+
+    <!-- User 1 -->
+    <div class="user-card">
+      <img src="https://via.placeholder.com/150" alt="John Doe" />
+      <div class="user-info">
+        <h3>John Doe</h3>
+        <p>Email: johndoe@gmail.com</p>
+        <p>Status: Active</p>
+        <button class="details-btn" onclick='openPopup(
+          "John Doe",
+          "johndoe@gmail.com",
+          "Active",
+          "https://via.placeholder.com/150",
+          "Honda Civic (2024-03-10 - None), Toyota Corolla (2024-01-15 - Gas problem)",
+          "$500",
+          4
+        )'>View Details</button>
+      </div>
+    </div>
+
+    <!-- User 2 -->
+    <div class="user-card">
+      <img src="https://via.placeholder.com/150" alt="Jane Smith" />
+      <div class="user-info">
+        <h3>Jane Smith</h3>
+        <p>Email: janesmith@gmail.com</p>
+        <p>Status: Inactive</p>
+        <button class="details-btn" onclick='openPopup(
+          "Jane Smith",
+          "janesmith@gmail.com",
+          "Inactive",
+          "https://via.placeholder.com/150",
+          "BMW 3 Series (2024-02-05 - Minor scratches)",
+          "$300",
+          3
+        )'>View Details</button>
+      </div>
+    </div>
+
+    <!-- User 3 -->
+    <div class="user-card">
+      <img src="https://via.placeholder.com/150" alt="Ahmed Ali" />
+      <div class="user-info">
+        <h3>Ahmed Ali</h3>
+        <p>Email: ahmed.ali@example.com</p>
+        <p>Status: Active</p>
+        <button class="details-btn" onclick='openPopup(
+          "Ahmed Ali",
+          "ahmed.ali@example.com",
+          "Active",
+          "https://via.placeholder.com/150",
+          "Kia Sportage (2024-04-01 - None), Hyundai Elantra (2024-03-12 - Flat tire)",
+          "$400",
+          5
+        )'>View Details</button>
+      </div>
+    </div>
+
+    <!-- User 4 -->
+    <div class="user-card">
+      <img src="https://via.placeholder.com/150" alt="Sara Youssef" />
+      <div class="user-info">
+        <h3>Sara Youssef</h3>
+        <p>Email: sara.youssef@example.com</p>
+        <p>Status: Inactive</p>
+        <button class="details-btn" onclick='openPopup(
+          "Sara Youssef",
+          "sara.youssef@example.com",
+          "Inactive",
+          "https://via.placeholder.com/150",
+          "Nissan Sunny (2024-02-20 - Broken headlight)",
+          "$200",
+          2
+        )'>View Details</button>
+      </div>
+    </div>
+
+    <!-- User 5 -->
+    <div class="user-card">
+      <img src="https://via.placeholder.com/150" alt="Mohamed Tarek" />
+      <div class="user-info">
+        <h3>Mohamed Tarek</h3>
+        <p>Email: mohamed.tarek@example.com</p>
+        <p>Status: Active</p>
+        <button class="details-btn" onclick='openPopup(
+          "Mohamed Tarek",
+          "mohamed.tarek@example.com",
+          "Active",
+          "https://via.placeholder.com/150",
+          "Chevrolet Cruze (2024-01-25 - Engine noise)",
+          "$350",
+          3
+        )'>View Details</button>
+      </div>
+    </div>
+
+    <!-- User 6 -->
+    <div class="user-card">
+      <img src="https://via.placeholder.com/150" alt="Layla Hassan" />
+      <div class="user-info">
+        <h3>Layla Hassan</h3>
+        <p>Email: layla.hassan@example.com</p>
+        <p>Status: Active</p>
+        <button class="details-btn" onclick='openPopup(
+          "Layla Hassan",
+          "layla.hassan@example.com",
+          "Active",
+          "https://via.placeholder.com/150",
+          "Mazda CX-5 (2024-03-05 - No issues), Ford Focus (2024-02-18 - Oil change)",
+          "$450",
+          4
+        )'>View Details</button>
+      </div>
+    </div>
+
+  </div>
 
   <!-- Popup for user details -->
   <div class="popup-overlay" id="popupOverlay">
@@ -37,7 +153,32 @@
     </div>
   </div>
 
-  <script src="../js/display user admin.js"></script>
+  <script>
+    function openPopup(name, email, status, image, historyStr, deposit, rating) {
+      document.getElementById("popupName").innerText = name;
+      document.getElementById("popupEmail").innerText = "Email: " + email;
+      document.getElementById("popupStatus").innerText = "Status: " + status;
+      document.getElementById("popupImage").src = image;
+      document.getElementById("popupDeposit").innerText = "Cash Deposit: " + deposit;
+      document.getElementById("popupRating").innerText = rating;
+
+      // Parse history and render
+      const historyList = document.getElementById("historyList");
+      historyList.innerHTML = "";
+      const items = historyStr.split(",");
+      items.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item.trim();
+        historyList.appendChild(li);
+      });
+
+      document.getElementById("popupOverlay").style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("popupOverlay").style.display = "none";
+    }
+  </script>
 
 </body>
 </html>

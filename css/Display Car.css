@@ -7,7 +7,7 @@ body {
     color: white; /* White text */
     position: relative;
     }
-    /**/
+    /*****/
 
     body::before {
     content: '';

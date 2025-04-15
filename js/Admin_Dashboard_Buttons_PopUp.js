@@ -54,6 +54,25 @@ window.onclick = function(event) {
   }
 }
 
+ //Display User Modal
+ 
+ function displayUseropenModal() {
+  document.getElementById("displayUserModal").style.display = "block";
+}
+
+function displayUsercloseModal() {
+  document.getElementById("displayUserModal").style.display = "none";
+}
+
+// Optional: Close when clicking outside the modal content
+
+window.onclick = function(event) {
+  const modal = document.getElementById("displayUserModal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+}
+
  //-----------------------------------------------Cars------------------------------------------------------
 //Add Car Modal
 function addCaropenModal() {
@@ -110,3 +129,22 @@ if (event.target === modal) {
 }
 }
 
+//Display Car Modal
+
+function displayCaropenModal() {
+  document.getElementById("displayCarModal").style.display = "block";
+  }
+  
+  function displayCarcloseModal() {
+  document.getElementById("displayCarModal").style.display = "none";
+  }
+  
+  // Optional: Close when clicking outside the modal content
+  
+  window.onclick = function(event) {
+  const modal = document.getElementById("displayCarModal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+  }
+  

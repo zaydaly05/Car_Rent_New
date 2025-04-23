@@ -2,9 +2,10 @@ const express=require('express');
 const app= express(); 
 const path=require('path');
 
+
 app.use(express.static(path.join(__dirname, 'FrontEnd')));
 app.get('/frontPage', function(req,res){
-    res.sendFile(path.join(__dirname, "FrontEnd","welcome.html"))
+    res.sendFile(path.join(__dirname, "FrontEnd/HTML","welcome.html"));
 });
 app.get('/dashboard', function(req,res){
     res.sendFile(path.join(__dirname, "User Dashboard.html"))

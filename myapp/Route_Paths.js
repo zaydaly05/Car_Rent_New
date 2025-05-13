@@ -2,7 +2,8 @@ const express=require('express');
 const app= express(); 
 const path=require('path');
 const mongoose=require('mongoose');
-
+const bodyParser=require('body-parser');
+const port=3000;
 
 
 app.use(express.static(path.join(__dirname, 'FrontEnd')));
@@ -21,4 +22,4 @@ app.get('/ShS', function(req,res){
 app.get('/ShL', function(req,res){
     res.sendFile(path.join(__dirname, "ShowRoom Luxury.html"))
 });
-app.listen(3000);
+app.listen(port);

@@ -276,8 +276,8 @@ const viewCarsPage=(req, res) => {
    
    }
    const delCar=(req, res) => {
-    Device.findByIdAndDelete(req.params.id).then(() => {
-      res.redirect('/admin/ManageDevices')
+    Car.findByIdAndDelete(req.params.id).then(() => {
+      res.redirect('/admin/ManageCars')
      
     }).catch((err) => {
       console.log(err);

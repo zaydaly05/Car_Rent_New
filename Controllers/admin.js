@@ -141,7 +141,7 @@ const getManageDevicePage = async (req, res) => {
     })
    
    }
-const viewDevicePage=(req, res) => {
+const viewCarsPage=(req, res) => {
     if (!req.session.userId) {
       return res.redirect('/user/LoginForm');
   }
@@ -239,13 +239,11 @@ const viewDevicePage=(req, res) => {
         res.status(500).json({ message: 'Error updating user profile.' });
     }
   }
-  const putEditDevice=(req, res) => {
+  const putEditCars=(req, res) => {
     const updatedData = {
       Name: req.body.Name,
       Price: req.body.Price,
-      Description: req.body.Description,
-      RAM: req.body.RAM,
-      ScreenSpace: req.body.ScreenSpace,
+     Category: req.body.Category,
       image: {
         data: req.file.buffer,
         contentType: req.file.mimetype,
@@ -263,10 +261,10 @@ const viewDevicePage=(req, res) => {
       res.redirect("/admin/ManageDevices");
     }).catch((err) => {
       console.log(err);
-      res.status(500).send('Error updating device image.');
+      res.status(500).send('Error updating Cars image.');
     });
   }
-  const delUsers=(req, res) => {
+  const delUsers=(req, res) => {    // Delete user by ID
     User.findByIdAndDelete(req.params.id).then(() => {
       res.redirect('/admin/Users')
      
@@ -307,7 +305,7 @@ const viewDevicePage=(req, res) => {
 
   
   
-   const getOrdersPage=async (req, res) => {
+   const getRequestsPage=async (req, res) => {
     if (!req.session.userId) {
       return res.redirect('/user/LoginForm');
   }
@@ -331,7 +329,7 @@ const viewDevicePage=(req, res) => {
     putEditUser,
     getEditUserPage,
     getEditDevicePage,
-    viewDevicePage,
+    viewCarsPage,
     getViewUserPage,
     getManageDevicePage,
     GetAllUsers,

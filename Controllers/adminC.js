@@ -1,6 +1,6 @@
 const User=require("./models/dataUsersSchema")
 const Device=require("./models/carsSchema")
-const Order = require('../models/order')
+const Order = require('./models/rentOrders')
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
@@ -31,12 +31,13 @@ const getAdminP=(req, res) => {
   }
   }
   const postAdminPage= async (req, res) => {
+
     if (!req.file) {
         return res.status(400).send('No file uploaded.');
     }
 
     try {
-        const existingCar= await Device.findOne({ Name: req.body.Name });
+        const existingCar= await Car.findOne({ Name: req.body.Name });
         if (existingCar) {
             return res.status(400).json({ message: 'A Car with this name already exists.' });
         }
@@ -82,7 +83,7 @@ const GetAllUsers = (req, res) => {
    const search = async (req, res) => {
     const query = req.query.query.toLowerCase();
     try {
-        const results = await Device.find({
+        const results = await Car.find({
             Name: { $regex: new RegExp(query, 'i') } // Case-insensitive search
         });
 
@@ -93,7 +94,7 @@ const GetAllUsers = (req, res) => {
     }
 };
 
-const getManageDevicePage = async (req, res) => {
+const getManageCarPage = async (req, res) => {
     if (!req.session.userId) {
         return res.redirect('/user/LoginForm');
     }
@@ -102,15 +103,15 @@ const getManageDevicePage = async (req, res) => {
     const page = req.query.page || 1;
 
     try {
-        const devices = await Device.find({})
+        const cars = await Car.find({})
             .skip((perPage * page) - perPage)
             .limit(perPage);
 
-        const count = await Device.countDocuments();
+        const count = await Car.countDocuments();
 
         if (req.session.type === 'Admin') {
-            res.render('ManageDevices', {
-                arr: devices,
+            res.render('ManageCars', {
+                arr: cars,
                 current: page,
                 pages: Math.ceil(count / perPage)
             });
@@ -145,9 +146,9 @@ const viewCarsPage=(req, res) => {
     if (!req.session.userId) {
       return res.redirect('/user/LoginForm');
   }
-    Device.findById(req.params.id).then((result) => {
+    Car.findById(req.params.id).then((result) => {
       if(req.session.type==='Admin'){
-      res.render('ViewDevice', {arr: result})
+      res.render('ViewCar', {arr: result})
       }else {
         return res.redirect('/user/LoginForm');
       }
@@ -157,13 +158,13 @@ const viewCarsPage=(req, res) => {
     })
    
    }
-   const getEditDevicePage= (req, res) => {
+   const getEditCarPage= (req, res) => {
     if (!req.session.userId) {
       return res.redirect('/user/LoginForm');
   }
-    Device.findById(req.params.id).then((result) => {
+    Car.findById(req.params.id).then((result) => {
       if(req.session.type==='Admin'){
-      res.render('EditDevice', {arr: result})
+      res.render('EditCar', {arr: result})
       }else {
         return res.redirect('/user/LoginForm');
       }
@@ -173,6 +174,7 @@ const viewCarsPage=(req, res) => {
     })
    
    }
+   //-------------------------------------------------
    const getUserOrdersPage = async (req, res) => {
     if (!req.session.userId) {
       return res.redirect('/user/LoginForm');
@@ -321,22 +323,22 @@ const viewCarsPage=(req, res) => {
       res.status(500).send('Error fetching orders.');
     }
   }
-   module.exports = {
+   module.exports = {  // get for admin put for users
     deleteOrders,
     delCar,
     delUsers,
-    putEditDevice,
+    putEditCars,
     putEditUser,
     getEditUserPage,
-    getEditDevicePage,
+    getEditCarPage,
     viewCarsPage,
     getViewUserPage,
-    getManageDevicePage,
+    getManageCarPage,
     GetAllUsers,
     postAdminPage,
     getAddCar,
     getAdminP,
-    getOrdersPage,
+    getUsersPage,
     search,
     getUserOrdersPage,
     deleteUserOrder

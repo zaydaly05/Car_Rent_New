@@ -13,8 +13,8 @@ const Schema =mongoose.Schema;
     
  });
 
- const Device=mongoose.model("myCar",AddCar);
+ const Cars =mongoose.model("myCar",AddCar);
 
 
 
- module.exports=Cars;
+ module.exports= Cars;

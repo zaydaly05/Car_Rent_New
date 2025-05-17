@@ -325,7 +325,7 @@ const viewDevicePage=(req, res) => {
   }
    module.exports = {
     deleteOrders,
-    delDevices,
+    delCar,
     delUsers,
     putEditDevice,
     putEditUser,
@@ -336,7 +336,7 @@ const viewDevicePage=(req, res) => {
     getManageDevicePage,
     GetAllUsers,
     postAdminPage,
-    getAddDevice,
+    getAddCar,
     getAdminP,
     getOrdersPage,
     search,

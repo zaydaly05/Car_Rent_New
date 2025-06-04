@@ -104,6 +104,11 @@ background-position: center;
     font-weight: 600;
     margin: 20px 0 2px 0;
 }
+.wrapper .btn:hover{
+    background: orange;
+    color: white;
+    transition: 0.3s ease;
+}
 .wrapper .select{
     width: 100%;
     height: 20px;

@@ -24,7 +24,7 @@
 </header>
   <main>
     <section class="welcome">
-      <h2>👋 Welcome back, Alex!</h2>
+      <h2>👋 Welcome back, <%= user ? user.FullName : 'Guest' %>!</h2>
       <p>Here's a summary of your recent activity. Ready for your next ride?</p>
     </section>
 

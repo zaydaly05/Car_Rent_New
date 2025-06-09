@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
@@ -7,6 +8,11 @@ const User = require('./Models/dataUsersSchema');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    secret: 'yourSecretKey', // Change this to a strong secret in production
+    resave: false,
+    saveUninitialized: true
+}));
 app.set('views', path.join(__dirname, 'Views'));
 app.set("view engine", "ejs");
 
@@ -32,10 +38,24 @@ app.get('/register', (req, res) => {//popup
 app.get('/login', (req, res) => {
     res.render('login');
 });
-app.get("/User_Dashboard", (_req, res) => {
-    res.render('User_Dashboard');
+app.get("/User_Dashboard", (req, res) => {
+    res.render('User_Dashboard', { user: req.session.user || null });
 });
 
+app.post('/login', async (req, res) => {
+    const { Email, Password } = req.body;
+    try {
+        const user = await User.findOne({ Email, Password });
+        if (user) {
+            req.session.user = user; // Save user in session
+            res.redirect('/User_Dashboard'); // Redirect to dashboard
+        } else {
+            res.status(401).send('<span style="color: red;">Invalid email or password</span>');
+        }
+    } catch (err) {
+        res.status(500).send('Server error');
+    }
+});
 
 /*app.get('/showroom/luxury', (req, res) => {
     res.render('ShowRoom_Luxury');

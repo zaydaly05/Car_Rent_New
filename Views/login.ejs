@@ -9,14 +9,14 @@
 </head>
 <body>
     <div class="wrapper" id="login">
-        <form action="post"class="form">
+        <form action="/login" class="form" method="post">
             <h1>login</h1>
             <div class="inputbox">
-                <input type="email" placeholder="Email" required>
+                <input type="email" name="Email" placeholder="Email" required>
                 <i class='bx bx-envelope'></i>
             </div>
             <div class="inputbox">
-                <input type="password" placeholder="Password" required>
+                <input type="password" name="Password" placeholder="Password" required>
                 <i class='bx bxs-lock'></i>
             </div>
             <button type="submit" class="btn">Login</button>

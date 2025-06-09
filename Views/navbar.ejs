@@ -1,4 +1,4 @@
- <nav>
+<nav>
         <a href="#" class="brand">Gulf Limousine</a>
 
     <a href="#" class="brand"><img src="/Images/logo.png" alt="logo"></a>
@@ -9,7 +9,11 @@
             <a href="home.html">Home</a>
             <a href="about.html">About</a>
             <a href="contact.html">Contact</a>
-            <button onclick="showPopup('login')" class="nav-link">Login</button>
+            <% if (user) { %>
+                <span class="nav-link">Welcome : <%= user.name %> :-) </span>
+            <% } else { %>
+                <button onclick="showPopup('login')" class="nav-link">Login</button>
+            <% } %>
         </div>
 
     </div>

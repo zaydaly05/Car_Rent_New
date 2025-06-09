@@ -64,18 +64,6 @@ app.get("/User_Dashboard", (_req, res) => {
 });
 
 
-app.get('/showroom/luxury', (req, res) => {
-    res.render('ShowRoom_Luxury');
-});
-
-app.get('/showroom/sedan', (req, res) => {
-    res.render('ShowRoom_Sedan');
-});
-
-app.get('/showroom/sports', (req, res) => {
-    res.render('ShowRoom_Sports');
-});
-
 
 mongoose.connect("mongodb+srv://omar:123@cars.chdtnqe.mongodb.net/?retryWrites=true&w=majority&appName=cars") 
 .then(() => {

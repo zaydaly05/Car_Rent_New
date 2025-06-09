@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Cars</title>
+</head>
+<body>
+    <h1>All Cars</h1>
+    <table border="1">
+        <tr>
+            <% if (cars.length > 0) { %>
+                <% Object.keys(cars[0]._doc).forEach(key => { %>
+                    <th><%= key %></th>
+                <% }) %>
+            <% } %>
+        </tr>
+        <% cars.forEach(car => { %>
+            <tr>
+                <% Object.values(car._doc).forEach(value => { %>
+                    <td><%= value %></td>
+                <% }) %>
+            </tr>
+        <% }) %>
+    </table>
+</body>
+</html>

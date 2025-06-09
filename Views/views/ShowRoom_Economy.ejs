@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Economy Cars Showroom</title>
+    <link rel="stylesheet" href="/css/ShowRoom Styling.css">
+</head>
+<body>
+    <h1>Economy Cars</h1>
+
+    <!-- Add Car Form -->
+    <form action="/showroom/sedan/add" method="POST" style="margin-bottom: 2em;">
+        <input type="text" name="name" placeholder="Car Name" required>
+        <input type="text" name="brand" placeholder="Brand" required>
+        <input type="text" name="type" placeholder="Type" required>
+        <input type="number" name="price" placeholder="Price" required>
+        <input type="text" name="image" placeholder="Image URL" required>
+        <button type="submit">Add Car</button>
+    </form>
+
+    <!-- Display Cars -->
+    <div class="car-list">
+        <% if (cars && cars.length) { %>
+            <% cars.forEach(car => { %>
+                <div class="car-container">
+                    <div class="car">
+                        <img src="<%= car.image %>" alt="<%= car.name %>">
+                        <div class="container">
+                            <p>Color: 
+                                <select>
+                                    <option>Red</option>
+                                    <option>Blue</option>
+                                    <option>Grey</option>
+                                </select>
+                            </p>
+                            <div>Price: <%= car.price %> EGP per Day</div>
+                            <div><%= car.type %> CC</div>
+                            <a href="#" class="button">Rent</a>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No cars found.</p>
+        <% } %>
+    </div>
+</body>
+</html>

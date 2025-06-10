@@ -103,18 +103,19 @@ const deleteCar = async (req, res) => {
 
 
 const editCarPage = async (req, res) => {
-  if (!isAdmin(req)) return res.redirect('/View/LoginForm');
+  if (!isAdmin(req)) return res.redirect('/Views/Welcome Page.html');
   const car = await Car.findByName(req.params.name);
-  res.render('EditCar', { arr: car });
+  res.render('login.ejs', { arr: car });
 };
 
 const editUserPage = async (req, res) => {
-  if (!isAdmin(req)) return res.redirect('/user/LoginForm');
+  
+  if (!isAdmin(req)) return res.redirect('/Views/Welcome Page.html');
   const user = await User.findByName(req.params.name);
   if (user.type === 'Admin') {
-    res.render('ViewUser', { arr: user, message: "Can't edit admin" });
+    res.render('ViewUser', { arr: user, message: "Can't edit admin...Access Developer Mode" });
   } else {
-    res.render('EditUser', { arr: user });
+    res.render('edit-user.html', { arr: user });
   }
 };
 

@@ -24,6 +24,12 @@
                     <td><%= req.NoOfDays %></td>
                     <td><%= req.totalPrice %></td>
                     <td><%= req.rentalDate.toDateString() %></td>
+                    <td>
+                    <form action="/delete-rent" method="POST" onsubmit="return confirm('Are you sure you want to delete this rental order?');">
+                    <input type="hidden" name="orderId" value="<%= order._id %>">
+                    <button type="submit" style="color:red;">Delete</button>
+                    </form>
+                    </td>
                 </tr>
             <% }) %>
         <% }) %>

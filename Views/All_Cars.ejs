@@ -18,6 +18,12 @@
                 <% Object.values(car._doc).forEach(value => { %>
                     <td><%= value %></td>
                 <% }) %>
+                <td>
+                <form action="/delete-car" method="POST" onsubmit="return confirm('Delete this car?');">
+                <input type="hidden" name="carId" value="<%= car._id %>">
+                <button type="submit" style="color:red;">Delete</button>
+                </form>
+                </td>
             </tr>
         <% }) %>
     </table>

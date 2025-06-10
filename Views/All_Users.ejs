@@ -49,6 +49,12 @@
                 <td><%= user.createdAt ? user.createdAt.toLocaleString() : '' %></td>
                 <td><%= user._id %></td>
                 <td><%= user.__v %></td>
+                <td>
+                <form action="/delete-user" method="POST" onsubmit="return confirm('Delete this user?');">
+               <input type="hidden" name="userId" value="<%= user._id %>">
+               <button type="submit" style="color:red;">Delete</button>
+               </form>
+               </td>
             </tr>
         <% }) %>
     </table>

@@ -2,9 +2,9 @@ const express = require('express');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const path = require('path');
-const session = require('express-session');
 const app = express();
 const User = require('./Models/dataUsersSchema'); 
+const Rent_Order = require('./Models/rentOrders');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -36,7 +36,7 @@ app.post("/register", (req, res) => {
     const newUser = new User({ FullName, Email, Phone, Password, licence, car });
     newUser.save()
         .then((user) => {
-            req.session.user = { name: user.FullName, email: user.Email ,Password: user.Password};
+            req.session.user = user;
             res.render('login');
         })
         .catch((err) => {
@@ -49,7 +49,7 @@ app.post('/login', async (req, res) => {
     try {
         const user = await User.findOne({ Email, Password });
         if (user) {
-            req.session.user = { email: user.Email ,Password: user.Password, name: user.FullName };
+            req.session.user = user;
             res.send(`<script>window.top.location.href='/User_Dashboard';</script>`);
         } else {
             res.status(401).send('<span style="color: red;">Invalid email or password</span>');
@@ -82,18 +82,6 @@ app.post('/login', async (req, res) => {
     } catch (err) {
         res.status(500).send('Server error');
     }
-});
-
-app.get('/showroom/luxury', (req, res) => {
-    res.render('ShowRoom_Luxury');
-});
-
-app.get('/showroom/sedan', (req, res) => {
-    res.render('ShowRoom_Sedan');
-});
-
-app.get('/showroom/sports', (req, res) => {
-    res.render('ShowRoom_Sports');
 });
 
 
@@ -199,6 +187,15 @@ app.get('/all-rent', async (req, res) => {
     }
 });
 
+app.post('/delete-rent', async (req, res) => {
+    try {
+        await Rent_Order.findByIdAndDelete(req.body.orderId);
+        res.redirect('/all-rent');
+    } catch (err) {
+        res.status(500).send('Error deleting rental order');
+    }
+});
+
 // Show all economy/sedan cars (GET)
 app.get('/showroom/sedan', async (req, res) => {
     try {
@@ -237,12 +234,30 @@ app.get('/all-users', async (req, res) => {
     }
 });
 
+app.post('/delete-user', async (req, res) => {
+    try {
+        await User.findByIdAndDelete(req.body.userId);
+        res.redirect('/all-users');
+    } catch (err) {
+        res.status(500).send('Error deleting user');
+    }
+});
+
 app.get('/all-cars', async (req, res) => {
     try {
         const cars = await Car.find({});
         res.render('All_Cars', { cars });
     } catch (err) {
         res.status(500).send('Error fetching cars');
+    }
+});
+
+app.post('/delete-car', async (req, res) => {
+    try {
+        await Car.findByIdAndDelete(req.body.carId);
+        res.redirect('/all-cars');
+    } catch (err) {
+        res.status(500).send('Error deleting car');
     }
 });
 

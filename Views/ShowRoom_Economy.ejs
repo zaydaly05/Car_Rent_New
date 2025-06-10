@@ -34,7 +34,11 @@
                             </p>
                             <div>Price: <%= car.price %> EGP per Day</div>
                             <div><%= car.type %> CC</div>
-                            <a href="#" class="button">Rent</a>
+                            <form action="/rent" method="POST" style="display:inline;">
+                           <input type="hidden" name="carId" value="<%= car._id %>">
+                           <input type="number" name="NoOfDays" value="1" min="1" style="width:60px;" required>
+                           <button type="submit" class="button">Rent</button>
+                           </form>
                         </div>
                     </div>
                 </div>

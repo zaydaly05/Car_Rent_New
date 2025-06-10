@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const mongoose = require('mongoose');
 const path = require('path');
 const session = require('express-session');
@@ -8,7 +9,12 @@ const User = require('./Models/dataUsersSchema');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.set('views', path.join(__dirname, 'Views', 'views'));
+app.use(session({
+    secret: 'yourSecretKey', // Change this to a strong secret in production
+    resave: false,
+    saveUninitialized: true
+}));
+app.set('views', path.join(__dirname, 'Views'));
 app.set("view engine", "ejs");
 
 app.use(session({
@@ -59,10 +65,24 @@ app.get('/register', (req, res) => {//popup
 app.get('/login', (req, res) => {
     res.render('login');
 });
-app.get("/User_Dashboard", (_req, res) => {
-    res.render('User_Dashboard');
+app.get("/User_Dashboard", (req, res) => {
+    res.render('User_Dashboard', { user: req.session.user || null });
 });
 
+app.post('/login', async (req, res) => {
+    const { Email, Password } = req.body;
+    try {
+        const user = await User.findOne({ Email, Password });
+        if (user) {
+            req.session.user = user; // Save user in session
+            res.redirect('/User_Dashboard'); // Redirect to dashboard
+        } else {
+            res.status(401).send('<span style="color: red;">Invalid email or password</span>');
+        }
+    } catch (err) {
+        res.status(500).send('Server error');
+    }
+});
 
 app.get('/showroom/luxury', (req, res) => {
     res.render('ShowRoom_Luxury');
@@ -74,9 +94,41 @@ app.get('/showroom/sedan', (req, res) => {
 
 app.get('/showroom/sports', (req, res) => {
     res.render('ShowRoom_Sports');
+});*/
+
+
+const Car = require('./car rent/models/car'); // Use this everywhere
+
+app.post('/rent', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).send('You must be logged in to rent a car.');
+    }
+    const { carId, NoOfDays } = req.body;
+    try {
+        const car = await Car.findById(carId); // Use Car, not Cars
+        if (!car) return res.status(404).send('Car not found.');
+
+        const totalPrice = car.price * NoOfDays; // Use lowercase if that's your schema
+
+        const rentOrder = new Rent_Order({
+            rentalRequests: [{
+                Car_name: car.name,
+                Category: car.category,
+                NoOfDays,
+                totalPrice
+            }],
+            totalPrice,
+            user: req.session.user._id
+        });
+
+        await rentOrder.save();
+        res.redirect('/User_Dashboard');
+    } catch (err) {
+        console.error('Rental error:', err);
+        res.status(500).send('Error processing rental.');
+    }
 });
 
-const Car = require('./car rent/models/car'); // Adjust path if needed
 
 // Show all cars (GET)
 app.get('/showroom/luxury', async (req, res) => {
@@ -133,6 +185,17 @@ app.post('/showroom/sports/add', async (req, res) => {
         res.redirect('/showroom/sports');
     } catch (err) {
         res.status(500).send('Error adding car');
+    }
+});
+
+
+app.get('/all-rent', async (req, res) => {
+    try {
+        const orders = await Rent_Order.find().populate('user');
+        res.render('all_rent', { orders });
+    } catch (err) {
+        console.error('All-rent error:', err);
+        res.status(500).send('Error fetching rental orders.');
     }
 });
 

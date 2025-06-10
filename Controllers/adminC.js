@@ -64,32 +64,32 @@ const postaddUser = async (req, res) => {
 };
 
 
-/*const viewUser = async (req, res) => {
+const displayUsers = async (req, res) => {
   if (!isAdmin(req)) return res.redirect('/Views/login.ejs');
   const user = await User.findById(req.params.id);
   res.render('ViewUser', { arr: user });
 };
 
-const viewCar = async (req, res) => {
+const displayCars = async (req, res) => {
   if (!isAdmin(req)) return res.redirect('/user/LoginForm');
   const car = await Car.findById(req.params.id);
   res.render('ViewCar', { arr: car });
 };
-*/
 
 
-const displayUsers = async (req, res) => {
+
+const filterUsers = async (req, res) => {
   if (!isAdmin(req)) return res.redirect('/user/LoginForm');
   const users = await User.find();
   const nonAdminUsers = users.filter(u => u._id.toString() !== req.session.userId);
   res.render("Users", { arr: nonAdminUsers });
 };
-const displayCars = async (req, res) => {
+/*const filterCars = async (req, res) => {
   if (!isAdmin(req)) return res.redirect('/user/LoginForm');
   const cars = await Car.find();
-  const nonAdminUsers = cars.filter(u => u._id.toString() !== req.session.userId);
-  res.render("Users", { arr: nonAdminUsers });
-};
+  const nonSportCars = cars.filter(u => u._id.toString() !== req.session.userId);
+  res.render("Users", { arr: nonSportCars });
+};*/
 
 const deleteUser = async (req, res) => {
   await User.findByIdAndDelete(req.params.id);
@@ -103,20 +103,9 @@ const deleteCar = async (req, res) => {
 
 
 const editCarPage = async (req, res) => {
-  if (!isAdmin(req)) return res.redirect('/Views/Welcome Page.html');
+  if (!isAdmin(req)) return res.redirect('/Views/login.ejs');
   const car = await Car.findByName(req.params.name);
-  res.render('login.ejs', { arr: car });
-};
-
-const editUserPage = async (req, res) => {
-  
-  if (!isAdmin(req)) return res.redirect('/Views/Welcome Page.html');
-  const user = await User.findByName(req.params.name);
-  if (user.type === 'Admin') {
-    res.render('ViewUser', { arr: user, message: "Can't edit admin...Access Developer Mode" });
-  } else {
-    res.render('edit-user.html', { arr: user });
-  }
+  res.render('Edit-car.ejs', { arr: car });
 };
 
 
@@ -133,27 +122,29 @@ const searchCars = async (req, res) => {
   }
 };
 
-const getManageCars = async (req, res) => {
-  if (!isAdmin(req)) return res.redirect('/user/LoginForm');
-  const perPage = 4;
-  const page = req.query.page || 1;
-
+const searchUsers = async (req, res) => {
   try {
-    const cars = await Car.find().skip((perPage * page) - perPage).limit(perPage);
-    const count = await Car.countDocuments();
-    res.render('ManageCars', {
-      arr: cars,
-      current: page,
-      pages: Math.ceil(count / perPage)
+    const uresults = await User.find({
+      Name: { $regex: new RegExp(req.query.query, 'i') }
     });
+    res.json(uresults);
   } catch (err) {
     console.log(err);
-    res.status(500).send('Error loading cars.');
+    res.status(500).send('Search failed');
   }
 };
 
 
-
+const editUserPage = async (req, res) => {
+  
+  if (!isAdmin(req)) return res.redirect('/Views/login.ejs');
+  const user = await User.findByName(req.params.name);
+  if (user.type === 'Admin') {
+    res.render('All_Users.ejs', { arr: user, message: "Can't edit admin...Access Developer Mode" });
+  } else {
+    res.render('edit-user.html', { arr: user });
+  }
+};
 
 const updateUser = async (req, res) => {
   try {
@@ -172,10 +163,30 @@ const updateUser = async (req, res) => {
     }
 
     await User.findByIdAndUpdate(req.params.id, updated);
-    res.json({ redirectUrl: "/admin/Users" });
+    res.json({ redirectUrl: "/Views/All_Users.ejs" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: 'Update failed.' });
+  }
+};
+
+const getManageCars = async (req, res) => {
+  if (!isAdmin(req)) return res.redirect('/View/login.ejs');
+  const perPage = 8;
+  const page = req.query.page || 1;
+
+  try {
+    const cars = await Car.find().skip((perPage * page) - perPage).limit(perPage);
+    const count = await Car.countDocuments();
+    res.render('ManageCars', {
+      arr: cars,
+      current: page,
+      pages: Math.ceil(count / perPage)
+    });
+    
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Error loading cars.');
   }
 };
 
@@ -189,7 +200,7 @@ const updateCar = async (req, res) => {
     };
 
     await Car.findByIdAndUpdate(req.params.id, updated);
-    res.redirect("/admin/ManageCars");
+    res.redirect("/Views/All_Cars.ejs");
   } catch (err) {
     console.log(err);
     res.status(500).send('Car update failed.');
@@ -197,28 +208,28 @@ const updateCar = async (req, res) => {
 };
 
 const getUserOrders = async (req, res) => {
-  if (!isAdmin(req)) return res.redirect('/user/LoginForm');
+  if (!isAdmin(req)) return res.redirect('/Views/login.ejs');
   const user = await User.findById(req.params.id);
   const orders = await Order.find({ user: user._id }).populate('user');
-  res.render('UserOrders', { orders, user });
+  res.render('all_rent', { orders, user });
 };
 
 const getAllOrders = async (req, res) => {
-  if (!isAdmin(req)) return res.redirect('/user/LoginForm');
-  const orders = await Order.find().populate('user');
-  res.render('Orders', { orders });
+  if (!isAdmin(req)) return res.redirect('/Views/login.ejs');
+  const orders = await Order.find().populate('user'); //populate:  allows the rendered view to access full user info (like name or email) for each order.
+  res.render('all_rent.ejs', { orders });
 };
 
 
 
-const deleteOrder = async (req, res) => {
+const AdminDeleteUserRent = async (req, res) => {
   await Order.findByIdAndDelete(req.params.id);
-  res.redirect('/admin/Orders');
+  res.redirect('/Views/all_rent.ejs');
 };
 
-const deleteUserOrder = async (req, res) => {
+const UserDeleteRent = async (req, res) => {
   await Order.findByIdAndDelete(req.params.id);
-  res.redirect(`/admin/UserOrders/${req.query.userId}`);
+  res.redirect(`/Views/User_Dashboard.ejs/${req.query.userId}`);
 };
 
 module.exports = {
@@ -227,11 +238,8 @@ module.exports = {
   postAddCar,
   getAddUser,
   postaddUser,
-  getAllUsers,
   searchCars,
   getManageCars,
-  viewUser,
-  viewCar,
   editCarPage,
   editUserPage,
   updateUser,
@@ -240,6 +248,10 @@ module.exports = {
   getAllOrders,
   deleteUser,
   deleteCar,
-  deleteOrder,
-  deleteUserOrder
+  AdminDeleteUserRent,
+  UserDeleteRent,
+  filterUsers,
+  displayUsers,
+  displayCars,
+  searchUsers
 };

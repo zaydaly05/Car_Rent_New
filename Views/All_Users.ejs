@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Users</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+        th, td {
+            border: 1px solid #888;
+            padding: 10px;
+            text-align: left;
+            word-break: break-all;
+        }
+        th {
+            background: #f0f0f0;
+        }
+        tr:nth-child(even) {
+            background: #fafafa;
+        }
+    </style>
+</head>
+<body>
+    <h1>All Users</h1>
+    <table>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Password</th>
+            <th>Licence</th>
+            <th>Registeration</th>
+            <th>Car</th>
+            <th>Created At</th>
+            <th>_id</th>
+            <th>__v</th>
+        </tr>
+        <% users.forEach(user => { %>
+            <tr>
+                <td><%= user.FullName %></td>
+                <td><%= user.Email %></td>
+                <td><%= user.Phone %></td>
+                <td><%= user.Password %></td>
+                <td><%= user.licence %></td>
+                <td><%= user.Registeration %></td>
+                <td><%= user.car %></td>
+                <td><%= user.createdAt ? user.createdAt.toLocaleString() : '' %></td>
+                <td><%= user._id %></td>
+                <td><%= user.__v %></td>
+                <td>
+                <form action="/delete-user" method="POST" onsubmit="return confirm('Delete this user?');">
+               <input type="hidden" name="userId" value="<%= user._id %>">
+               <button type="submit" style="color:red;">Delete</button>
+               </form>
+               </td>
+            </tr>
+        <% }) %>
+    </table>
+</body>
+</html>

@@ -1,14 +1,32 @@
 const express = require('express');
+const session = require('express-session');
 const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
 const User = require('./Models/dataUsersSchema'); 
+const Rent_Order = require('./Models/rentOrders');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.set('views', path.join(__dirname, 'Views', 'views'));
+app.use(session({
+    secret: 'yourSecretKey', // Change this to a strong secret in production
+    resave: false,
+    saveUninitialized: true
+}));
+app.set('views', path.join(__dirname, 'Views'));
 app.set("view engine", "ejs");
+
+app.use(session({
+    secret: 'yourSecretKey',
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use((req, res, next) => {
+    res.locals.user = req.session.user;
+    next();
+});
 
 app.get('/', (req, res) => {
     res.render('welcome');
@@ -17,13 +35,41 @@ app.post("/register", (req, res) => {
     const { FullName, Email, Phone, Password, licence, car } = req.body;
     const newUser = new User({ FullName, Email, Phone, Password, licence, car });
     newUser.save()
-        .then(() => {
-            res.send(`<script>window.top.location.href='/User_Dashboard';</script>`);
+        .then((user) => {
+            req.session.user = user;
+            res.render('login');
         })
         .catch((err) => {
             console.error("Error registering user:", err);
-            res.status(500).send('<span style="color: red;">Email already taken</span>'); // Show error in browser
+            res.status(500).send('<span style="color: red;">Email already taken</span>');
         });
+});
+app.post('/login', async (req, res) => {
+    const { Email, Password } = req.body;
+    try {
+        const user = await User.findOne({ Email, Password });
+        if (user) {
+            req.session.user = user;
+            res.send(`<script>window.top.location.href='/User_Dashboard';</script>`);
+        } else {
+            res.status(401).send('<span style="color: red;">Invalid email or password</span>');
+        }
+    } catch (err) {
+        console.error("Login error:", err);
+        res.status(500).send("Server error");
+    }
+});
+
+app.get("/User_Dashboard", async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+    try {
+        const orders = await Rent_Order.find({ user: req.session.user._id }).sort({ rentalDate: -1 });
+        res.render('User_Dashboard', { user: req.session.user, orders });
+    } catch (err) {
+        res.status(500).send('Error loading dashboard');
+    }
 });
 
 app.get('/register', (req, res) => {//popup
@@ -32,10 +78,201 @@ app.get('/register', (req, res) => {//popup
 app.get('/login', (req, res) => {
     res.render('login');
 });
-app.get("/User_Dashboard", (_req, res) => {
-    res.render('User_Dashboard');
+app.get("/User_Dashboard", (req, res) => {
+    res.render('User_Dashboard', { user: req.session.user || null });
 });
 
+app.post('/login', async (req, res) => {
+    const { Email, Password } = req.body;
+    try {
+        const user = await User.findOne({ Email, Password });
+        if (user) {
+            req.session.user = user; // Save user in session
+            res.redirect('/User_Dashboard'); // Redirect to dashboard
+        } else {
+            res.status(401).send('<span style="color: red;">Invalid email or password</span>');
+        }
+    } catch (err) {
+        res.status(500).send('Server error');
+    }
+});
+
+
+const Car = require('./car rent/models/car'); // Use this everywhere
+
+app.post('/rent', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).send('You must be logged in to rent a car.');
+    }
+    const { carId, NoOfDays } = req.body;
+    try {
+        const car = await Car.findById(carId); // Use Car, not Cars
+        if (!car) return res.status(404).send('Car not found.');
+
+        const totalPrice = car.price * NoOfDays; // Use lowercase if that's your schema
+
+        const rentOrder = new Rent_Order({
+            rentalRequests: [{
+                Car_name: car.name,
+                Category: car.category,
+                NoOfDays,
+                totalPrice
+            }],
+            totalPrice,
+            user: req.session.user._id
+        });
+
+        await rentOrder.save();
+        res.redirect('/User_Dashboard');
+    } catch (err) {
+        console.error('Rental error:', err);
+        res.status(500).send('Error processing rental.');
+    }
+});
+
+
+// Show all cars (GET)
+app.get('/showroom/luxury', async (req, res) => {
+    try {
+        const cars = await Car.find({ category: 'Luxury' }); // Filter by category if needed
+        res.render('ShowRoom_Luxury', { cars });
+    } catch (err) {
+        res.status(500).send('Error fetching cars');
+    }
+});
+
+// Add a new car (POST)
+app.post('/showroom/luxury/add', async (req, res) => {
+    try {
+        const { name, brand, type, price, image } = req.body;
+        const car = new Car({
+            name,
+            brand,
+            type,
+            category: 'Luxury',
+            price,
+            image // For simplicity, use a URL or base64 string for now
+        });
+        await car.save();
+        res.redirect('/showroom/luxury');
+    } catch (err) {
+        res.status(500).send('Error adding car');
+    }
+});
+
+// Show all sports cars (GET)
+app.get('/showroom/sports', async (req, res) => {
+    try {
+        const cars = await Car.find({ category: 'Sports' });
+        res.render('ShowRoom_Sports', { cars });
+    } catch (err) {
+        res.status(500).send('Error fetching cars');
+    }
+});
+
+// Add a new sports car (POST)
+app.post('/showroom/sports/add', async (req, res) => {
+    try {
+        const { name, brand, type, price, image } = req.body;
+        const car = new Car({
+            name,
+            brand,
+            type,
+            category: 'Sports',
+            price,
+            image
+        });
+        await car.save();
+        res.redirect('/showroom/sports');
+    } catch (err) {
+        res.status(500).send('Error adding car');
+    }
+});
+
+
+app.get('/all-rent', async (req, res) => {
+    try {
+        const orders = await Rent_Order.find().populate('user');
+        res.render('all_rent', { orders });
+    } catch (err) {
+        console.error('All-rent error:', err);
+        res.status(500).send('Error fetching rental orders.');
+    }
+});
+
+app.post('/delete-rent', async (req, res) => {
+    try {
+        await Rent_Order.findByIdAndDelete(req.body.orderId);
+        res.redirect('/all-rent');
+    } catch (err) {
+        res.status(500).send('Error deleting rental order');
+    }
+});
+
+// Show all economy/sedan cars (GET)
+app.get('/showroom/sedan', async (req, res) => {
+    try {
+        const cars = await Car.find({ category: 'Economy' }); // or 'Sedan' if that's your category name
+        res.render('ShowRoom_Economy', { cars });
+    } catch (err) {
+        res.status(500).send('Error fetching cars');
+    }
+});
+
+// Add a new economy/sedan car (POST)
+app.post('/showroom/sedan/add', async (req, res) => {
+    try {
+        const { name, brand, type, price, image } = req.body;
+        const car = new Car({
+            name,
+            brand,
+            type,
+            category: 'Economy', // or 'Sedan'
+            price,
+            image
+        });
+        await car.save();
+        res.redirect('/showroom/sedan');
+    } catch (err) {
+        res.status(500).send('Error adding car');
+    }
+});
+
+app.get('/all-users', async (req, res) => {
+    try {
+        const users = await User.find({});
+        res.render('All_Users', { users });
+    } catch (err) {
+        res.status(500).send('Error fetching users');
+    }
+});
+
+app.post('/delete-user', async (req, res) => {
+    try {
+        await User.findByIdAndDelete(req.body.userId);
+        res.redirect('/all-users');
+    } catch (err) {
+        res.status(500).send('Error deleting user');
+    }
+});
+
+app.get('/all-cars', async (req, res) => {
+    try {
+        const cars = await Car.find({});
+        res.render('All_Cars', { cars });
+    } catch (err) {
+        res.status(500).send('Error fetching cars');
+    }
+});
+
+app.post('/delete-car', async (req, res) => {
+    try {
+        await Car.findByIdAndDelete(req.body.carId);
+        res.redirect('/all-cars');
+    } catch (err) {
+        res.status(500).send('Error deleting car');
+    }
+});
 
 mongoose.connect("mongodb+srv://omar:123@cars.chdtnqe.mongodb.net/?retryWrites=true&w=majority&appName=cars") 
 .then(() => {

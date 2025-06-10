@@ -1,5 +1,5 @@
 const express = require('express');
-const session = require('express-session');
+const session = require('express-session'); // Only ONCE!
 const mongoose = require('mongoose');
 const path = require('path');
 const app = express();

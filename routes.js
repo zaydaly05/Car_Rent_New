@@ -69,8 +69,40 @@ app.post('/login', async (req, res) => {
     res.render('ShowRoom_Sports');
 });*/
 
+const Rent_Order = require('./Models/rentOrders');
 
-const Car = require('./car rent/models/car'); // Adjust path if needed
+const Car = require('./car rent/models/car'); // Use this everywhere
+
+app.post('/rent', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).send('You must be logged in to rent a car.');
+    }
+    const { carId, NoOfDays } = req.body;
+    try {
+        const car = await Car.findById(carId); // Use Car, not Cars
+        if (!car) return res.status(404).send('Car not found.');
+
+        const totalPrice = car.price * NoOfDays; // Use lowercase if that's your schema
+
+        const rentOrder = new Rent_Order({
+            rentalRequests: [{
+                Car_name: car.name,
+                Category: car.category,
+                NoOfDays,
+                totalPrice
+            }],
+            totalPrice,
+            user: req.session.user._id
+        });
+
+        await rentOrder.save();
+        res.redirect('/User_Dashboard');
+    } catch (err) {
+        console.error('Rental error:', err);
+        res.status(500).send('Error processing rental.');
+    }
+});
+
 
 // Show all cars (GET)
 app.get('/showroom/luxury', async (req, res) => {
@@ -127,6 +159,17 @@ app.post('/showroom/sports/add', async (req, res) => {
         res.redirect('/showroom/sports');
     } catch (err) {
         res.status(500).send('Error adding car');
+    }
+});
+
+
+app.get('/all-rent', async (req, res) => {
+    try {
+        const orders = await Rent_Order.find().populate('user');
+        res.render('all_rent', { orders });
+    } catch (err) {
+        console.error('All-rent error:', err);
+        res.status(500).send('Error fetching rental orders.');
     }
 });
 

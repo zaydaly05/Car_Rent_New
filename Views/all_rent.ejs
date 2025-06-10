@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>All Rental Orders</title>
+    <link rel="stylesheet" href="/css/ShowRoom Styling.css">
+</head>
+<body>
+    <h1>All Rental Orders</h1>
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>User</th>
+            <th>Car Name</th>
+            <th>Category</th>
+            <th>No. of Days</th>
+            <th>Total Price</th>
+            <th>Rental Date</th>
+        </tr>
+        <% orders.forEach(order => { %>
+            <% order.rentalRequests.forEach(req => { %>
+                <tr>
+                    <td><%= order.user ? order.user.FullName : 'Unknown' %></td>
+                    <td><%= req.Car_name %></td>
+                    <td><%= req.Category %></td>
+                    <td><%= req.NoOfDays %></td>
+                    <td><%= req.totalPrice %></td>
+                    <td><%= req.rentalDate.toDateString() %></td>
+                </tr>
+            <% }) %>
+        <% }) %>
+    </table>
+</body>
+</html>

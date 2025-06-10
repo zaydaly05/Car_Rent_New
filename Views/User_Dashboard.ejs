@@ -29,21 +29,33 @@
     </section>
 
     <section class="cards">
-      <div class="card highlight">
-        <h3>🚘 Upcoming Rental</h3>
-        <p><strong>Toyota Corolla</strong> - Apr 10 to Apr 15</p>
-      </div>
+  <div class="card highlight">
+    <h3>🚘 <%= orders && orders.length > 0 ? 'Current Rental' : 'No Current Rental' %></h3>
+    <% if (orders && orders.length > 0) { %>
+      <% const current = orders[0]; %>
+      <p>
+        <strong><%= current.rentalRequests[0].Car_name %></strong>
+        - <%= new Date(current.rentalDate).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) %>
+      </p>
+    <% } else { %>
+      <p>No active rentals.</p>
+    <% } %>
+  </div>
 
-      <div class="card">
-        <h3>📊 Total Rentals</h3>
-        <p>8 Rentals</p>
-      </div>
+  <div class="card">
+    <h3>📊 Total Rentals</h3>
+    <p><%= orders ? orders.length : 0 %> Rentals</p>
+  </div>
 
-      <div class="card">
-        <h3>💳 Last Payment</h3>
-        <p>$320 - Apr 01, 2025</p>
-      </div>
-    </section>
+  <div class="card">
+    <h3>💳 Last Payment</h3>
+    <% if (orders && orders.length > 0) { %>
+      <p><%= orders[0].totalPrice %> EGP - <%= new Date(orders[0].rentalDate).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) %></p>
+    <% } else { %>
+      <p>No payments yet.</p>
+    <% } %>
+  </div>
+</section>
 
     <section class="cards">
       <div class="card">

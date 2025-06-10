@@ -94,7 +94,7 @@ app.get('/showroom/sedan', (req, res) => {
 
 app.get('/showroom/sports', (req, res) => {
     res.render('ShowRoom_Sports');
-});*/
+});
 
 
 const Car = require('./car rent/models/car'); // Use this everywhere

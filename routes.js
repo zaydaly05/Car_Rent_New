@@ -277,7 +277,7 @@ app.post('/delete-car', async (req, res) => {
 mongoose.connect("mongodb+srv://omar:123@cars.chdtnqe.mongodb.net/?retryWrites=true&w=majority&appName=cars") 
 .then(() => {
     app.listen(5500,()=>{
-    console.log("Server is running on port 3000 and connected to MongoDB");
+    console.log("Server is running on port 5500 and connected to MongoDB");
 });
 })
 .catch((err) => {

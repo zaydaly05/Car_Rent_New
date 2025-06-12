@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Car</title>
+  <link rel="stylesheet" href="/css/forms-edit-car.css">
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Edit Car</h1>
+    <form method="POST" action="/edit-car/<%= car._id %>">
+      <input type="hidden" name="redirectTo" value="<%= typeof redirectTo !== 'undefined' ? redirectTo : (req.get && req.get('referer')) || '/all-cars' %>">
+      <div class="inputbox">
+        <label for="name">Car Name:</label>
+        <input type="text" id="name" name="name" value="<%= car.name %>" required>
+      </div>
+      <div class="inputbox">
+        <label for="brand">Brand:</label>
+        <input type="text" id="brand" name="brand" value="<%= car.brand %>" required>
+      </div>
+      <div class="inputbox">
+        <label for="type">Type:</label>
+        <input type="text" id="type" name="type" value="<%= car.type %>" required>
+      </div>
+      <div class="inputbox">
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" value="<%= car.category %>" required>
+      </div>
+      <div class="inputbox">
+        <label for="status">Status:</label>
+        <select id="status" name="status" class="select" required>
+          <option value="available" <%= car.status === 'available' ? 'selected' : '' %>>Available</option>
+          <option value="unavailable" <%= car.status === 'unavailable' ? 'selected' : '' %>>Unavailable</option>
+        </select>
+      </div>
+      <div class="inputbox">
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" value="<%= car.price %>" required>
+      </div>
+      <div class="inputbox">
+        <label for="image">Image URL:</label>
+        <input type="text" id="image" name="image" value="<%= car.image %>">
+      </div>
+      <div class="inputbox">
+        <label for="ratings">Ratings (comma separated):</label>
+        <input type="text" id="ratings" name="ratings" value="<%= car.ratings ? car.ratings.join(',') : '' %>">
+      </div>
+      <div class="inputbox">
+        <label for="createdAt">Created At:</label>
+        <input type="text" id="createdAt" name="createdAt" value="<%= car.createdAt ? car.createdAt.toISOString().slice(0, 16) : '' %>" readonly>
+      </div>
+      <button type="submit" class="btn">Save Changes</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "scripts": {
+  "start": "nodemon routes.js"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zaydaly05/Car_Rent_New.git"
@@ -24,5 +27,8 @@
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "mongoose": "^8.15.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }

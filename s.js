@@ -36,7 +36,9 @@ app.get("/User_Dashboard", (_req, res) => {
     res.render('User_Dashboard');
 });
 
-
+app.get("/AdminDashboard", (_req, res) => {
+    res.render('Admin Dashboard');
+});
 const Car = require('./car rent/models/car'); // Adjust path if needed
 
 // Show all cars (GET)

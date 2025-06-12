@@ -1,21 +1,20 @@
-<nav>
-        <a href="#" class="brand">Gulf Limousine</a>
+<nav id="nav">
+    <a href="/" class="brand">
+        Gulf Limousine    
+            <img src="/Images/logo.png" alt="Gulf Limousine" style="height:48px;vertical-align:middle;">
 
-    <a href="#" class="brand"><img src="/Images/logo.png" alt="logo"></a>
+    </a>
     <div class="menubtn"></div>
-
-    <div class="navigation">    
+    <div class="navigation">
         <div class="navigation-items">
-            <a href="home.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
             <% if (user) { %>
-                <span class="nav-link">Welcome : <%= user.name %> :-) </span>
+                <span class="nav-link">Welcome: <%= user.name %> :-)</span>
             <% } else { %>
-                <button onclick="showPopup('login')" class="nav-link">Login</button>
+                <button type="button" onclick="showPopup('login')" class="nav-link">Login</button>
             <% } %>
         </div>
-
     </div>
-
 </nav>

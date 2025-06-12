@@ -1,0 +1,216 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <title>User Dashboard - Car Rental</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="/Css/main.css">
+        <link rel="stylesheet" href="/Css/welcome.css">
+        <style>section{padding: 40px 20px;}</style>
+    </head>
+    <body class="homepage is-preload">
+        <div id="page-wrapper">
+
+            <!-- Header -->
+                <div id="header-wrapper">
+                    <div class="container">
+
+                        <!-- Header -->
+                            <header id="header">
+                                <div class="inner">
+
+                          <%- include('navbar') %>
+                                </div>
+                            </header>
+
+                        <!-- Banner -->
+                            <div id="banner">
+                                <h2><strong>Welcome back, <span id="user-name">Guest</span>!</strong></h2>
+                                <p > Ready for your next ride?</p>
+                                <a href="#rent" class="button large icon solid fa-car">Book Your Next Car</a>
+                            </div>
+
+                    </div>
+                </div>
+
+            <!-- Main Wrapper -->
+                <div id="main-wrapper">
+                    <div class="wrapper style1">
+                        <div class="inner">
+
+                            <!-- Feature 1 -->
+                                <section class="container box feature1">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <header class="first major">
+                                                <h2>Your Rental Overview</h2>
+                                                <p>Quick stats and your upcoming bookings</p>
+                                            </header>
+                                        </div>
+                                        <div class="col-4 col-12-medium">
+                                            <section>
+                                                <a href="#" class="image featured"><img src="images/pic01.jpg" alt="Upcoming Rental" /></a>
+                                                <header class="second icon solid fa-calendar-check">
+                                                    <h3>Upcoming Rental</h3>
+                                                    <p><strong>Toyota Corolla</strong><br>Apr 10 to Apr 15</p>
+                                                </header>
+                                            </section>
+                                        </div>
+                                        <div class="col-4 col-12-medium">
+                                            <section>
+                                                <a href="#" class="image featured"><img src="images/pic02.jpg" alt="Total Rentals" /></a>
+                                                <header class="second icon solid fa-chart-bar">
+                                                    <h3>Total Rentals</h3>
+                                                    <p>8 Rentals</p>
+                                                </header>
+                                            </section>
+                                        </div>
+                                        <div class="col-4 col-12-medium">
+                                            <section>
+                                                <a href="#" class="image featured"><img src="images/pic03.jpg" alt="Last Payment" /></a>
+                                                <header class="second icon solid fa-credit-card">
+                                                    <h3>Last Payment</h3>
+                                                    <p>$320 - Apr 01, 2025</p>
+                                                </header>
+                                            </section>
+                                        </div>
+                                        <div class="col-12">
+                                            <p>Thank you for choosing Gulf Limousine Travel. We strive to provide quality car rental services tailored for your comfort and convenience.</p>
+                                        </div>
+                                    </div>
+                                </section>
+
+                        </div>
+                    </div>
+                    <div class="wrapper style2">
+                        <div class="inner">
+
+                            <!-- Feature 2 -->
+                                <section class="container box feature2">
+                                    <div class="row">
+                                        <div class="col-6 col-12-medium">
+                                            <section>
+                                                <header class="major">
+                                                    <h2>✨ Want to Rent a Car?</h2>
+                                                    <p>Explore our top categories:</p>
+                                                </header>
+                                                <a href="/showroom/sedan" class="button medium icon solid fa-car-side">Sedan</a>
+                                                <a href="/showroom/luxury" class="button medium icon solid fa-gem">Luxury</a>
+                                                <a href="/showroom/sports" class="button medium icon solid fa-flag-checkered">Sports</a>
+                                                <footer style="margin-top:2em;">
+                                                    <h3>📬 Get Special Offers</h3>
+                                                    <form class="newsletter-form">
+                                                        <input type="email" placeholder="Enter your email" required />
+                                                        <button type="submit" class="button small">Subscribe</button>
+                                                    </form>
+                                                </footer>
+                                            </section>
+                                        </div>
+                                        <div class="col-6 col-12-medium">
+                                            <section>
+                                                <header class="major">
+                                                    <h2>About Us</h2>
+                                                    <p>Gulf Limousine Travel</p>
+                                                </header>
+                                                <p>We provide quality car rental services tailored for your comfort and convenience. Contact us for exclusive deals and discounts!</p>
+                                                <footer>
+                                                    <a href="#" class="button medium alt icon solid fa-info-circle">Contact Us</a>
+                                                </footer>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </section>
+
+                            </div>
+                    </div>
+                    <div class="wrapper style3">
+                        <div class="inner">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-8 col-12-medium">
+
+                                        <!-- Article list -->
+                                            <section class="box article-list">
+                                                <h2 class="icon fa-file-alt">Recent Activity</h2>
+
+                                                <!-- Excerpt -->
+                                                    <article class="box excerpt">
+                                                        <a href="#" class="image left"><img src="images/pic04.jpg" alt="" /></a>
+                                                        <div>
+                                                            <header>
+                                                                <span class="date">Apr 01</span>
+                                                                <h3><a href="#">Payment Received</a></h3>
+                                                            </header>
+                                                            <p>Your payment of $320 for Toyota Corolla rental has been processed successfully.</p>
+                                                        </div>
+                                                    </article>
+
+                                                <!-- Excerpt -->
+                                                    <article class="box excerpt">
+                                                        <a href="#" class="image left"><img src="images/pic05.jpg" alt="" /></a>
+                                                        <div>
+                                                            <header>
+                                                                <span class="date">Mar 28</span>
+                                                                <h3><a href="#">Rental Completed</a></h3>
+                                                            </header>
+                                                            <p>You returned the Honda Civic. We hope you enjoyed your ride!</p>
+                                                        </div>
+                                                    </article>
+
+                                                <!-- Excerpt -->
+                                                    <article class="box excerpt">
+                                                        <a href="#" class="image left"><img src="images/pic06.jpg" alt="" /></a>
+                                                        <div>
+                                                            <header>
+                                                                <span class="date">Mar 20</span>
+                                                                <h3><a href="#">New Booking</a></h3>
+                                                            </header>
+                                                            <p>Your booking for Toyota Corolla from Apr 10 to Apr 15 is confirmed.</p>
+                                                        </div>
+                                                    </article>
+
+                                            </section>
+                                    </div>
+                                    <div class="col-4 col-12-medium">
+
+                                        <!-- Spotlight -->
+                                            <section class="box spotlight">
+                                                <h2 class="icon fa-star">Special Offers</h2>
+                                                <article>
+                                                    <a href="#" class="image featured"><img src="images/pic07.jpg" alt=""></a>
+                                                    <header>
+                                                        <h3><a href="#">Spring Discount</a></h3>
+                                                        <p>Save 15% on all rentals this April!</p>
+                                                    </header>
+                                                    <p>Book your next ride now and enjoy exclusive discounts for loyal customers. Limited time offer.</p>
+                                                    <footer>
+                                                        <a href="#rent" class="button alt icon solid fa-car">Book Now</a>
+                                                    </footer>
+                                                </article>
+                                            </section>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Footer Wrapper -->
+                <div id="footer-wrapper">
+                  <%- include('NFooter') %>
+                </div>
+
+        </div>
+
+        <!-- Scripts -->
+            <script src="/public/js/jquery.min.js"></script>
+            <script src="/public/js/jquery.dropotron.min.js"></script>
+            <script src="/public/js/browser.min.js"></script>
+            <script src="/public/js/breakpoints.min.js"></script>
+            <script src="/public/js/util.js"></script>
+            <script src="/public/js/main.js"></script>
+
+    </body>
+</html>

@@ -264,6 +264,9 @@ app.get('/all-cars', async (req, res) => {
         res.status(500).send('Error fetching cars');
     }
 });
+app.get("/udshboard", (req, res) => {
+   res.render("index");
+});
 
 app.post('/delete-car', async (req, res) => {
     try {

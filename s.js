@@ -18,7 +18,7 @@ app.post("/register", (req, res) => {
     const newUser = new User({ FullName, Email, Phone, Password, licence, car });
     newUser.save()
         .then(() => {
-            res.send(`<script>window.top.location.href='/User_Dashboard';</script>`);
+            res.send(`<script>window.top.location.href='/User_Dashboard';</script>`); // submitting pop up form
         })
         .catch((err) => {
             console.error("Error registering user:", err);
@@ -35,19 +35,6 @@ app.get('/login', (req, res) => {
 app.get("/User_Dashboard", (_req, res) => {
     res.render('User_Dashboard');
 });
-
-
-/*app.get('/showroom/luxury', (req, res) => {
-    res.render('ShowRoom_Luxury');
-});*/
-
-/*app.get('/showroom/sedan', (req, res) => {
-    res.render('ShowRoom_Economy');
-});*/
-
-/*app.get('/showroom/sports', (req, res) => {
-    res.render('ShowRoom_Sports');
-});*/
 
 
 const Car = require('./car rent/models/car'); // Adjust path if needed

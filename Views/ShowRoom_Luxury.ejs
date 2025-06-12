@@ -3,6 +3,7 @@
 <head>
     <title>Luxury Cars Showroom</title>
     <link rel="stylesheet" href="/css/ShowRoom Styling.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
 </head>
 <body>
     <h1>Luxury Cars</h1>
@@ -35,9 +36,21 @@
                             <div>Price: <%= car.price %> EGP per Day</div>
                             <div><%= car.type %> CC</div>
                             <form action="/rent" method="POST" style="display:inline;">
-                            <input type="hidden" name="carId" value="<%= car._id %>">
-                            <input type="number" name="NoOfDays" value="1" min="1" style="width:60px;" required>
-                            <button type="submit" class="button">Rent</button>
+                                <input type="hidden" name="carId" value="<%= car._id %>">
+                                <input type="number" name="NoOfDays" value="1" min="1" style="width:60px;" required>
+                                <button type="submit" class="button">Rent</button>
+                            </form>
+                            <!-- Edit Button (popup) -->
+                            <a href="#" style="color:orange; margin-left:8px;" onclick="openEditPopup('<%= car._id %>'); return false;">
+                                <i class='bx bx-edit'></i>
+                            </a>
+                            <!-- Delete Button -->
+                            <form action="/delete-car" method="POST" style="display:inline;">
+                                <input type="hidden" name="carId" value="<%= car._id %>">
+                                <input type="hidden" name="redirectTo" value="/showroom/luxury">
+                                <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">
+                                    <i class='bx bx-trash'></i>
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -47,5 +60,20 @@
             <p>No cars found.</p>
         <% } %>
     </div>
+
+    <div id="editCarModalContainer"></div>
+    <script>
+    function openEditPopup(carId) {
+        fetch('/edit-car-popup/' + carId)
+          .then(res => res.text())
+          .then(html => {
+            document.getElementById('editCarModalContainer').innerHTML = html;
+            document.getElementById('editCarPopup').style.display = 'flex';
+          });
+    }
+    function closeEditPopup() {
+        document.getElementById('editCarModalContainer').innerHTML = '';
+    }
+    </script>
 </body>
 </html>

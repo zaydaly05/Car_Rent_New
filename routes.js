@@ -268,9 +268,39 @@ app.get('/all-cars', async (req, res) => {
 app.post('/delete-car', async (req, res) => {
     try {
         await Car.findByIdAndDelete(req.body.carId);
-        res.redirect('/all-cars');
+        res.redirect(req.body.redirectTo || '/showroom/sedan');
     } catch (err) {
         res.status(500).send('Error deleting car');
+    }
+});
+
+app.get('/edit-car-popup/:id', async (req, res) => {
+    try {
+        const car = await Car.findById(req.params.id);
+        if (!car) return res.status(404).send('Car not found');
+        res.render('Edit-car-form', { car }); // Adjust path if needed
+    } catch (err) {
+        res.status(500).send('Error loading car for edit');
+    }
+});
+
+app.post('/edit-car/:id', async (req, res) => {
+    try {
+        const { name, brand, type, category, status, price, image, ratings, redirectTo } = req.body;
+        await Car.findByIdAndUpdate(req.params.id, {
+            name,
+            brand,
+            type,
+            category,
+            status,
+            price,
+            image,
+            ratings: ratings ? ratings.split(',').map(r => Number(r.trim())).filter(r => !isNaN(r)) : []
+        });
+        res.redirect(redirectTo || req.get('referer') || '/all-cars');
+    } catch (err) {
+        console.error("Error updating car:", err);
+        res.status(500).send("Error updating car");
     }
 });
 

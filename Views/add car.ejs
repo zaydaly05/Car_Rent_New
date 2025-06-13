@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Car</title>
+  <link rel="stylesheet" href="/css/forms.css">
+
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Add Car</h1>
+    <form id="addCarForm" method="post" enctype="multipart/form-data">
+      <div class="inputbox">
+        <label for="name">Car Name:</label>
+        <input type="text" id="name" name="name" placeholder="e.g., Toyota Corolla" required>
+      </div>
+      <div>
+        <label for="category">Car Category:</label>
+        <select id="category" name="category" class="select" required>
+          <option value="">Select Category</option>
+          <option value="Economy">Economy</option>
+          <option value="Luxury">Luxury</option>
+          <option value="Sports">Sports</option>
+        </select>
+      </div>
+      <div class="inputbox">
+        <label for="type">Type:</label>
+        <input type="text" id="type" name="type" placeholder="e.g., Sedan" required>
+      </div>
+      <div class="inputbox">
+        <label for="brand">Brand:</label>
+        <input type="text" id="brand" name="brand" placeholder="e.g., Toyota" required>
+      </div>
+      <div class="inputbox">
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" placeholder="e.g., 650" required>
+      </div>
+      <div class="inputbox">
+        <label for="image">Upload Car Photo:</label>
+        <input type="file" id="image" name="image" accept="image/*" required>
+      </div>
+      <button type="submit" class="btn">Add Car</button>
+    </form>
+
+    <div id="preview"></div>
+  </div>
+
+  <script src="/js/add car.js"></script>
+</body>
+</html>

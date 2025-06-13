@@ -86,60 +86,6 @@ function closeEditPopup() {
 }
 </script>
 
-<<<<<<< Updated upstream
-<script>
-document.getElementById('addCarForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const form = e.target;
-    const data = new FormData(form);
-
-    fetch(form.action, {
-        method: 'POST',
-        body: data
-    })
-    .then(res => res.json())
-    .then(car => {
-        // Build the new car HTML
-        const carHtml = `
-        <div class="car-container">
-            <div class="car">
-                <img src="${car.image}" alt="${car.name}">
-                <div class="container">
-                    <p>Color: 
-                        <select>
-                            <option>Red</option>
-                            <option>Blue</option>
-                            <option>Grey</option>
-                        </select>
-                    </p>
-                    <div>Price: ${car.price} EGP per Day</div>
-                    <div>${car.type} CC</div>
-                    <a href="Car Rent Contract form Sedan.html" class="button">Rent</a>
-                </div>
-            </div>
-        </div>
-        `;
-        document.getElementById('carList').insertAdjacentHTML('afterbegin', carHtml);
-        form.reset();
-    })
-    .catch(() => alert('Error adding car!'));
-});
-=======
-<div id="carContractModalContainer"></div>
-<script>
-function openCarContractPopup(carId, userId, NoOfDays) {
-  fetch(`/car-contract-popup?carId=${carId}&userId=${userId}&NoOfDays=${NoOfDays}`)
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('carContractModalContainer').innerHTML = html;
-      document.getElementById('carContractPopup').style.display = 'flex';
-    });
-}
-function closeCarContractPopup() {
-  document.getElementById('carContractModalContainer').innerHTML = '';
-}
->>>>>>> Stashed changes
-</script>
 
 </body>
 </html>

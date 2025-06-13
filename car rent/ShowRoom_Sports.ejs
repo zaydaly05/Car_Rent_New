@@ -35,6 +35,7 @@
                             </p>
                             <div>Price: <%= car.price %> EGP per Day</div>
                             <div><%= car.type %> CC</div>
+                            <% const userId = user && user._id ? user._id : ''; %>
                             <% if (userId) { %>
                             <button type="button" class="button"
                                 onclick="openCarContractPopup('<%= car._id %>', '<%= userId %>')">

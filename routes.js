@@ -68,7 +68,7 @@ app.get("/User_Dashboard", async (req, res) => {
     }
     try {
         const orders = await Rent_Order.find({ user: req.session.user._id }).sort({ rentalDate: -1 });
-        res.render('User_Dashboard', { user: req.session.user, orders });
+        res.render('usd.ejs', { user: req.session.user, orders });
     } catch (err) {
         res.status(500).send('Error loading dashboard');
     }
@@ -357,6 +357,11 @@ app.post('/rent/contract', async (req, res) => {
     const totalPrice = car.price * days;
     if (isNaN(totalPrice)) {
         return res.status(400).send('Invalid total price calculation');
+    }
+    if (registration) {
+        await User.findByIdAndUpdate(userId, {
+            Registeration: registration
+        });
     }
     const rentOrder = new Rent_Order({
         rentalRequests: [{

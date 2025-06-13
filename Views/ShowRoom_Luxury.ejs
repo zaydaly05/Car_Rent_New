@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Luxury Cars Showroom</title>
+    <title><style></style>Cars Showroom</title>
     <link rel="stylesheet" href="/css/ShowRoom Styling.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
 </head>
 <body>
-    <h1>Luxury Cars</h1>
+    <h1>Cars Showroom</h1>
 
     <!-- Add Car Form 
     <form action="/showroom/luxury/add" method="POST" style="margin-bottom: 2em;">
@@ -19,6 +19,7 @@
     </form>
 -->
     <!-- Display Cars -->
+      <a href="add car.ejs" style="color:orange; margin-left:8px;" onclick="openaddPopup(); return false;"> <i class='bx bx-add'></i>
     <div class="car-list">
         <% if (cars && cars.length) { %>
             <% cars.forEach(car => { %>
@@ -41,7 +42,7 @@
                                 <button type="submit" class="button">Rent</button>
                             </form>
                             <!-- Edit Button (popup) -->
-                            <a href="#" style="color:orange; margin-left:8px;" onclick="openEditPopup('<%= car._id %>', '/showroom/luxury'); return false;">
+                            <a href="Edit-car-form.ejs" style="color:orange; margin-left:8px;" onclick="openEditPopup('<%= car._id %>', '/showroom/luxury'); return false;">
                              <i class='bx bx-edit'></i>
                             </a>
                             <!-- Delete Button -->
@@ -61,18 +62,43 @@
         <% } %>
     </div>
 
-    <div id="editCarModalContainer"></div>
+   <div id="editCarModalContainer"></div>
     <script>
 function openEditPopup(carId, redirectTo) {
     fetch('/edit-car-popup/' + carId + '?redirectTo=' + encodeURIComponent(redirectTo))
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('editCarModalContainer').innerHTML = html;
-        document.getElementById('editCarPopup').style.display = 'flex';
-      });
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('editCarModalContainer').innerHTML = html;
+    document.getElementById('editCarPopup').style.display = 'flex';
+  })
+  .catch(err => {
+    console.error('Failed to load edit popup:', err);
+    alert('Unable to load edit popup.');
+  });
 }
 function closeEditPopup() {
+    document.getElementById('editCarPopup').style.display = 'none';
     document.getElementById('editCarModalContainer').innerHTML = '';
+}
+
+
+
+function openAddPopup(carId, redirectTo) {
+    fetch('/add-car-popup/' + carId + '?redirectTo=' + encodeURIComponent(redirectTo))
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('addCarModalContainer').innerHTML = html;
+        document.getElementById('addCarPopup').style.display = 'flex';
+      })
+      .catch(err => {
+        console.error('Failed to load add popup:', err);
+        alert('Unable to load add popup.');
+      });
+}
+
+function closeAddPopup() {
+    document.getElementById('addCarPopup').style.display = 'none';
+    document.getElementById('addCarModalContainer').innerHTML = '';
 }
 </script>
 </body>

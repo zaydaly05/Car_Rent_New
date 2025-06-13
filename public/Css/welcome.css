@@ -9,14 +9,17 @@
 }
 nav {
     z-index: 999 !important;
-    position: absolute !important;
+    position: fixed !important;         /* Fixed at the top */
     top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important; /* Center horizontally */
+    width: 1500px !important;           /* Set your desired width */
+    max-width: 100% !important;         /* Responsive fallback */
     display: flex !important;
-    justify-content: space-between !important;
+    justify-content: flex-start !important;
     align-items: center !important;
-    padding: 1px 100px 0 10px !important;
+    gap: 80px !important; /* Add this for space between brand and nav items */
+    padding: 1px 40px 0 20px !important;
     transition: 0.5s ease !important;
     border: rgb(235, 209, 171) 5px solid !important;
     border-radius: 90px !important;
@@ -33,6 +36,8 @@ nav .brand{
     text-decoration: none !important;
     font-weight: 900 !important;
     margin: auto !important;
+    margin-right: 80px !important; /* Increase this value for more space */
+    margin-left: 0 !important;
 }
 nav .brand img{
     width: 280px !important;
@@ -47,7 +52,7 @@ nav .navigation{
     width: auto !important;
     height: auto !important;
     display: flex !important;
-    justify-content: flex-end !important;
+    justify-content: flex-start !important;  /* Align items to the left */
     align-items: center !important;
     background: none !important;
 }
@@ -352,5 +357,14 @@ nav * {
         background-size: 30px !important;
         background-position: center !important;
         transition: 0.3s ease !important;
+    }
+}
+@media (max-width: 1240px) {
+    nav {
+        width: 100% !important;
+        left: 0 !important;
+        transform: none !important;
+        border-radius: 0 !important;
+        padding: 1px 10px 0 10px !important;
     }
 }

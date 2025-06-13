@@ -8,7 +8,7 @@
 <body>
     <h1>Economy Cars</h1>
 
-    <!-- Add Car Form -->
+    <!-- 
     <form action="/showroom/sedan/add" method="POST" style="margin-bottom: 2em;">
         <input type="text" name="name" placeholder="Car Name" required>
         <input type="text" name="brand" placeholder="Brand" required>
@@ -16,8 +16,8 @@
         <input type="number" name="price" placeholder="Price" required>
         <input type="text" name="image" placeholder="Image URL" required>
         <button type="submit">Add Car</button>
-    </form>
--->
+    </form>  -->
+    
     <!-- Display Cars -->
     <div class="car-list" id="carList">
         <% if (cars && cars.length) { %>
@@ -38,7 +38,15 @@
                             <form action="/rent" method="POST" style="display:inline;">
                             <input type="hidden" name="carId" value="<%= car._id %>">
                             
-                            <button type= submit class="button" onclick="showPopup('car_contract')">Rent</button>
+                            <% const userId = user && user._id ? user._id : ''; %>
+                            <% if (userId) { %>
+                              <button type="button" class="button"
+                                onclick="openCarContractPopup('<%= car._id %>', '<%= userId %>')">
+                                Rent
+                              </button>
+                            <% } else { %>
+                              <button type="button" class="button" disabled title="Please log in to rent">Rent</button>
+                            <% } %>
                             
                         </form>
 
@@ -48,7 +56,7 @@
 
                         <form action="/delete-car" method="POST" style="display:inline;">
                           <input type="hidden" name="carId" value="<%= car._id %>">
-                          <input type="hidden" name="redirectTo" value="/showroom/luxury">
+                          <input type="hidden" name="redirectTo" value="/showroom/sedan">
                           <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">
                             <i class='bx bx-trash'></i>
                           </button>
@@ -78,43 +86,19 @@ function closeEditPopup() {
 }
 </script>
 
+<div id="carContractModalContainer"></div>
 <script>
-document.getElementById('addCarForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const form = e.target;
-    const data = new FormData(form);
-
-    fetch(form.action, {
-        method: 'POST',
-        body: data
-    })
-    .then(res => res.json())
-    .then(car => {
-        // Build the new car HTML
-        const carHtml = `
-        <div class="car-container">
-            <div class="car">
-                <img src="${car.image}" alt="${car.name}">
-                <div class="container">
-                    <p>Color: 
-                        <select>
-                            <option>Red</option>
-                            <option>Blue</option>
-                            <option>Grey</option>
-                        </select>
-                    </p>
-                    <div>Price: ${car.price} EGP per Day</div>
-                    <div>${car.type} CC</div>
-                    <a href="Car Rent Contract form Sedan.html" class="button">Rent</a>
-                </div>
-            </div>
-        </div>
-        `;
-        document.getElementById('carList').insertAdjacentHTML('afterbegin', carHtml);
-        form.reset();
-    })
-    .catch(() => alert('Error adding car!'));
-});
+function openCarContractPopup(carId, userId, NoOfDays) {
+  fetch(`/car-contract-popup?carId=${carId}&userId=${userId}&NoOfDays=${NoOfDays}`)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('carContractModalContainer').innerHTML = html;
+      document.getElementById('carContractPopup').style.display = 'flex';
+    });
+}
+function closeCarContractPopup() {
+  document.getElementById('carContractModalContainer').innerHTML = '';
+}
 </script>
 
 </body>

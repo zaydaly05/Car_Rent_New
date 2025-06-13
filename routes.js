@@ -68,7 +68,7 @@ app.get("/User_Dashboard", async (req, res) => {
     }
     try {
         const orders = await Rent_Order.find({ user: req.session.user._id }).sort({ rentalDate: -1 });
-        res.render('usd', { user: req.session.user, orders });
+        res.render('new_userdasboard', { user: req.session.user, orders });
     } catch (err) {
         res.status(500).send('Error loading dashboard');
     }
@@ -162,7 +162,7 @@ app.post("/showroom/sedan/add", async (req, res) => {
 app.get('/showroom/luxury', async (req, res) => {
     try {
         const cars = await Car.find({ category: 'Luxury' }); // Filter by category if needed
-        res.render('ShowRoom_Luxury', { cars });
+        res.render('ShowRoom_Luxury', { cars, user: req.session.user });
     } catch (err) {
         res.status(500).send('Error fetching cars');
     }
@@ -191,7 +191,7 @@ app.post('/showroom/luxury/add', async (req, res) => {
 app.get('/showroom/sports', async (req, res) => {
     try {
         const cars = await Car.find({ category: 'Sports' });
-        res.render('ShowRoom_Sports', { cars });
+        res.render('ShowRoom_Sports', { cars, user: req.session.user });
     } catch (err) {
         res.status(500).send('Error fetching cars');
     }
@@ -240,7 +240,7 @@ app.post('/delete-rent', async (req, res) => {
 app.get('/showroom/sedan', async (req, res) => {
     try {
         const cars = await Car.find({ category: 'Economy' }); // or 'Sedan' if that's your category name
-        res.render('ShowRoom_Economy', { cars });
+        res.render('ShowRoom_Economy', { cars, user: req.session.user });
     } catch (err) {
         res.status(500).send('Error fetching cars');
     }
@@ -332,6 +332,51 @@ app.post('/edit-car/:id', async (req, res) => {
         console.error("Error updating car:", err);
         res.status(500).send("Error updating car");
     }
+});
+
+app.get('/car-contract-popup', async (req, res) => {
+    const { carId, userId } = req.query;
+    if (!userId) {
+        return res.status(401).send('You must be logged in to rent a car.');
+    }
+    const car = await Car.findById(carId);
+    const user = await User.findById(userId);
+    res.render('car_contract', { car, user });
+});
+
+app.post('/rent/contract', async (req, res) => {
+    const { carId, userId, NoOfDays, registration } = req.body;
+    const days = Number(NoOfDays);
+    if (!carId || !userId || isNaN(days)) {
+        return res.status(400).send('Missing or invalid data');
+    }
+    const car = await Car.findById(carId);
+    if (!car || typeof car.price !== 'number') {
+        return res.status(400).send('Invalid car or car price');
+    }
+    const totalPrice = car.price * days;
+    if (isNaN(totalPrice)) {
+        return res.status(400).send('Invalid total price calculation');
+    }
+    if (registration) {
+        await User.findByIdAndUpdate(userId, {
+            Registeration: registration
+        });
+    }
+    const rentOrder = new Rent_Order({
+        rentalRequests: [{
+            Car_name: car.name,
+            Category: car.category,
+            NoOfDays: days,
+            totalPrice,
+            rentalDate: new Date()
+        }],
+        totalPrice,
+        rentalDate: new Date(),
+        user: userId
+    });
+    await rentOrder.save();
+    res.redirect('/User_Dashboard');
 });
 
 mongoose.connect("mongodb+srv://omar:123@cars.chdtnqe.mongodb.net/?retryWrites=true&w=majority&appName=cars") 

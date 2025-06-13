@@ -281,7 +281,7 @@ app.get('/edit-car-popup/:id', async (req, res) => {
     try {
         const car = await Car.findById(req.params.id);
         if (!car) return res.status(404).send('Car not found');
-        res.render('Edit-car-form', { car }); // Adjust path if needed
+        res.render('Edit-car-form', { car, redirectTo: req.query.redirectTo || '/showroom/sedan' });
     } catch (err) {
         res.status(500).send('Error loading car for edit');
     }

@@ -50,14 +50,14 @@
                             
                         </form>
 
-                        <a href="#" style="color:orange; margin-left:8px;" onclick="openEditPopup('<%= car._id %>', '/showroom/sedan'); return false;">
+                        <a class="edit-btn" onclick="openEditPopup('<%= car._id %>', '/showroom/sedan'); return false;">
                           <i class='bx bx-edit'></i>
                         </a>
 
                         <form action="/delete-car" method="POST" style="display:inline;">
                           <input type="hidden" name="carId" value="<%= car._id %>">
                           <input type="hidden" name="redirectTo" value="/showroom/sedan">
-                          <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">
+                          <button type="submit" class="delete-btn">
                             <i class='bx bx-trash'></i>
                           </button>
                         </form>

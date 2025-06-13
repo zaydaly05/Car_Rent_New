@@ -46,14 +46,14 @@
                             <button type="button" class="button" disabled title="Please log in to rent">Rent</button>
                             <% } %>
                             <!-- Edit Button (popup) -->
-                            <a href="Edit-car-form.ejs" style="color:orange; margin-left:8px;" onclick="openEditPopup('<%= car._id %>', '/showroom/luxury'); return false;">
+                            <a href="#" style="color:orange; margin-left:8px;" onclick="openEditPopup('<%= car._id %>', '/showroom/luxury'); return false;">
                              <i class='bx bx-edit'></i>
                             </a>
                             <!-- Delete Button -->
                             <form action="/delete-car" method="POST" style="display:inline;">
                                 <input type="hidden" name="carId" value="<%= car._id %>">
                                 <input type="hidden" name="redirectTo" value="/showroom/luxury">
-                                <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">
+                                <button type="submit" class="delete-btn">
                                     <i class='bx bx-trash'></i>
                                 </button>
                             </form>

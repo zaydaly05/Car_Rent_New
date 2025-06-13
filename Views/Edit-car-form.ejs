@@ -4,7 +4,7 @@
     <button onclick="closeEditPopup()" class="clsbtn" style="position:absolute; top:10px; right:10px;">&times;</button>
     <h1>Edit Car</h1>
     <form method="POST" action="/edit-car/<%= car._id %>">
-      <input type="hidden" name="redirectTo" value="/showroom/sedan">
+      <input type="hidden" name="redirectTo" value="<%= redirectTo %>">
       <div class="inputbox">
         <label for="name">Car Name:</label>
         <input type="text" id="name" name="name" value="<%= car.name %>" required>
@@ -17,10 +17,10 @@
         <label for="type">Type:</label>
         <input type="text" id="type" name="type" value="<%= car.type %>" required>
       </div>
-      <div class="inputbox">
+      <!-- <div class="inputbox">
         <label for="category">Category:</label>
         <input type="text" id="category" name="category" value="<%= car.category %>" required>
-      </div>
+      </div> -->
       <div class="inputbox">
         <label for="status">Status:</label>
         <select id="status" name="status" class="select" required>

@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Sports Cars Showroom</title>
+    <title>Cars Showroom</title>
     <link rel="stylesheet" href="/css/ShowRoom Styling.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
 </head>
 <body>
-    <h1>Sports Cars</h1>
+    <h1>Economy Cars</h1>
 
-    <!-- Add Car Form 
-    <form action="/showroom/sports/add" method="POST" style="margin-bottom: 2em;">
+    <!-- 
+    <form action="/showroom/sedan/add" method="POST" style="margin-bottom: 2em;">
         <input type="text" name="name" placeholder="Car Name" required>
         <input type="text" name="brand" placeholder="Brand" required>
         <input type="text" name="type" placeholder="Type" required>
         <input type="number" name="price" placeholder="Price" required>
         <input type="text" name="image" placeholder="Image URL" required>
         <button type="submit">Add Car</button>
-    </form>
--->
+    </form>  -->
+    
     <!-- Display Cars -->
-    <div class="car-list">
+    <div class="car-list" id="carList">
         <% if (cars && cars.length) { %>
             <% cars.forEach(car => { %>
                 <div class="car-container">
@@ -35,26 +35,32 @@
                             </p>
                             <div>Price: <%= car.price %> EGP per Day</div>
                             <div><%= car.type %> CC</div>
+                            <form action="/rent" method="POST" style="display:inline;">
+                            <input type="hidden" name="carId" value="<%= car._id %>">
+                            
+                            <% const userId = user && user._id ? user._id : ''; %>
                             <% if (userId) { %>
-                            <button type="button" class="button"
+                              <button type="button" class="button"
                                 onclick="openCarContractPopup('<%= car._id %>', '<%= userId %>')">
                                 Rent
-                            </button>
+                              </button>
                             <% } else { %>
-                            <button type="button" class="button" disabled title="Please log in to rent">Rent</button>
+                              <button type="button" class="button" disabled title="Please log in to rent">Rent</button>
                             <% } %>
-                            <!-- Edit Button (popup) -->
-                            <a href="#" style="color:orange; margin-left:8px;" onclick="openEditPopup('<%= car._id %>', '/showroom/sports'); return false;">
-                             <i class='bx bx-edit'></i>
-                            </a>
-                            <!-- Delete Button -->
-                            <form action="/delete-car" method="POST" style="display:inline;">
-                                <input type="hidden" name="carId" value="<%= car._id %>">
-                                <input type="hidden" name="redirectTo" value="/showroom/sports">
-                                <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">
-                                    <i class='bx bx-trash'></i>
-                                </button>
-                            </form>
+                            
+                        </form>
+
+                        <a class="edit-btn" onclick="openEditPopup('<%= car._id %>', '/showroom/sedan'); return false;">
+                          <i class='bx bx-edit'></i>
+                        </a>
+
+                        <form action="/delete-car" method="POST" style="display:inline;">
+                          <input type="hidden" name="carId" value="<%= car._id %>">
+                          <input type="hidden" name="redirectTo" value="/showroom/sedan">
+                          <button type="submit" class="delete-btn">
+                            <i class='bx bx-trash'></i>
+                          </button>
+                        </form>
                         </div>
                     </div>
                 </div>
@@ -64,8 +70,9 @@
         <% } %>
     </div>
 
-    <div id="editCarModalContainer"></div>
-    <script>
+
+<div id="editCarModalContainer"></div>
+<script>
 function openEditPopup(carId, redirectTo) {
     fetch('/edit-car-popup/' + carId + '?redirectTo=' + encodeURIComponent(redirectTo))
       .then(res => res.text())
@@ -81,8 +88,8 @@ function closeEditPopup() {
 
 <div id="carContractModalContainer"></div>
 <script>
-function openCarContractPopup(carId, userId) {
-  fetch(`/car-contract-popup?carId=${carId}&userId=${userId}`)
+function openCarContractPopup(carId, userId, NoOfDays) {
+  fetch(`/car-contract-popup?carId=${carId}&userId=${userId}&NoOfDays=${NoOfDays}`)
     .then(res => res.text())
     .then(html => {
       document.getElementById('carContractModalContainer').innerHTML = html;

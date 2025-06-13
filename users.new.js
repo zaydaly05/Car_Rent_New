@@ -164,7 +164,7 @@ const postEditProfilePage = async (req, res) => {
     }
 };
 
-const search = async (req, res) => {
+const CarSearch = async (req, res) => {
     const query = req.query.query.toLowerCase();
     try {
 
@@ -176,29 +176,29 @@ const search = async (req, res) => {
     }
 };
 
-const getDevicesPage = async (req, res) => {
+const getCarsEPage = async (req, res) => {
     if (!req.session.userId) {
-        return res.redirect("/user/LoginForm");
+        return res.redirect("/Views/login.ejs");
     }
 
     const perPage = 4;
     const page = req.query.page || 1;
 
     try {
-        const devices = await Device.find({})
+        const cars = await carsSchema.find({})
             .skip(perPage * page - perPage)
             .limit(perPage);
 
-        const count = await Device.countDocuments();
+        const count = await carsSchema.countDocuments();
 
-        if (req.session.type === "Client") {
-            res.render("Devices", {
-                arr: devices,
+        if (req.session.type === "User") {
+            res.render("Cars", {
+                arr: cars,
                 current: page,
                 pages: Math.ceil(count / perPage),
             });
         } else {
-            return res.redirect("/user/LoginForm");
+            return res.redirect("/Views/login.ejs");
         }
     } catch (err) {
         console.log(err);
@@ -206,21 +206,21 @@ const getDevicesPage = async (req, res) => {
     }
 };
 
-const getDevicePage = (req, res) => {
+const getCarsLPage = (req, res) => {
     if (!req.session.userId) {
-        return res.redirect("/user/LoginForm");
+        return res.redirect("/Views/login.ejs");
     }
-    Device.findById(req.params.id)
+    carsSchema.findById(req.params.id)
         .then((result) => {
-            if (req.session.type === "Client") {
+            if (req.session.type === "User") {
                 res.render("Device", { arr: result });
             } else {
-                return res.redirect("/user/LoginForm");
+                return res.redirect("/Views/login.ejs");
             }
         })
         .catch((err) => {
             console.log(err);
-            res.status(500).send("Error retrieving device.");
+            res.status(500).send("Error retrieving Car.");
         });
 };
 
@@ -385,27 +385,10 @@ const getHistory = async (req, res) => {
     }
 };
 
-const getOrderDetailsPage = (req, res) => {
-    if (!req.session.userId) {
-        return res.redirect("/user/LoginForm");
-    }
-    Order.findById(req.params.id2)
-        .then((order) => {
-            if (req.session.type === "Client") {
-                res.render("OrderDetails", { order });
-            } else {
-                return res.redirect("/user/LoginForm");
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).send("Error retrieving order details.");
-        });
-};
 
-const getRentOrderDetailsPage = (req, res) => {
+const getAllRentals = (req, res) => {
     if (!req.session.userId) {
-        return res.redirect("/user/LoginForm");
+        return res.redirect("/Views/login.ejs");
     }
     RentOrder.findById(req.params.id)
         .then((rentOrder) => {
@@ -446,6 +429,7 @@ module.exports = {
     userPage,
     postRigster,
     getSummary,
+    CarSearch,
     getEditProfilePage,
     postEditProfilePage,
     getDevicesPage,
@@ -455,5 +439,7 @@ module.exports = {
     getRentPage,
     getRentOrderDetailsPage,
     search,
-    postSignUp
+    postSignUp,
+    getRentalSummary,
+    getSignUpPage
 };

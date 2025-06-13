@@ -8,7 +8,7 @@
 <body>
     <h1>Economy Cars</h1>
 
-    <!-- Add Car Form 
+    <!-- Add Car Form -->
     <form action="/showroom/sedan/add" method="POST" style="margin-bottom: 2em;">
         <input type="text" name="name" placeholder="Car Name" required>
         <input type="text" name="brand" placeholder="Brand" required>
@@ -19,7 +19,7 @@
     </form>
 -->
     <!-- Display Cars -->
-    <div class="car-list">
+    <div class="car-list" id="carList">
         <% if (cars && cars.length) { %>
             <% cars.forEach(car => { %>
                 <div class="car-container">
@@ -78,6 +78,44 @@ function closeEditPopup() {
 }
 </script>
 
+<script>
+document.getElementById('addCarForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+
+    fetch(form.action, {
+        method: 'POST',
+        body: data
+    })
+    .then(res => res.json())
+    .then(car => {
+        // Build the new car HTML
+        const carHtml = `
+        <div class="car-container">
+            <div class="car">
+                <img src="${car.image}" alt="${car.name}">
+                <div class="container">
+                    <p>Color: 
+                        <select>
+                            <option>Red</option>
+                            <option>Blue</option>
+                            <option>Grey</option>
+                        </select>
+                    </p>
+                    <div>Price: ${car.price} EGP per Day</div>
+                    <div>${car.type} CC</div>
+                    <a href="Car Rent Contract form Sedan.html" class="button">Rent</a>
+                </div>
+            </div>
+        </div>
+        `;
+        document.getElementById('carList').insertAdjacentHTML('afterbegin', carHtml);
+        form.reset();
+    })
+    .catch(() => alert('Error adding car!'));
+});
+</script>
 
 </body>
 </html>

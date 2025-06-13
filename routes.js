@@ -68,7 +68,7 @@ app.get("/User_Dashboard", async (req, res) => {
     }
     try {
         const orders = await Rent_Order.find({ user: req.session.user._id }).sort({ rentalDate: -1 });
-        res.render('usd.ejs', { user: req.session.user, orders });
+        res.render('new_userdasboard', { user: req.session.user, orders });
     } catch (err) {
         res.status(500).send('Error loading dashboard');
     }
@@ -131,6 +131,31 @@ app.post('/rent', async (req, res) => {
         res.status(500).send('Error processing rental.');
     }
 });
+app.post("/showroom/sedan/add", async (req, res) => {
+    const { name, brand, type, price, image } = req.body;
+    const car = new Car({
+        name,
+        brand,
+        type,
+        category: 'Economy', // or 'Sedan' if that's your category name
+        price,
+        image // For simplicity, use a URL or base64 string for now
+    });
+    try {
+        await car.save();
+        // Respond with the new car as JSON for AJAX
+        res.json({
+            _id: car._id,
+            name: car.name,
+            brand: car.brand,
+            type: car.type,
+            price: car.price,
+            image: car.image
+        });
+    } catch (err) {
+        res.status(500).json({ error: 'Error adding car' });
+    }
+})
 
 
 // Show all cars (GET)

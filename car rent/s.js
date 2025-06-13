@@ -33,7 +33,7 @@ app.get('/login', (req, res) => {
     res.render('login');
 });
 app.get("/User_Dashboard", (_req, res) => {
-    res.render('User_Dashboard');
+    res.render('new_userdasboard');
 });
 
 app.get("/AdminDashboard", (_req, res) => {

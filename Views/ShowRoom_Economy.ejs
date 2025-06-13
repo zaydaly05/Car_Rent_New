@@ -86,6 +86,20 @@ function closeEditPopup() {
 }
 </script>
 
+<div id="carContractModalContainer"></div>
+<script>
+function openCarContractPopup(carId, userId, NoOfDays) {
+  fetch(`/car-contract-popup?carId=${carId}&userId=${userId}&NoOfDays=${NoOfDays}`)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('carContractModalContainer').innerHTML = html;
+      document.getElementById('carContractPopup').style.display = 'flex';
+    });
+}
+function closeCarContractPopup() {
+  document.getElementById('carContractModalContainer').innerHTML = '';
+}
+</script>
 
 </body>
 </html>

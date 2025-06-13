@@ -59,14 +59,16 @@ app.post('/login', async (req, res) => {
         res.status(500).send("Server error");
     }
 });
-
+app.get('/thank_you', (req, res) => {
+    res.render('thankyou.html');
+});
 app.get("/User_Dashboard", async (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login');
     }
     try {
         const orders = await Rent_Order.find({ user: req.session.user._id }).sort({ rentalDate: -1 });
-        res.render('usd', { user: req.session.user, orders });
+        res.render('new_userdasboard', { user: req.session.user, orders });
     } catch (err) {
         res.status(500).send('Error loading dashboard');
     }
@@ -79,7 +81,7 @@ app.get('/login', (req, res) => {
     res.render('login');
 });
 app.get("/User_Dashboard", (req, res) => {
-    res.render('User_Dashboard', { user: req.session.user || null });
+    res.render('usd.ejs', { user: req.session.user || null });
 });
 
 app.post('/login', async (req, res) => {
@@ -88,7 +90,7 @@ app.post('/login', async (req, res) => {
         const user = await User.findOne({ Email, Password });
         if (user) {
             req.session.user = user; // Save user in session
-            res.redirect('/User_Dashboard'); // Redirect to dashboard
+            res.redirect('/usd.ejs'); // Redirect to dashboard
         } else {
             res.status(401).send('<span style="color: red;">Invalid email or password</span>');
         }

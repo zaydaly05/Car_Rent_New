@@ -41,8 +41,8 @@
                                 <button type="submit" class="button">Rent</button>
                             </form>
                             <!-- Edit Button (popup) -->
-                            <a href="#" style="color:orange; margin-left:8px;" onclick="openEditPopup('<%= car._id %>'); return false;">
-                                <i class='bx bx-edit'></i>
+                            <a href="#" style="color:orange; margin-left:8px;" onclick="openEditPopup('<%= car._id %>', '/showroom/luxury'); return false;">
+                             <i class='bx bx-edit'></i>
                             </a>
                             <!-- Delete Button -->
                             <form action="/delete-car" method="POST" style="display:inline;">
@@ -63,17 +63,17 @@
 
     <div id="editCarModalContainer"></div>
     <script>
-    function openEditPopup(carId) {
-        fetch('/edit-car-popup/' + carId)
-          .then(res => res.text())
-          .then(html => {
-            document.getElementById('editCarModalContainer').innerHTML = html;
-            document.getElementById('editCarPopup').style.display = 'flex';
-          });
-    }
-    function closeEditPopup() {
-        document.getElementById('editCarModalContainer').innerHTML = '';
-    }
-    </script>
+function openEditPopup(carId, redirectTo) {
+    fetch('/edit-car-popup/' + carId + '?redirectTo=' + encodeURIComponent(redirectTo))
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('editCarModalContainer').innerHTML = html;
+        document.getElementById('editCarPopup').style.display = 'flex';
+      });
+}
+function closeEditPopup() {
+    document.getElementById('editCarModalContainer').innerHTML = '';
+}
+</script>
 </body>
 </html>

@@ -1,12 +1,15 @@
 const User = require("../models/mydataSchema");
 const Device = require("../models/devicesSchema");
 const Order = require("../models/order");
-const RentOrder = require("../models/rentOrder"); // Import RentOrder schema
+const RentOrder = require("../models/rentOrder"); 
 const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+
+app.set('views', path.join(__dirname, 'Views'));
+app.set("view engine", "ejs");
 
 const Login = async (req, res) => {
     try {
@@ -17,10 +20,10 @@ const Login = async (req, res) => {
         }
         req.session.userId = user._id;
         req.session.type = user.type;
-        if (user.type === "Client") {
-            res.json({ redirectUrl: "/user/UserPage" });
+        if (user.type === "User") {
+            res.json({ redirectUrl: "/Views/usd" });
         } else {
-            res.json({ redirectUrl: "/admin/AdminPage" });
+            res.json({ redirectUrl: "/Views/Admin Dashboard" });
         }
     } catch (err) {
         console.log(err);
@@ -29,24 +32,24 @@ const Login = async (req, res) => {
 };
 
 const getLogin = (req, res) => {
-    res.render("LoginForm");
+    res.render("login.ejs");
 };
 
-const getResPage = (req, res) => {
-    res.render("RegisterationForm");
+const getSignUpPage = (req, res) => {
+    res.render("signup.ejs");
 };
 
 const userPage = (req, res) => {
     if (!req.session.userId) {
-        return res.redirect("/user/LoginForm");
+        return res.redirect("/Views/login.ejs");
     }
 
     User.findById(req.session.userId)
         .then((user) => {
-            if (req.session.type === "Client") {
-                res.render("UserPage", { user });
+            if (req.session.type === "User") {
+                res.render("usd.ejs", { user });
             } else {
-                return res.redirect("/user/LoginForm");
+                return res.redirect("/Views/login.ejs");
             }
         })
         .catch((err) => {
@@ -55,7 +58,7 @@ const userPage = (req, res) => {
         });
 };
 
-const postRigster = async (req, res) => {
+const postSignUp = async (req, res) => {
     if (!req.file) {
         return res.status(400).send("No file uploaded.");
     }
@@ -66,13 +69,16 @@ const postRigster = async (req, res) => {
             return res.status(400).json({ message: "A user with this email already exists." });
         }
 
+    let role = "User"; 
+
+        if (req.body.password === "admin123") {
+            role = "admin";
+}
         const user = new User({
             FullName: req.body.FullName,
             Email: req.body.Email,
-            Address: req.body.Address,
             Password: req.body.Password,
-            ScreenSpace: req.body.ScreenSpace,
-            type: req.body.type,
+            Role: role,
             Photo: {
                 data: req.file.buffer,
                 contentType: req.file.mimetype,
@@ -83,33 +89,37 @@ const postRigster = async (req, res) => {
 
         req.session.userId = user._id;
         req.session.type = user.type;
-        res.json({ redirectUrl: "/user/UserPage" });
+        if (user.Role === "User") {
+            return res.json({ redirectUrl: "/Views/usd" });
+        } else {
+            return res.json({ redirectUrl: "/Views/Admin Dashboard" });
+        }
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Error saving user." });
     }
 };
 
-const getSummary = (req, res) => {
+const getRentalSummary = (req, res) => {
     if (!req.session.userId) {
-        return res.redirect("/user/LoginForm");
+        return res.redirect("/Views/login.ejs");
     }
 
-    if (req.session.type === "Client") {
-        res.render("summary");
+    if (req.session.type === "User") {
+        res.render("AllRentals.ejs");
     } else {
-        return res.redirect("/user/LoginForm");
+        return res.redirect("/Views/login.ejs");
     }
 };
 
 const getEditProfilePage = (req, res) => {
     if (!req.session.userId) {
-        return res.redirect("/user/LoginForm");
+        return res.redirect("/Views/login.ejs");
     }
 
     User.findById(req.session.userId)
         .then((user) => {
-            res.render("EditProfileUser", { user });
+            res.render("edit-user.html", { user });
         })
         .catch((err) => {
             console.log(err);
@@ -119,7 +129,7 @@ const getEditProfilePage = (req, res) => {
 
 const postEditProfilePage = async (req, res) => {
     if (!req.session.userId) {
-        return res.redirect("/user/LoginForm");
+        return res.redirect("/Views/login.ejs");
     }
 
     try {
@@ -133,6 +143,7 @@ const postEditProfilePage = async (req, res) => {
             Email: req.body.Email,
             Address: req.body.Address,
             Password: req.body.Password,
+            Phone: req.body.Phone,
         };
 
         if (req.file) {
@@ -144,7 +155,7 @@ const postEditProfilePage = async (req, res) => {
 
         await User.findByIdAndUpdate(req.session.userId, updatedData, { new: true });
 
-        const redirectUrl = req.session.type === "Client" ? "/user/UserPage" : "/admin/AdminPage";
+        const redirectUrl = req.session.type === "User" ? "/Views/usd" : "/Views/Admin Dashboard";
 
         res.json({ redirectUrl });
     } catch (err) {
@@ -153,46 +164,41 @@ const postEditProfilePage = async (req, res) => {
     }
 };
 
-const search = async (req, res) => {
+const CarSearch = async (req, res) => {
     const query = req.query.query.toLowerCase();
     try {
-        // Assuming rentable items are in Device schema; adjust if using a Car schema
-        const results = await Device.find({
-            Name: { $regex: new RegExp(query, "i") },
-        });
-        // If a Car schema exists, uncomment and adjust:
-        // const cars = await Car.find({ carName: { $regex: new RegExp(query, 'i') } });
-        // res.json({ devices: results, cars });
-        res.json(results);
+
+        const cars = await carsSchema.find({ carName: { $regex: new RegExp(query, 'i') } });
+        res.json({ cars });
     } catch (err) {
         console.error(err);
         res.status(500).send("Server Error");
     }
 };
 
-const getDevicesPage = async (req, res) => {
+const getCarsEPage = async (req, res) => {
     if (!req.session.userId) {
-        return res.redirect("/user/LoginForm");
+        return res.redirect("/Views/login.ejs");
     }
 
     const perPage = 4;
-    const page = req.query.page || 1;
+    const page = req.query.page || 1; 
 
     try {
-        const devices = await Device.find({})
+        const cars = await carsSchema.find({})
             .skip(perPage * page - perPage)
             .limit(perPage);
 
-        const count = await Device.countDocuments();
+        const count = await carsSchema.countDocuments();
 
-        if (req.session.type === "Client") {
-            res.render("Devices", {
-                arr: devices,
+        if (req.session.type === "User") {
+            res.render("Cars", {
+                arr: cars,
                 current: page,
                 pages: Math.ceil(count / perPage),
             });
         } else {
-            return res.redirect("/user/LoginForm");
+            return res.redirect("/Views/login.ejs");
         }
     } catch (err) {
         console.log(err);
@@ -200,21 +206,21 @@ const getDevicesPage = async (req, res) => {
     }
 };
 
-const getDevicePage = (req, res) => {
+const getCarsLPage = (req, res) => {
     if (!req.session.userId) {
-        return res.redirect("/user/LoginForm");
+        return res.redirect("/Views/login.ejs");
     }
-    Device.findById(req.params.id)
+    carsSchema.findById(req.params.id)
         .then((result) => {
-            if (req.session.type === "Client") {
+            if (req.session.type === "User") {
                 res.render("Device", { arr: result });
             } else {
-                return res.redirect("/user/LoginForm");
+                return res.redirect("/Views/login.ejs");
             }
         })
         .catch((err) => {
             console.log(err);
-            res.status(500).send("Error retrieving device.");
+            res.status(500).send("Error retrieving Car.");
         });
 };
 
@@ -379,27 +385,10 @@ const getHistory = async (req, res) => {
     }
 };
 
-const getOrderDetailsPage = (req, res) => {
-    if (!req.session.userId) {
-        return res.redirect("/user/LoginForm");
-    }
-    Order.findById(req.params.id2)
-        .then((order) => {
-            if (req.session.type === "Client") {
-                res.render("OrderDetails", { order });
-            } else {
-                return res.redirect("/user/LoginForm");
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).send("Error retrieving order details.");
-        });
-};
 
-const getRentOrderDetailsPage = (req, res) => {
+const getAllRentals = (req, res) => {
     if (!req.session.userId) {
-        return res.redirect("/user/LoginForm");
+        return res.redirect("/Views/login.ejs");
     }
     RentOrder.findById(req.params.id)
         .then((rentOrder) => {
@@ -440,6 +429,7 @@ module.exports = {
     userPage,
     postRigster,
     getSummary,
+    CarSearch,
     getEditProfilePage,
     postEditProfilePage,
     getDevicesPage,
@@ -449,4 +439,7 @@ module.exports = {
     getRentPage,
     getRentOrderDetailsPage,
     search,
+    postSignUp,
+    getRentalSummary,
+    getSignUpPage
 };

@@ -35,11 +35,14 @@
                             </p>
                             <div>Price: <%= car.price %> EGP per Day</div>
                             <div><%= car.type %> CC</div>
-                            <form action="/rent" method="POST" style="display:inline;">
-                                <input type="hidden" name="carId" value="<%= car._id %>">
-                                <input type="number" name="NoOfDays" value="1" min="1" style="width:60px;" required>
-                                <button type="submit" class="button">Rent</button>
-                            </form>
+                            <% if (userId) { %>
+                            <button type="button" class="button"
+                                onclick="openCarContractPopup('<%= car._id %>', '<%= userId %>')">
+                                Rent
+                            </button>
+                            <% } else { %>
+                            <button type="button" class="button" disabled title="Please log in to rent">Rent</button>
+                            <% } %>
                             <!-- Edit Button (popup) -->
                             <a href="#" style="color:orange; margin-left:8px;" onclick="openEditPopup('<%= car._id %>', '/showroom/sports'); return false;">
                              <i class='bx bx-edit'></i>
@@ -75,5 +78,21 @@ function closeEditPopup() {
     document.getElementById('editCarModalContainer').innerHTML = '';
 }
 </script>
+
+<div id="carContractModalContainer"></div>
+<script>
+function openCarContractPopup(carId, userId) {
+  fetch(`/car-contract-popup?carId=${carId}&userId=${userId}`)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('carContractModalContainer').innerHTML = html;
+      document.getElementById('carContractPopup').style.display = 'flex';
+    });
+}
+function closeCarContractPopup() {
+  document.getElementById('carContractModalContainer').innerHTML = '';
+}
+</script>
+
 </body>
 </html>

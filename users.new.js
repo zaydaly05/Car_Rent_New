@@ -182,7 +182,7 @@ const getCarsEPage = async (req, res) => {
     }
 
     const perPage = 4;
-    const page = req.query.page || 1;
+    const page = req.query.page || 1; 
 
     try {
         const cars = await carsSchema.find({})

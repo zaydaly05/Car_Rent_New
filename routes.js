@@ -68,7 +68,7 @@ app.get("/User_Dashboard", async (req, res) => {
     }
     try {
         const orders = await Rent_Order.find({ user: req.session.user._id }).sort({ rentalDate: -1 });
-        res.render('new_userdasboard', { user: req.session.user, orders });
+        res.render('usd', { user: req.session.user, orders });
     } catch (err) {
         res.status(500).send('Error loading dashboard');
     }

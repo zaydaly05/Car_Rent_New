@@ -3,7 +3,8 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
-const User = require('./Models/dataUsersSchema'); 
+const Cars = require('./Models/carsSchema');
+const User = require('./Models/dataUsersSchema');
 const Rent_Order = require('./Models/rentOrders');
 
 app.use(express.json());
@@ -100,7 +101,13 @@ app.post('/login', async (req, res) => {
 });
 
 
-const Car = require('./car rent/models/car'); // Use this everywhere
+app.get("/contact",(req, res) => {
+    res.render("contact.ejs");
+});
+
+app.get("/about",(req, res) => {
+    res.render("about");
+});
 
 app.post('/rent', async (req, res) => {
     if (!req.session.user) {
@@ -377,6 +384,55 @@ app.post('/rent/contract', async (req, res) => {
     });
     await rentOrder.save();
     res.redirect('/User_Dashboard');
+});
+
+app.get('/admin-dashboard', async (req, res) => {
+    try {
+        // 1. Ratio of Category Rented
+        const allOrders = await Rent_Order.find({});
+        let categoryCounts = {};
+        let totalRented = 0;
+        allOrders.forEach(order => {
+            order.rentalRequests.forEach(req => {
+                categoryCounts[req.Category] = (categoryCounts[req.Category] || 0) + 1;
+                totalRented++;
+            });
+        });
+        let ratio = Object.entries(categoryCounts)
+            .map(([cat, count]) => `${cat}: ${(count / totalRented * 100).toFixed(1)}%`)
+            .join(', ');
+
+        // 2. Average Accounts Registered per Month
+        const users = await User.find({});
+        let months = {};
+        users.forEach(u => {
+            const m = u.createdAt.getMonth() + 1;
+            const y = u.createdAt.getFullYear();
+            const key = `${y}-${m}`;
+            months[key] = (months[key] || 0) + 1;
+        });
+        const avg = (users.length / Object.keys(months).length).toFixed(1);
+
+        // 3. Total income per month
+        let incomePerMonth = {};
+        allOrders.forEach(order => {
+            const m = order.rentalDate.getMonth() + 1;
+            const y = order.rentalDate.getFullYear();
+            const key = `${y}-${m}`;
+            incomePerMonth[key] = (incomePerMonth[key] || 0) + (order.totalPrice || 0);
+        });
+        // Show the most recent month
+        const latestMonth = Object.keys(incomePerMonth).sort().pop();
+        const total_income = latestMonth ? incomePerMonth[latestMonth].toFixed(2) : '0';
+
+        res.render('Admin Dashboard', {
+            ratio,
+            average: avg,
+            total_income
+        });
+    } catch (err) {
+        res.status(500).send('Error fetching statistics');
+    }
 });
 
 mongoose.connect("mongodb+srv://omar:123@cars.chdtnqe.mongodb.net/?retryWrites=true&w=majority&appName=cars") 

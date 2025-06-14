@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Gulf Limousine</title>
+    <link rel="stylesheet" href="/Css/User Dashboard Styling.css">
+    <style>
+        .contact-section {
+            max-width: 500px;
+            margin: 48px auto;
+            background: linear-gradient(120deg, #fffbe6 60%, #e86c06 100%);
+            border-radius: 18px;
+            box-shadow: 0 6px 24px rgba(232,108,6,0.13);
+            padding: 40px 36px 32px 36px;
+            color: #333;
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-section::before {
+            content: "";
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 160px;
+            height: 160px;
+            background: #e86c06;
+            opacity: 0.13;
+            border-radius: 50%;
+            z-index: 0;
+        }
+        .contact-section h2 {
+            color: #e86c06;
+            margin-bottom: 18px;
+            font-size: 2em;
+            position: relative;
+            z-index: 1;
+        }
+        .contact-section p {
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        .contact-section ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+        }
+        .contact-section li {
+            margin-bottom: 10px;
+            font-size: 1.08em;
+        }
+        .contact-section a {
+            color: #e86c06;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .contact-section a:hover {
+            color: #b35404;
+            text-decoration: underline;
+        }
+        .contact-section strong {
+            color: #e86c06;
+        }
+        .contact-section .social-icons {
+            margin-top: 8px;
+            display: flex;
+            gap: 18px;
+        }
+        .contact-section .social-icons a {
+            font-size: 1.1em;
+            background: #fffbe6;
+            padding: 7px 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(232,108,6,0.07);
+            color: #e86c06;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contact-section .social-icons a:hover {
+            background: #e86c06;
+            color: #fffbe6;
+        }
+        @media (max-width: 600px) {
+            .contact-section {
+                padding: 24px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="contact-section">
+            <h2>Contact Us</h2>
+            <p>We'd love to hear from you! Reach us using the information below:</p>
+            <ul>
+                <li><strong>Phone:</strong> <a href="tel:+971500000000">01555167966</a></li>
+                <li><strong>Email:</strong> <a href="mailto:info@gulflimousine.com">info@gulflimousine.com</a></li>
+                <li><strong>Address:</strong> Gulf Limousine, Sheikh Zayed</li>
+            </ul>
+            <div style="margin-top: 18px;">
+                <strong>Working Hours:</strong>
+                <p>Monday - Saturday: 9:00 AM – 8:00 PM<br>Sunday: Closed</p>
+            </div>
+            <div style="margin-top: 18px;">
+                <strong>Follow Us:</strong>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/" target="_blank">🔵 Facebook</a>
+                    <a href="https://www.instagram.com/" target="_blank">🟣 Instagram</a>
+                    <a href="https://www.twitter.com/" target="_blank">🔵 Twitter</a>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

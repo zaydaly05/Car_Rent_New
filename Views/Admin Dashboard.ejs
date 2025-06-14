@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Car Rental</title>
+ <link rel="stylesheet" href="/Css/User Dashboard Styling.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="/Css/forms.css">
+        <link rel="stylesheet" href="/Css/welcome.css">
+
+  <script src="/js/Admin_Dashboard_Buttons_PopUp.js"></script>
+</head>
+<body>
+
+
+  <header>
+    <h1>CarRental</h1>
+    <%- include('navbar') %>
+  </header>
+
+  <main>
+    <section class="welcome">
+      <h2>Welcome back <% if (user && user.name) { %><%= user.name %><% } %></h2>
+      <p>Here's a summary of your activity.</p>
+    </section>
+
+      <div class="card">
+        <h3>Controls</h3>
+        <br> 
+       <a href="ShowRoom_Luxury.ejs"><button class="button">Car Controls</button></a>
+        <a href="All_Users.ejs"><button class="button">User Controls</button></a>
+      
+      </div>
+      <div class="statistics">
+        <h3>Statistics</h3>
+        <p>Ratio of Category Rented: <%= ratio %></p>
+        <p>Average Accounts Registered per Month: <%= average %></p>
+        <p>Total income: <%= total_income %> per month</p>
+      </div>
+    </section>
+  </main>
+
+
+
+  <footer class="footer">
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>About Us</h3>
+            <p>We provide quality content and services to our users.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <a href="/css/ome Page.html">Home</a>
+            <a href="#">Services</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+        <div class="footer-section">
+            <h3>Follow Us</h3>
+            <div class="social-icons">
+                <a href="www.facebook.com">🔵 Facebook</a>
+                <a href="www.instagram.com">🟣 Instagram</a>
+                <a href="www.twitter.com">🔵 Twitter</a>
+            </div>
+        </div>
+    </div>
+    <p>&copy; 2025 Gulf Limousine Travel. All Rights Reserved.</p>
+  </footer>
+  <script>
+function showEditProfile() {
+  Swal.fire({
+    title: 'Edit Profile',
+    html: `
+      <input type="text" id="swal-input1" class="swal2-input" placeholder="Name">
+      <input type="email" id="swal-input2" class="swal2-input" placeholder="Email">
+    `,
+    confirmButtonText: 'Save',
+    showCancelButton: true,
+    preConfirm: () => {
+      const name = document.getElementById('swal-input1').value;
+      const email = document.getElementById('swal-input2').value;
+      // You can add AJAX here to save changes
+      return { name, email };
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Handle the result.value (name, email)
+      // Example: send to server or update UI
+      Swal.fire('Saved!', '', 'success');
+    }
+  });
+}
+</script>
+  
+</body>
+</html>

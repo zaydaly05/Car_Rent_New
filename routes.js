@@ -1,3 +1,4 @@
+
 const express = require('express');
 const session = require('express-session');
 const mongoose = require('mongoose');
@@ -140,35 +141,10 @@ app.post('/rent', async (req, res) => {
         res.status(500).send('Error processing rental.');
     }
 });
-app.post("/showroom/sedan/add", async (req, res) => {
-    const { name, brand, type, price, image } = req.body;
-    const car = new Car({
-        name,
-        brand,
-        type,
-        category: 'Economy', // or 'Sedan' if that's your category name
-        price,
-        image // For simplicity, use a URL or base64 string for now
-    });
-    try {
-        await car.save();
-        // Respond with the new car as JSON for AJAX
-        res.json({
-            _id: car._id,
-            name: car.name,
-            brand: car.brand,
-            type: car.type,
-            price: car.price,
-            image: car.image
-        });
-    } catch (err) {
-        res.status(500).json({ error: 'Error adding car' });
-    }
-})
 
 
 // Show all cars (GET)
-app.get('/showroom/luxury', async (req, res) => {
+app.get('/showroom', async (req, res) => {
     try {
         const cars = await Car.find({ category: 'Luxury' }); // Filter by category if needed
         res.render('ShowRoom_Luxury', { cars, user: req.session.user });
@@ -177,7 +153,7 @@ app.get('/showroom/luxury', async (req, res) => {
     }
 });
 
-app.post('/showroom/luxury/add', upload.single('image'), async (req, res) => {
+app.post('/showroom/add', upload.single('image'), async (req, res) => {
     try {
         const { Name, Price, Category } = req.body;
         const image = req.file
@@ -197,34 +173,7 @@ app.post('/showroom/luxury/add', upload.single('image'), async (req, res) => {
     }
 });
 
-// Show all sports cars (GET)
-app.get('/showroom/sports', async (req, res) => {
-    try {
-        const cars = await Car.find({ category: 'Sports' });
-        res.render('ShowRoom_Sports', { cars, user: req.session.user });
-    } catch (err) {
-        res.status(500).send('Error fetching cars');
-    }
-});
 
-// Add a new sports car (POST)
-app.post('/showroom/sports/add', async (req, res) => {
-    try {
-        const { name, brand, type, price, image } = req.body;
-        const car = new Car({
-            name,
-            brand,
-            type,
-            category: 'Sports',
-            price,
-            image
-        });
-        await car.save();
-        res.redirect('/showroom/sports');
-    } catch (err) {
-        res.status(500).send('Error adding car');
-    }
-});
 
 
 app.get('/all-rent', async (req, res) => {

@@ -6,6 +6,8 @@ const app = express();
 const Cars = require('./Models/carsSchema');
 const User = require('./Models/dataUsersSchema');
 const Rent_Order = require('./Models/rentOrders');
+const multer = require('multer');
+const upload = multer();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -175,22 +177,23 @@ app.get('/showroom/luxury', async (req, res) => {
     }
 });
 
-// Add a new car (POST)
-app.post('/showroom/luxury/add', async (req, res) => {
+app.post('/showroom/luxury/add', upload.single('image'), async (req, res) => {
     try {
-        const { name, brand, type, price, image } = req.body;
-        const car = new Car({
-            name,
-            brand,
-            type,
-            category: 'Luxury',
-            price,
-            image // For simplicity, use a URL or base64 string for now
+        const { Name, Price, Category } = req.body;
+        const image = req.file
+            ? { data: req.file.buffer, contentType: req.file.mimetype }
+            : undefined;
+
+        const car = new Cars({
+            Name,
+            Price,
+            Category,
+            image
         });
         await car.save();
-        res.redirect('/showroom/luxury');
+        res.json({ success: true });
     } catch (err) {
-        res.status(500).send('Error adding car');
+        res.status(500).json({ success: false, error: 'Error adding car' });
     }
 });
 
@@ -339,6 +342,9 @@ app.post('/edit-car/:id', async (req, res) => {
         console.error("Error updating car:", err);
         res.status(500).send("Error updating car");
     }
+});
+app.get('/addcar', (req, res) => {
+    res.render('add car');
 });
 
 app.get('/car-contract-popup', async (req, res) => {

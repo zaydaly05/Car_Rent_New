@@ -25,7 +25,7 @@
             <% cars.forEach(car => { %>
                 <div class="car-container">
                     <div class="car">
-                        <img src="<%= car.image %>" alt="<%= car.name %>">
+                        <img src="/car-image/<%= car._id %>" alt="<%= car.Name %>">
                         <div class="container">
                             <p>Color: 
                                 <select>
@@ -34,8 +34,8 @@
                                     <option>Grey</option>
                                 </select>
                             </p>
-                            <div>Price: <%= car.price %> EGP per Day</div>
-                            <div><%= car.type %> CC</div>
+                            <div>Price: <%= car.Price %> EGP per Day</div>
+                            <div>Category: <%= car.Category %></div>
                             <% const userId = user && user._id ? user._id : ''; %>
                             <% if (userId) { %>
                             <button type="button" class="button"

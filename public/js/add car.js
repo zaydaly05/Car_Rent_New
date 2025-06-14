@@ -1,7 +1,4 @@
-const express = require('express');
-const router = express.Router();
-const Car = require('../models/Car');
-app.use(express.json());
+
 
 
 document.getElementById('addCarForm').addEventListener('submit', function (e) {

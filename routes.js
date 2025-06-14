@@ -146,7 +146,7 @@ app.post('/rent', async (req, res) => {
 // Show all cars (GET)
 app.get('/showroom', async (req, res) => {
     try {
-        const cars = await Car.find({ category: 'Luxury' }); // Filter by category if needed
+        const cars = await Cars.find({ Category: 'Luxury' }); // Use correct model and field name
         res.render('ShowRoom_Luxury', { cars, user: req.session.user });
     } catch (err) {
         res.status(500).send('Error fetching cars');
@@ -387,6 +387,16 @@ app.get('/admin-dashboard', async (req, res) => {
         });
     } catch (err) {
         res.status(500).send('Error fetching statistics');
+    }
+});
+
+app.get('/car-image/:id', async (req, res) => {
+    const car = await Cars.findById(req.params.id);
+    if (car && car.image && car.image.data) {
+        res.contentType(car.image.contentType);
+        res.send(car.image.data);
+    } else {
+        res.status(404).send('No image');
     }
 });
 

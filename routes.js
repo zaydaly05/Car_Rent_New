@@ -172,6 +172,22 @@ app.post('/showroom/add', upload.single('image'), async (req, res) => {
         res.status(500).json({ success: false, error: 'Error adding car' });
     }
 });
+app.get("/All_Cars", async (req, res) => {
+    try {
+        const cars = await Cars.find({});
+        res.render('All_Cars', { cars });
+    } catch (err) {
+        res.status(500).send('Error fetching cars');
+    }
+});
+app.get("/All_Users"), async (req, res) => {
+    try {
+        const users = await User.find({});
+        res.render('All_Users', { users });
+    } catch (err) {
+        res.status(500).send('Error fetching users');
+    }
+};
 
 
 

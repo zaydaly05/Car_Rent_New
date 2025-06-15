@@ -1,4 +1,3 @@
-
 const express = require('express');
 const session = require('express-session');
 const mongoose = require('mongoose');
@@ -180,14 +179,14 @@ app.get("/All_Cars", async (req, res) => {
         res.status(500).send('Error fetching cars');
     }
 });
-app.get("/All_Users"), async (req, res) => {
+app.get("/alluser", async (req, res) => {
     try {
         const users = await User.find({});
         res.render('All_Users', { users });
     } catch (err) {
         res.status(500).send('Error fetching users');
     }
-};
+});
 
 
 

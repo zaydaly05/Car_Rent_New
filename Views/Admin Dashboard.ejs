@@ -17,15 +17,13 @@
   <script src="/js/Admin_Dashboard_Buttons_PopUp.js"></script>
 </head>
 <body>
-
-
   <header>
     <h1>CarRental</h1>
     <%- include('navbar') %>
   </header>
 
   <main>
-    <section class="welcome">
+    <section class="welcome" >
       <h2>Welcome back <% if (user && user.name) { %><%= user.name %><% } %></h2>
       <p>Here's a summary of your activity.</p>
     </section>
@@ -33,11 +31,11 @@
       <div class="card">
         <h3>Controls</h3>
         <br> 
-       <a href="/All_Cars" class="button">Car Controls</a>
-        <a href="/All_Users" class="button">User Controls</a>
+      <button onclick="showPopup('/All_Cars')" class="button">Car Controls</button>
+       <button onclick="showPopup('/alluser')" class="button">User Controls</button>
 
       </div>
-      <div class="statistics">
+      <div class="statistics" style="margin-bottom: -80px;">
         <h3>Statistics</h3>
         <p>Ratio of Category Rented: <%= ratio %></p>
         <p>Average Accounts Registered per Month: <%= average %></p>
@@ -45,33 +43,11 @@
       </div>
     </section>
   </main>
+<footer style="margin-top: 90px;">
+  <%- include('Nfooter') %>
+</footer>
 
 
-
-  <footer class="footer">
-    <div class="footer-container">
-        <div class="footer-section">
-            <h3>About Us</h3>
-            <p>We provide quality content and services to our users.</p>
-        </div>
-        <div class="footer-section">
-            <h3>Quick Links</h3>
-            <a href="/css/ome Page.html">Home</a>
-            <a href="#">Services</a>
-            <a href="#">Contact</a>
-            <a href="#">Privacy Policy</a>
-        </div>
-        <div class="footer-section">
-            <h3>Follow Us</h3>
-            <div class="social-icons">
-                <a href="www.facebook.com">🔵 Facebook</a>
-                <a href="www.instagram.com">🟣 Instagram</a>
-                <a href="www.twitter.com">🔵 Twitter</a>
-            </div>
-        </div>
-    </div>
-    <p>&copy; 2025 Gulf Limousine Travel. All Rights Reserved.</p>
-  </footer>
   <script>
 function showEditProfile() {
   Swal.fire({
@@ -97,6 +73,18 @@ function showEditProfile() {
   });
 }
 </script>
-  
+  <script>function showPopup(page) {
+    Swal.fire({
+        html: `<iframe src="${page}" width="100%" height="650px" frameborder="0" style="min-width:1300px;"></iframe>`,
+        width: 1300, // Increase width
+        padding: '1.5em',
+        showCloseButton: true,
+        showConfirmButton: false,
+        focusConfirm: false,
+        customClass: {
+            popup: 'swal2-signup-modal'
+        }
+    });
+}</script>
 </body>
 </html>

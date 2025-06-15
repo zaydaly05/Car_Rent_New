@@ -2,30 +2,105 @@
 <html>
 <head>
     <title>All Cars</title>
+    <style>
+body {
+    background: url("/Images/p5.png") no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Poppins', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+h1 {
+    color: #fff;
+    margin-top: 32px;
+    text-shadow: 0 2px 8px #e86c06, 0 1px 0 #fffbe6;
+    letter-spacing: 2px;
+}
+.table-card {
+    background: rgba(255,255,255,0.93);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(232,108,6,0.13);
+    padding: 32px 24px;
+    margin: 40px 0;
+    width: 95vw;
+    max-width: 1100px;
+    overflow-x: auto;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 1.08em;
+    min-width: 800px;
+    background: transparent;
+}
+th, td {
+    border: 1px solid #e86c06;
+    padding: 14px 18px;
+    text-align: left;
+    word-break: break-all;
+}
+th {
+    background: #fffbe6;
+    color: #e86c06;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+tr:nth-child(even) {
+    background: #fff7ed;
+}
+tr:nth-child(odd) {
+    background: #fff;
+}
+button, .delete-btn {
+    background: #e86c06;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 18px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.2s;
+}
+button:hover, .delete-btn:hover {
+    background: #b35404;
+}
+form {
+    display: inline;
+}
+@media (max-width: 900px) {
+    .table-card { padding: 10px; }
+    table { min-width: 600px; font-size: 0.97em; }
+}
+</style>
 </head>
 <body>
     <h1>All Cars</h1>
-    <table border="1">
-        <tr>
-            <% if (cars.length > 0) { %>
-                <% Object.keys(cars[0]._doc).forEach(key => { %>
-                    <th><%= key %></th>
-                <% }) %>
-            <% } %>
-        </tr>
-        <% cars.forEach(car => { %>
+    <div class="table-card">
+        <table>
             <tr>
-                <% Object.values(car._doc).forEach(value => { %>
-                    <td><%= value %></td>
-                <% }) %>
-                <td>
-                <form action="/delete-car" method="POST" onsubmit="return confirm('Delete this car?');">
-                <input type="hidden" name="carId" value="<%= car._id %>">
-                <button type="submit" style="color:red;">Delete</button>
-                </form>
-                </td>
+                <% if (cars.length > 0) { %>
+                    <% Object.keys(cars[0]._doc).forEach(key => { %>
+                        <th><%= key %></th>
+                    <% }) %>
+                <% } %>
             </tr>
-        <% }) %>
-    </table>
+            <% cars.forEach(car => { %>
+                <tr>
+                    <% Object.values(car._doc).forEach(value => { %>
+                        <td><%= value %></td>
+                    <% }) %>
+                    <td>
+                    <form action="/delete-car" method="POST" onsubmit="return confirm('Delete this car?');">
+                    <input type="hidden" name="carId" value="<%= car._id %>">
+                    <button type="submit" style="color:red;">Delete</button>
+                    </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </table>
+    </div>
 </body>
 </html>

@@ -36,7 +36,7 @@ nav .brand{
     text-decoration: none !important;
     font-weight: 900 !important;
     margin: auto !important;
-    margin-right: 80px !important; /* Increase this value for more space */
+    margin-right: 70px !important; /* Increase this value for more space */
     margin-left: 0 !important;
 }
 nav .brand img{

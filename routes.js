@@ -12,11 +12,7 @@ const upload = multer();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-    secret: 'yourSecretKey', // Change this to a strong secret in production
-    resave: false,
-    saveUninitialized: true
-}));
+
 app.set('views', path.join(__dirname, 'Views'));
 app.set("view engine", "ejs");
 
@@ -36,32 +32,22 @@ app.get('/', (req, res) => {
 });
 app.post("/register", (req, res) => {
     const { FullName, Email, Phone, Password, licence, car } = req.body;
-    const newUser = new User({ FullName, Email, Phone, Password, licence, car });
+    const Role = "user"; // Default role for new signups
+    const newUser = new User({ FullName, Email, Phone, Password, licence, car, Role });
     newUser.save()
-        .then((user) => {
-            req.session.user = user;
-            res.render('login');
+        .then(() => {
+            res.redirect('/login');
         })
         .catch((err) => {
-            console.error("Error registering user:", err);
-            res.status(500).send('<span style="color: red;">Email already taken</span>');
+            if (err.code === 11000) {
+                res.status(400).send('<span style="color: red;">Email or phone already registered</span>');
+            } else {
+                console.error("Error registering user:", err);
+                res.status(500).send('<span style="color: red;">server error</span>');
+            }
         });
 });
-app.post('/login', async (req, res) => {
-    const { Email, Password } = req.body;
-    try {
-        const user = await User.findOne({ Email, Password });
-        if (user) {
-            req.session.user = user;
-            res.send(`<script>window.top.location.href='/User_Dashboard';</script>`);
-        } else {
-            res.status(401).send('<span style="color: red;">Invalid email or password</span>');
-        }
-    } catch (err) {
-        console.error("Login error:", err);
-        res.status(500).send("Server error");
-    }
-});
+
 app.get('/thank_you', (req, res) => {
     res.render('thankyou.html');
 });
@@ -83,9 +69,6 @@ app.get('/register', (req, res) => {//popup
 app.get('/login', (req, res) => {
     res.render('login');
 });
-app.get("/User_Dashboard", (req, res) => {
-    res.render('usd.ejs', { user: req.session.user || null });
-});
 
 app.post('/login', async (req, res) => {
     const { Email, Password } = req.body;
@@ -93,7 +76,7 @@ app.post('/login', async (req, res) => {
         const user = await User.findOne({ Email, Password });
         if (user) {
             req.session.user = user; // Save user in session
-            res.redirect('/usd.ejs'); // Redirect to dashboard
+            res.redirect('/User_Dashboard'); // Redirect to dashboard
         } else {
             res.status(401).send('<span style="color: red;">Invalid email or password</span>');
         }
@@ -117,15 +100,15 @@ app.post('/rent', async (req, res) => {
     }
     const { carId, NoOfDays } = req.body;
     try {
-        const car = await Car.findById(carId); // Use Car, not Cars
+        const car = await Cars.findById(carId); // Use Cars, not Car
         if (!car) return res.status(404).send('Car not found.');
 
-        const totalPrice = car.price * NoOfDays; // Use lowercase if that's your schema
+        const totalPrice = car.Price * NoOfDays; // Use lowercase if that's your schema
 
         const rentOrder = new Rent_Order({
             rentalRequests: [{
-                Car_name: car.name,
-                Category: car.category,
+                Car_name: car.Name,
+                Category: car.Category,
                 NoOfDays,
                 totalPrice
             }],
@@ -148,7 +131,7 @@ app.get("/readm", (req, res) => {
 // Show all cars (GET)
 app.get('/showroom', async (req, res) => {
     try {
-        const cars = await Cars.find({ Category: 'Luxury' }); // Use correct model and field name
+        const cars = await Cars.find({}); // Use correct model and field name
         res.render('ShowRoom_Luxury', { cars, user: req.session.user });
     } catch (err) {
         res.status(500).send('Error fetching cars');
@@ -213,34 +196,10 @@ app.post('/delete-rent', async (req, res) => {
     }
 });
 
-// Show all economy/sedan cars (GET)
-app.get('/showroom/sedan', async (req, res) => {
-    try {
-        const cars = await Car.find({ category: 'Economy' }); // or 'Sedan' if that's your category name
-        res.render('ShowRoom_Economy', { cars, user: req.session.user });
-    } catch (err) {
-        res.status(500).send('Error fetching cars');
-    }
-});
+
 
 // Add a new economy/sedan car (POST)
-app.post('/showroom/sedan/add', async (req, res) => {
-    try {
-        const { name, brand, type, price, image } = req.body;
-        const car = new Car({
-            name,
-            brand,
-            type,
-            category: 'Economy', // or 'Sedan'
-            price,
-            image
-        });
-        await car.save();
-        res.redirect('/showroom/sedan');
-    } catch (err) {
-        res.status(500).send('Error adding car');
-    }
-});
+
 
 app.get('/all-users', async (req, res) => {
     try {
@@ -262,7 +221,7 @@ app.post('/delete-user', async (req, res) => {
 
 app.get('/all-cars', async (req, res) => {
     try {
-        const cars = await Car.find({});
+        const cars = await Cars.find({});
         res.render('All_Cars', { cars });
     } catch (err) {
         res.status(500).send('Error fetching cars');
@@ -274,7 +233,7 @@ app.get("/usd", (req, res) => {
 
 app.post('/delete-car', async (req, res) => {
     try {
-        await Car.findByIdAndDelete(req.body.carId);
+        await Cars.findByIdAndDelete(req.body.carId);
         res.redirect(req.body.redirectTo || '/showroom/sedan');
     } catch (err) {
         res.status(500).send('Error deleting car');
@@ -283,7 +242,7 @@ app.post('/delete-car', async (req, res) => {
 
 app.get('/edit-car-popup/:id', async (req, res) => {
     try {
-        const car = await Car.findById(req.params.id);
+        const car = await Cars.findById(req.params.id);
         if (!car) return res.status(404).send('Car not found');
         res.render('Edit-car-form', { car, redirectTo: req.query.redirectTo || '/showroom/sedan' });
     } catch (err) {
@@ -294,15 +253,15 @@ app.get('/edit-car-popup/:id', async (req, res) => {
 app.post('/edit-car/:id', async (req, res) => {
     try {
         const { name, brand, type, category, status, price, image, ratings, redirectTo } = req.body;
-        await Car.findByIdAndUpdate(req.params.id, {
-            name,
-            brand,
-            type,
-            category,
-            status,
-            price,
-            image,
-            ratings: ratings ? ratings.split(',').map(r => Number(r.trim())).filter(r => !isNaN(r)) : []
+        await Cars.findByIdAndUpdate(req.params.id, {
+            Name: name,
+            Brand: brand,
+            Type: type,
+            Category: category,
+            Status: status,
+            Price: price,
+            Image: image,
+            Ratings: ratings ? ratings.split(',').map(r => Number(r.trim())).filter(r => !isNaN(r)) : []
         });
         res.redirect(redirectTo || req.get('referer') || '/all-cars');
     } catch (err) {
@@ -319,7 +278,7 @@ app.get('/car-contract-popup', async (req, res) => {
     if (!userId) {
         return res.status(401).send('You must be logged in to rent a car.');
     }
-    const car = await Car.findById(carId);
+    const car = await Cars.findById(carId);
     const user = await User.findById(userId);
     res.render('car_contract', { car, user });
 });
@@ -330,11 +289,11 @@ app.post('/rent/contract', async (req, res) => {
     if (!carId || !userId || isNaN(days)) {
         return res.status(400).send('Missing or invalid data');
     }
-    const car = await Car.findById(carId);
-    if (!car || typeof car.price !== 'number') {
+    const car = await Cars.findById(carId);
+    if (!car || typeof car.Price !== 'number') {
         return res.status(400).send('Invalid car or car price');
     }
-    const totalPrice = car.price * days;
+    const totalPrice = car.Price * days;
     if (isNaN(totalPrice)) {
         return res.status(400).send('Invalid total price calculation');
     }
@@ -345,8 +304,8 @@ app.post('/rent/contract', async (req, res) => {
     }
     const rentOrder = new Rent_Order({
         rentalRequests: [{
-            Car_name: car.name,
-            Category: car.category,
+            Car_name: car.Name,
+            Category: car.Category,
             NoOfDays: days,
             totalPrice,
             rentalDate: new Date()

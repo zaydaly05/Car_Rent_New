@@ -6,19 +6,19 @@
     <form method="POST" action="/rent/contract">
       <div class="inputbox">
         <label>Car Name:</label>
-        <input type="text" value="<%= car.name %>" readonly>
+        <input type="text" value="<%= car.Name %>" readonly>
       </div>
       <div class="inputbox">
         <label>User:</label>
         <input type="text" value="<%= user.FullName %>" readonly>
       </div>
       <div class="inputbox">
-        <label>Registration Number:</label>
-        <input type="text" id="registration" name="registration" placeholder="Registration Number" required>
-      </div>
-      <div class="inputbox">
         <label>Number of Days:</label>
         <input type="number" id="NoOfDays" name="NoOfDays" min="1" value="1" required>      </div>
+      <div class="inputbox">
+        <label>Price per Day:</label>
+        <input type="text" value="<%= car.Price %> EGP" readonly>
+      </div>
       
       <input type="hidden" name="carId" value="<%= car._id %>">
       <input type="hidden" name="userId" value="<%= user._id %>">

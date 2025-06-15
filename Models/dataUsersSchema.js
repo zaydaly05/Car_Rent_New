@@ -7,7 +7,7 @@ const Registeration = new Schema({
     FullName: { type: String, required: true },
     Email: { type: String, required: true, unique: true },
     Phone: { type: Number, required: true, unique: true },
-    Role: { type: String, required: true, unique: true },
+    Role: { type: String, required: true },
 
     Password: { type: String, required: true },
     licence: { type: String, required: true },

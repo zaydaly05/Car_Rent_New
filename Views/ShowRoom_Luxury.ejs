@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title><style></style>Cars Showroom</title>
+    <title>Cars Showroom</title>
+    <link rel="stylesheet" href="/Css/welcome.css">
     <link rel="stylesheet" href="/css/ShowRoom Styling.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
 </head>
 <body>
-    <h1>Cars Showroom</h1>
+    <header style="margin-bottom: 10px;">
+    <%- include('navbar') %>
+    
+    </header>
+    <section style="margin-top: 19px;">
+    <h1 style="font-family: fantasy;font-weight: 700; font-size: 50px; color: orange;">Cars Showroom</h1>
+    <!-- Add Car Button (admin only, optional) -->
+    <a href="/addcar" style="color:orange; margin-left:8px;">
+        <i class='bx bx-add'></i>
+    </a>
 
-    <!-- Add Car Form 
-    <form action="/showroom/luxury/add" method="POST" style="margin-bottom: 2em;">
-        <input type="text" name="name" placeholder="Car Name" required>
-        <input type="text" name="brand" placeholder="Brand" required>
-        <input type="text" name="type" placeholder="Type" required>
-        <input type="number" name="price" placeholder="Price" required>
-        <input type="text" name="image" placeholder="Image URL" required>
-        <button type="submit">Add Car</button>
-    </form>
--->
-    <!-- Display Cars -->
-      <a href="/addcar" style="color:orange; margin-left:8px;" onclick="openaddPopup(); return false;"> <i class='bx bx-add'></i>
     <div class="car-list">
         <% if (cars && cars.length) { %>
             <% cars.forEach(car => { %>
@@ -27,36 +26,32 @@
                     <div class="car">
                         <img src="/car-image/<%= car._id %>" alt="<%= car.Name %>">
                         <div class="container">
-                            <p>Color: 
-                                <select>
-                                    <option>Red</option>
-                                    <option>Blue</option>
-                                    <option>Grey</option>
-                                </select>
-                            </p>
+                            <div>Name: <%= car.Name %></div>
                             <div>Price: <%= car.Price %> EGP per Day</div>
                             <div>Category: <%= car.Category %></div>
-                            <% const userId = user && user._id ? user._id : ''; %>
-                            <% if (userId) { %>
-                            <button type="button" class="button"
-                                onclick="openCarContractPopup('<%= car._id %>', '<%= userId %>')">
-                                Rent
-                            </button>
-                            <% } else { %>
-                            <button type="button" class="button" disabled title="Please log in to rent">Rent</button>
-                            <% } %>
-                            <!-- Edit Button (popup) -->
-                            <a href="#" style="color:orange; margin-left:8px;" onclick="openEditPopup('<%= car._id %>', '/showroom/luxury'); return false;">
-                             <i class='bx bx-edit'></i>
-                            </a>
-                            <!-- Delete Button -->
-                            <form action="/delete-car" method="POST" style="display:inline;">
-                                <input type="hidden" name="carId" value="<%= car._id %>">
-                                <input type="hidden" name="redirectTo" value="/showroom/luxury">
-                                <button type="submit" class="delete-btn">
-                                    <i class='bx bx-trash'></i>
+                            <% if (user && user._id) { %>
+                                <button type="button" class="button"
+                                    onclick="showPopup('/car-contract-popup?carId=<%= car._id %>&userId=<%= user._id %>')">
+                                    Rent
                                 </button>
-                            </form>
+                            <% } else { %>
+                                <button type="button" class="button" disabled title="Please log in to rent">Rent</button>
+                            <% } %>
+                            <% if (user && user.Role === 'admin') { %>
+                                <!-- Edit Button (popup) -->
+                                <a href="#" style="color:orange; margin-left:8px;"
+                                   onclick="showPopup('/edit-car-popup/<%= car._id %>?redirectTo=/showroom'); return false;">
+                                    <i class='bx bx-edit'></i>
+                                </a>
+                                <!-- Delete Button -->
+                                <form action="/delete-car" method="POST" style="display:inline;">
+                                    <input type="hidden" name="carId" value="<%= car._id %>">
+                                    <input type="hidden" name="redirectTo" value="/showroom">
+                                    <button type="submit" class="delete-btn">
+                                        <i class='bx bx-trash'></i>
+                                    </button>
+                                </form>
+                            <% } %>
                         </div>
                     </div>
                 </div>
@@ -65,59 +60,11 @@
             <p>No cars found.</p>
         <% } %>
     </div>
-
-   <div id="editCarModalContainer"></div>
-    <script>
-function openEditPopup(carId, redirectTo) {
-    fetch('/edit-car-popup/' + carId + '?redirectTo=' + encodeURIComponent(redirectTo))
-  .then(res => res.text())
-  .then(html => {
-    document.getElementById('editCarModalContainer').innerHTML = html;
-    document.getElementById('editCarPopup').style.display = 'flex';
-  })
-  .catch(err => {
-    console.error('Failed to load edit popup:', err);
-    alert('Unable to load edit popup.');
-  });
-}
-function closeEditPopup() {
-    document.getElementById('editCarPopup').style.display = 'none';
-    document.getElementById('editCarModalContainer').innerHTML = '';
-}
-
-
-
-function openAddPopup(carId, redirectTo) {
-    fetch('/add-car-popup/' + carId + '?redirectTo=' + encodeURIComponent(redirectTo))
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('addCarModalContainer').innerHTML = html;
-        document.getElementById('addCarPopup').style.display = 'flex';
-      })
-      .catch(err => {
-        console.error('Failed to load add popup:', err);
-        alert('Unable to load add popup.');
-      });
-}
-
-function closeAddPopup() {
-    document.getElementById('addCarPopup').style.display = 'none';
-    document.getElementById('addCarModalContainer').innerHTML = '';
-}
-</script>
-
-<div id="carContractModalContainer"></div>
-
-<script>
-function openCarContractPopup(carId, userId, NoOfDays) {
-  fetch(`/car-contract-popup?carId=${carId}&userId=${userId}&NoOfDays=${NoOfDays}`)
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('carContractModalContainer').innerHTML = html;
-      document.getElementById('carContractPopup').style.display = 'flex';
-    });
-}
-</script>
+</section>
+<footer>
+    <%- include('Nfooter') %>
+</footer>
+    
 
 </body>
 </html>

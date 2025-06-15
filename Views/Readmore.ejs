@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Read More | Gulf Limousine</title>
+  <link rel="stylesheet" href="/Css/User Dashboard Styling.css">
+  <style>
+    body {
+      background: linear-gradient(120deg, #fffbe6 60%, #e86c06 100%);
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Poppins', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .readmore-card {
+      background: rgba(255,255,255,0.97);
+      border-radius: 22px;
+      box-shadow: 0 8px 32px rgba(232,108,6,0.13);
+      padding: 48px 38px 38px 38px;
+      max-width: 650px;
+      margin: 40px auto;
+      position: relative;
+      overflow: hidden;
+    }
+    .readmore-card::before {
+      content: "";
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 180px;
+      height: 180px;
+      background: #e86c06;
+      opacity: 0.10;
+      border-radius: 50%;
+      z-index: 0;
+    }
+    .readmore-title {
+      color: #e86c06;
+      font-size: 2.2em;
+      font-weight: 700;
+      margin-bottom: 18px;
+      letter-spacing: 1.5px;
+      text-shadow: 0 2px 8px #fffbe6;
+      position: relative;
+      z-index: 1;
+    }
+    .readmore-content {
+      color: #333;
+      font-size: 1.18em;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 0;
+    }
+    .readmore-highlight {
+      color: #fff;
+      background: #e86c06;
+      padding: 2px 10px;
+      border-radius: 8px;
+      font-weight: 600;
+      box-shadow: 0 2px 8px #e86c06;
+    }
+    @media (max-width: 700px) {
+      .readmore-card {
+        padding: 22px 8px;
+        max-width: 98vw;
+      }
+      .readmore-title {
+        font-size: 1.3em;
+      }
+      .readmore-content {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="readmore-card">
+    <div class="readmore-title">
+      <i class="fa-solid fa-car-side"></i> Read More
+    </div>
+    <div class="readmore-content">
+      At <span class="readmore-highlight">Gulf Limousine</span>, excellence isn’t just a goal — it’s our standard. Our fleet features top-of-the-line vehicles, from sleek sedans and powerful SUVs to luxurious limousines, all meticulously maintained for comfort, safety, and style. Each rental comes with flexible options, including self-drive or chauffeur service, to ensure a seamless experience that fits your lifestyle.
+      <br><br>
+      Whether you need a car for a few hours, a weekend, or a long-term stay, our team is dedicated to providing professional support, transparent pricing, and unbeatable convenience. We also offer airport transfers, corporate accounts, and custom packages for weddings, VIP guests, and events.
+      <br><br>
+      With a passion for quality and a commitment to client satisfaction, <span class="readmore-highlight">Gulf Limousine</span> is redefining car rental in Egypt — one journey at a time.
+    </div>
+  </div>
+</body>
+</html>

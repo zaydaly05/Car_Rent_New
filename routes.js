@@ -141,6 +141,9 @@ app.post('/rent', async (req, res) => {
     }
 });
 
+app.get("/readm", (req, res) => {
+    res.render("Readmore");
+});
 
 // Show all cars (GET)
 app.get('/showroom', async (req, res) => {

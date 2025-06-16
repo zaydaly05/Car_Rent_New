@@ -11,10 +11,7 @@
             <a href="/about">About</a>
             <a href="/contact">Contact</a>
             <% if (user) { %>
-               <a href= "thankyou.html" class="nav-link">Logout</a>
-               
-               
-        
+               <a href= "/logout" class="nav-link">Logout</a>
             <% } else { %>
                 <button type="button" onclick="showPopup('login')" class="nav-link">Login</button>
             <% } %>

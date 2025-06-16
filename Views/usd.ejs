@@ -7,6 +7,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <link rel="stylesheet" href="/Css/main.css">
         <link rel="stylesheet" href="/Css/welcome.css">
+        <script src="/js/popup.js"></script>
+         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <style>section{padding: 40px 20px;}</style>
     </head>
     <body class="homepage is-preload">
@@ -27,12 +30,11 @@
                         <!-- Banner -->
                             <div id="banner">
                                 <h2><strong>Welcome back, <span id="user-name"><%= user.FullName%></span>!</strong></h2>
-                                <p > Ready for your next ride?</p>
+                                <p>Ready for your next ride?</p>
                                 <a href="/showroom" class="button large icon solid fa-car">Book Your Next Car</a>
                             </div>
 
-                    </div>
-                </div>
+                         
 
             <!-- Main Wrapper -->
                 <div id="main-wrapper">
@@ -50,28 +52,31 @@
                                         </div>
                                         <div class="col-4 col-12-medium">
                                             <section>
-                                                <a href="#" class="image featured"><img src="/Images/upr.png" alt="Upcoming Rental" /></a>
+                                                <a href="#" onclick="showPopup('/upcoming-popup'); return false;" class="image featured">
+                                                    <img src="/Images/upr.png" alt="Upcoming Rental" />
+                                                </a>
                                                 <header class="second icon solid fa-calendar-check">
                                                     <h3>Upcoming Rental</h3>
-                                                    <p><strong>Toyota Corolla</strong><br>Apr 10 to Apr 15</p>
                                                 </header>
                                             </section>
                                         </div>
                                         <div class="col-4 col-12-medium">
                                             <section>
-                                                <a href="#" class="image featured"><img src="/Images/totr.png" alt="Total Rentals" /></a>
+                                                <a href="#" onclick="showPopup('/totalr-popup'); return false;" class="image featured">
+                                                    <img src="/Images/totr.png" alt="Total Rentals" />
+                                                </a>
                                                 <header class="second icon solid fa-chart-bar">
                                                     <h3>Total Rentals</h3>
-                                                    <p>8 Rentals</p>
                                                 </header>
                                             </section>
                                         </div>
                                         <div class="col-4 col-12-medium">
                                             <section>
-                                                <a href="#" class="image featured"><img src="/Images/lpa.png" alt="Last Payment" /></a>
+                                                <a href="#" onclick="showPopup('/payments-popup'); return false;" class="image featured">
+                                                    <img src="/Images/lpa.png" alt="Last Payment" />
+                                                </a>
                                                 <header class="second icon solid fa-credit-card">
                                                     <h3>Last Payment</h3>
-                                                    <p>$320 - Apr 01, 2025</p>
                                                 </header>
                                             </section>
                                         </div>
@@ -92,10 +97,9 @@
                                         <div class="col-6 col-12-medium">
                                             <section>
                                                 <header class="major">
-                                                    <h2>✨ Want to Rent a Car?</h2>
-                                                 
+                                                    <h2>we appreciate your hidden racer!!</h2>
                                                 </header>
-                                                <a href="/ShowRoom_Luxury" class="button medium icon solid fa-gem">vrooom!!</a>
+                                                <a href="/showroom" class="button medium icon solid fa-gem">go vrooom!!</a>
                                                 <footer style="margin-top:2em;">
                                                     <h3>📬 Get Special Offers</h3>
                                                     <form class="newsletter-form">
@@ -113,7 +117,7 @@
                                                 </header>
                                                 <p>We provide quality car rental services tailored for your comfort and convenience. Contact us for exclusive deals and discounts!</p>
                                                 <footer>
-                                                    <a href="#" class="button medium alt icon solid fa-info-circle">Contact Us</a>
+                                                    <a href="/contact" class="button medium alt icon solid fa-info-circle">Contact Us</a>
                                                 </footer>
                                             </section>
                                         </div>
@@ -131,43 +135,24 @@
                                         <!-- Article list -->
                                             <section class="box article-list">
                                                 <h2 class="icon fa-file-alt">Recent Activity</h2>
-
-                                                <!-- Excerpt -->
-                                                    <article class="box excerpt">
-                                                        <a href="#" class="image left"><img src="images/pic04.jpg" alt="" /></a>
-                                                        <div>
-                                                            <header>
-                                                                <span class="date">Apr 01</span>
-                                                                <h3><a href="#">Payment Received</a></h3>
-                                                            </header>
-                                                            <p>Your payment of $320 for Toyota Corolla rental has been processed successfully.</p>
-                                                        </div>
-                                                    </article>
-
-                                                <!-- Excerpt -->
-                                                    <article class="box excerpt">
-                                                        <a href="#" class="image left"><img src="images/pic05.jpg" alt="" /></a>
-                                                        <div>
-                                                            <header>
-                                                                <span class="date">Mar 28</span>
-                                                                <h3><a href="#">Rental Completed</a></h3>
-                                                            </header>
-                                                            <p>You returned the Honda Civic. We hope you enjoyed your ride!</p>
-                                                        </div>
-                                                    </article>
-
-                                                <!-- Excerpt -->
-                                                    <article class="box excerpt">
-                                                        <a href="#" class="image left"><img src="images/pic06.jpg" alt="" /></a>
-                                                        <div>
-                                                            <header>
-                                                                <span class="date">Mar 20</span>
-                                                                <h3><a href="#">New Booking</a></h3>
-                                                            </header>
-                                                            <p>Your booking for Toyota Corolla from Apr 10 to Apr 15 is confirmed.</p>
-                                                        </div>
-                                                    </article>
-
+                                                <% if (recentActivity && recentActivity.length) { %>
+                                                    <% recentActivity.forEach(activity => { %>
+                                                        <article class="box excerpt">
+                                                            <a href="#" class="image left"><img src="<%= activity.image %>" alt="" /></a>
+                                                            <div>
+                                                                <header>
+                                                                    <span class="date"><%= activity.date %></span>
+                                                                    <h3><a href="#"><%= activity.title %></a></h3>
+                                                                </header>
+                                                                <p>
+                                                                    Your payment of <%= activity.amount %> for <%= activity.car %> rental has been processed successfully.
+                                                                </p>
+                                                            </div>
+                                                        </article>
+                                                    <% }) %>
+                                                <% } else { %>
+                                                    <p>No recent activity.</p>
+                                                <% } %>
                                             </section>
                                     </div>
                                     <div class="col-4 col-12-medium">
@@ -183,7 +168,7 @@
                                                     </header>
                                                     <p>Book your next ride now and enjoy exclusive discounts for loyal customers. Limited time offer.</p>
                                                     <footer>
-                                                        <a href="#rent" class="button alt icon solid fa-car">Book Now</a>
+                                                        <a href="/showroom" class="button alt icon solid fa-car">Your dream awaits!</a>
                                                     </footer>
                                                 </article>
                                             </section>

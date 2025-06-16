@@ -1,0 +1,21 @@
+<section style="background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%); border-radius: 18px; box-shadow: 0 4px 16px rgba(67, 206, 162, 0.15); padding: 24px 18px; text-align: center; margin-bottom: 18px;">
+    <h3 style="font-family: 'Montserrat', sans-serif; font-size: 1.5em; color: #fff; margin-bottom: 10px; letter-spacing: 1px;">
+        <i class="bx bx-calendar-check" style="vertical-align: middle; margin-right: 6px;"></i>
+        Upcoming Rental
+    </h3>
+    <% if (upcoming) { %>
+        <div style="font-size: 1.2em; color: #fff; margin-bottom: 6px;">
+            <strong><%= upcoming.rentalRequests[0].Car_name %></strong>
+        </div>
+        <div style="color: #e0f7fa; margin-bottom: 4px;">
+            <i class="bx bx-calendar"></i>
+            <%= upcoming.rentalDate.toDateString() %>
+        </div>
+        <div style="color: #fff;">
+            <i class="bx bx-time"></i>
+            For <%= upcoming.rentalRequests[0].NoOfDays %> days
+        </div>
+    <% } else { %>
+        <span style="color: #fff; opacity: 0.8;">No upcoming rentals.</span>
+    <% } %>
+</section>

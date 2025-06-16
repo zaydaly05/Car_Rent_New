@@ -1862,7 +1862,7 @@ input, select, textarea {
 /* Wrappers */
 
 	#header-wrapper {
-		background: url("images/bg01.png"), url("/Images/1phot.png");
+		background: url("/Images/1phot.png") no-repeat center center, black no-repeat center center;
 		background-position: top left, center center;
 		background-size: auto, cover;
 		padding: 3em 0;

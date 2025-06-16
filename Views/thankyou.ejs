@@ -35,5 +35,15 @@
         <p>You have been successfully logged out.</p>
         <a href="/welcome.ejs">Return to Home</a>
     </div>
+    <script>
+        setTimeout(function() {
+            // If in a popup/iframe, redirect the top window
+            if (window.top !== window.self) {
+                window.top.location.href = '/User_Dashboard';
+            } else {
+                window.location.href = '/User_Dashboard';
+            }
+        }, 3000);
+    </script>
 </body>
 </html>

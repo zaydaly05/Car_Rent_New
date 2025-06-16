@@ -49,18 +49,64 @@ app.post("/register", (req, res) => {
 });
 
 app.get('/thank_you', (req, res) => {
-    res.render('thankyou.html');
+    res.render('thankyou');
 });
 app.get("/User_Dashboard", async (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/login');
+    if (!req.session.user) return res.redirect('/login');
+    const orders = await Rent_Order.find({ user: req.session.user._id }).sort({ rentalDate: -1 });
+
+    // Find one of each type
+    let completed, payment, booking;
+    for (const order of orders) {
+        const reqData = order.rentalRequests[0];
+        // Completed
+        if (!completed && order.status === 'completed') {
+            completed = {
+                type: 'completed',
+                image: '/images/pic05.jpg',
+                date: order.rentalDate ? order.rentalDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) : '',
+                title: 'Rental Completed',
+                car: reqData?.Car_name
+            };
+        }
+        // Payment (assuming every order is a payment)
+        if (!payment) {
+            payment = {
+                type: 'payment',
+                image: '/images/pic04.jpg',
+                date: order.rentalDate ? order.rentalDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) : '',
+                title: 'Payment Received',
+                amount: `$${order.totalPrice}`,
+                car: reqData?.Car_name
+            };
+        }
+        // Booking
+        if (!booking && order.status === 'booked') {
+            booking = {
+                type: 'booking',
+                image: '/images/pic06.jpg',
+                date: order.rentalDate ? order.rentalDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) : '',
+                title: 'New Booking',
+                car: reqData?.Car_name,
+                from: reqData?.startDate
+                    ? reqData.startDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
+                    : '',
+                to: reqData?.endDate
+                    ? reqData.endDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
+                    : ''
+            };
+        }
+        // Stop if we have all three
+        if (completed && payment && booking) break;
     }
-    try {
-        const orders = await Rent_Order.find({ user: req.session.user._id }).sort({ rentalDate: -1 });
-        res.render('usd', { user: req.session.user, orders });
-    } catch (err) {
-        res.status(500).send('Error loading dashboard');
-    }
+
+    // Only include the ones that exist
+    const recentActivity = [completed, payment, booking].filter(Boolean);
+
+    res.render('usd', {
+        user: req.session.user,
+        recentActivity
+    });
 });
 
 app.get('/register', (req, res) => {//popup
@@ -76,7 +122,8 @@ app.post('/login', async (req, res) => {
         const user = await User.findOne({ Email, Password });
         if (user) {
             req.session.user = user; // Save user in session
-            res.redirect('/User_Dashboard'); // Redirect to dashboard
+            // Always open dashboard in the top window
+            res.send(`<script>window.top.location.href='/User_Dashboard';</script>`);
         } else {
             res.status(401).send('<span style="color: red;">Invalid email or password</span>');
         }
@@ -284,9 +331,9 @@ app.get('/car-contract-popup', async (req, res) => {
 });
 
 app.post('/rent/contract', async (req, res) => {
-    const { carId, userId, NoOfDays, registration } = req.body;
+    const { carId, userId, NoOfDays, registration, startDate, endDate } = req.body;
     const days = Number(NoOfDays);
-    if (!carId || !userId || isNaN(days)) {
+    if (!carId || !userId || isNaN(days) || !startDate || !endDate) {
         return res.status(400).send('Missing or invalid data');
     }
     const car = await Cars.findById(carId);
@@ -308,6 +355,8 @@ app.post('/rent/contract', async (req, res) => {
             Category: car.Category,
             NoOfDays: days,
             totalPrice,
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
             rentalDate: new Date()
         }],
         totalPrice,
@@ -315,7 +364,7 @@ app.post('/rent/contract', async (req, res) => {
         user: userId
     });
     await rentOrder.save();
-    res.redirect('/User_Dashboard');
+    res.redirect('/thank_you');
 });
 
 app.get('/admin-dashboard', async (req, res) => {
@@ -375,6 +424,42 @@ app.get('/car-image/:id', async (req, res) => {
     } else {
         res.status(404).send('No image');
     }
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/');
+    });
+});
+
+app.get('/upcoming-popup', async (req, res) => {
+    if (!req.session.user) return res.status(401).send('Login required');
+    const orders = await Rent_Order.find({ user: req.session.user._id }).sort({ rentalDate: -1 });
+    const upcoming = orders[0] || null;
+    res.render('upcoming', { upcoming });
+});
+
+app.get('/totalr-popup', async (req, res) => {
+    if (!req.session.user) return res.status(401).send('Login required');
+    const orders = await Rent_Order.find({ user: req.session.user._id });
+    const totalRentals = orders.length;
+    res.render('totalr', { totalRentals });
+});
+
+app.get('/payments-popup', async (req, res) => {
+    if (!req.session.user) return res.status(401).send('Login required');
+    const orders = await Rent_Order.find({ user: req.session.user._id }).sort({ rentalDate: -1 });
+    const lastPayment = orders[0] ? {
+        amount: orders[0].totalPrice,
+        date: orders[0].rentalDate,
+        car: orders[0].rentalRequests[0]?.Car_name
+    } : null;
+    const allPayments = orders.map(order => ({
+        amount: order.totalPrice,
+        date: order.rentalDate,
+        car: order.rentalRequests[0]?.Car_name
+    }));
+    res.render('payments', { lastPayment, allPayments });
 });
 
 mongoose.connect("mongodb+srv://omar:123@cars.chdtnqe.mongodb.net/?retryWrites=true&w=majority&appName=cars") 

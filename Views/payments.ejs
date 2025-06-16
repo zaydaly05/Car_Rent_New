@@ -1,0 +1,23 @@
+<section style="background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); border-radius: 18px; box-shadow: 0 4px 16px rgba(255, 117, 140, 0.15); padding: 24px 18px; text-align: center; margin-bottom: 18px;">
+    <h3 style="font-family: 'Montserrat', sans-serif; font-size: 1.5em; color: #fff; margin-bottom: 10px; letter-spacing: 1px;">
+        <i class="bx bx-credit-card" style="vertical-align: middle; margin-right: 6px;"></i>
+        Last Payment
+    </h3>
+    <% if (lastPayment) { %>
+        <p style="font-size: 1.1em; color: #fff; margin-bottom: 10px;">
+            <strong><%= lastPayment.car %></strong><br>
+            <span style="color: #ffe0e9;"><%= lastPayment.amount %> EGP</span> - <span style="color: #ffe0e9;"><%= lastPayment.date.toDateString() %></span>
+        </p>
+    <% } else { %>
+        <span style="color: #fff; opacity: 0.8;">No payments yet.</span>
+    <% } %>
+    <h4 style="color: #fff; margin-top: 18px; font-size: 1.1em;">All Payments</h4>
+    <ul style="list-style: none; padding: 0; margin: 0;">
+        <% allPayments.forEach(p => { %>
+            <li style="background: rgba(255,255,255,0.13); margin: 6px 0; padding: 8px 12px; border-radius: 8px; color: #fff;">
+                <i class="bx bx-receipt"></i>
+                <%= p.car %>: <span style="color: #ffe0e9;"><%= p.amount %> EGP</span> - <span style="color: #ffe0e9;"><%= p.date.toDateString() %></span>
+            </li>
+        <% }) %>
+    </ul>
+</section>

@@ -1,7 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>All Users</title>
+    <link rel="stylesheet" href="/Css/welcome.css">
+    <link rel="stylesheet" href="/css/ShowRoom Styling.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <style>
 body {
     background: url("/Images/p5.png") no-repeat center center fixed;
@@ -70,49 +75,120 @@ button:hover, .delete-btn:hover {
 form {
     display: inline;
 }
+.car-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+.car-container {
+    background: rgba(255,255,255,0.93);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    overflow: hidden;
+    width: calc(33.333% - 40px);
+    min-width: 300px;
+}
+.car {
+    padding: 16px;
+}
+.container {
+    margin-bottom: 12px;
+}
+.button {
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.button i {
+    margin-right: 6px;
+}
+.button:hover {
+    opacity: 0.9;
+}
 @media (max-width: 900px) {
     .table-card { padding: 10px; }
     table { min-width: 600px; font-size: 0.97em; }
+    .car-container {
+        width: calc(50% - 20px);
+    }
+}
+@media (max-width: 600px) {
+    .car-container {
+        width: 100%;
+    }
 }
     </style>
 </head>
 <body>
-    <h1>All Users</h1>
-    <div class="table-card">
-        <table>
-            <tr>
-                <th>Full Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Password</th>
-                <th>Licence</th>
-                <th>Registeration</th>
-                <th>Car</th>
-                <th>Created At</th>
-                <th>_id</th>
-                <th>__v</th>
-            </tr>
+    <header style="margin-bottom: 10px;">
+        <%- include('navbar') %>
+    </header>
+    <section style="margin-top: 19px;">
+        <h1 style="font-family: fantasy;font-weight: 700; font-size: 50px; color: orange;">All Users</h1>
+        <div class="car-list">
             <% users.forEach(user => { %>
-                <tr>
-                    <td><%= user.FullName %></td>
-                    <td><%= user.Email %></td>
-                    <td><%= user.Phone %></td>
-                    <td><%= user.Password %></td>
-                    <td><%= user.licence %></td>
-                    <td><%= user.Registeration %></td>
-                    <td><%= user.car %></td>
-                    <td><%= user.createdAt ? user.createdAt.toLocaleString() : '' %></td>
-                    <td><%= user._id %></td>
-                    <td><%= user.__v %></td>
-                    <td>
-                    <form action="/delete-user" method="POST" onsubmit="return confirm('Delete this user?');">
-                   <input type="hidden" name="userId" value="<%= user._id %>">
-                   <button type="submit" style="color:red;">Delete</button>
-                   </form>
-                   </td>
-                </tr>
+                <div class="car-container">
+                    <div class="car">
+                        <div class="container">
+                            <div><strong>Name:</strong> <%= user.FullName %></div>
+                            <div><strong>Email:</strong> <%= user.Email %></div>
+                            <div><strong>Phone:</strong> <%= user.Phone %></div>
+                            <div><strong>Licence:</strong> <%= user.licence %></div>
+                            <div><strong>Registeration:</strong> <%= user.Registeration %></div>
+                            <div><strong>Car:</strong> <%= user.car %></div>
+                            <div><strong>Created At:</strong> <%= user.createdAt ? user.createdAt.toLocaleString() : '' %></div>
+                            <div><strong>_id:</strong> <%= user._id %></div>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <!-- Info Button -->
+                            <button type="button" class="button" style="background: #007bff; color: #fff; margin-right: 6px;"
+                                onclick="showPopup('/admin-user-info/<%= user._id %>')">
+                                <i class='bx bx-info-circle'></i> Info
+                            </button>
+                            <!-- Edit Button -->
+                            <button type="button" class="button" style="background: #ffc107; color: #222; margin-right: 6px;"
+                                onclick="showPopup('/admin-edit-user/<%= user._id %>')">
+                                <i class='bx bx-edit'></i> Edit
+                            </button>
+                            <!-- Delete Button -->
+                            <form action="/delete-user" method="POST" style="display:inline;" onsubmit="return confirm('Delete this user?');">
+                                <input type="hidden" name="userId" value="<%= user._id %>">
+                                <button type="submit" class="delete-btn" style="background: #e86c06; color: #fff;">
+                                    <i class='bx bx-trash'></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             <% }) %>
-        </table>
-    </div>
+        </div>
+        <div style="margin-bottom: 20px;">
+            <a href="/admin-dashboard" class="button" style="background: #222; color: orange;">
+                <i class='bx bx-arrow-back'></i> Back to Dashboard
+            </a>
+        </div>
+    </section>
+    <footer>
+        <%- include('Nfooter') %>
+    </footer>
+     <script>
+     function showPopup(page) {
+    Swal.fire({
+        html: `<iframe src="${page}" style="width:100%;height:70vh;min-height:500px;max-height:80vh;overflow:auto;" frameborder="0" scrolling="yes"></iframe>`,
+        width: '60vw', // Make the popup wider
+        heightAuto: false, // Prevent SweetAlert2 from auto-adjusting height
+        showCloseButton: true,
+        showConfirmButton: false,
+        focusConfirm: false,
+        customClass: {
+            popup: 'swal2-signup-modal'
+        }
+    });
+}</script>
 </body>
 </html>

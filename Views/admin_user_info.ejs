@@ -1,0 +1,16 @@
+<div class="backg" id="userInfoPopup" style="display:flex; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:2000; justify-content:center; align-items:center;">
+  <div class="wrapper" style="background:#fff; padding:2em; border-radius:12px; min-width:350px; position:relative;">
+ 
+    <h2>User Info</h2>
+    <ul style="list-style:none;padding:0;">
+      <li><strong>Name:</strong> <%= user.FullName %></li>
+      <li><strong>Email:</strong> <%= user.Email %></li>
+      <li><strong>Phone:</strong> <%= user.Phone %></li>
+      <li><strong>Licence:</strong> <%= user.licence %></li>
+      <li><strong>Registeration:</strong> <%= user.Registeration %></li>
+      <li><strong>Car:</strong> <%= user.car %></li>
+      <li><strong>Created At:</strong> <%= user.createdAt ? user.createdAt.toLocaleString() : '' %></li>
+      <li><strong>_id:</strong> <%= user._id %></li>
+    </ul>
+  </div>
+</div>

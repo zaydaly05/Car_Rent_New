@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="backg" id="editUserPopup" style="display:flex; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:2000; justify-content:center; align-items:center;">
+      <div class="wrapper" style="background:#fff; padding:2em; border-radius:12px; min-width:350px; position:relative;">
+        <form method="POST" action="/admin-edit-user/<%= user._id %>?_method=PUT" class="form">
+          <h2>Edit User</h2>
+          <div class="inputbox">
+            <input type="text" name="FullName" value="<%= user.FullName %>" placeholder="Username" required>
+            <i class='bx bx-user'></i>
+          </div>
+          <div class="inputbox">
+            <input type="email" name="Email" value="<%= user.Email %>" placeholder="Email" required>
+            <i class='bx bx-envelope'></i>
+          </div>
+          <div class="inputbox">
+            <input type="text" name="Phone" value="<%= user.Phone %>" placeholder="Phone" required>
+            <i class='bx bx-phone'></i>
+          </div>
+          <div class="inputbox">
+            <input type="text" name="licence" value="<%= user.licence %>" placeholder="Licence">
+            <i class='bx bx-id-card'></i>
+          </div>
+          <div class="inputbox">
+            <input type="text" name="Registeration" value="<%= user.Registeration %>" placeholder="Registeration">
+            <i class='bx bx-id-card'></i>
+          </div>
+          <div class="inputbox">
+            <input type="text" name="car" value="<%= user.car %>" placeholder="Car">
+            <i class='bx bx-car'></i>
+          </div>
+          <div class="inputbox">
+            <input type="password" name="Password" value="<%= user.Password %>" placeholder="Password" required>
+            <i class='bx bxs-lock'></i>
+          </div>
+          <button type="submit" class="btn">Apply edits</button>
+        </form>
+      </div>
+    </div>
+</body>
+</html>

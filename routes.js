@@ -440,6 +440,37 @@ app.get('/admin-dashboard', async (req, res) => {
     }
 });
 
+app.get('/admin-user-info/:id', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) return res.status(404).send('User not found');
+        res.render('admin_user_info', { user });
+    } catch (err) {
+        res.status(500).send('Error loading user info');
+    }
+});
+
+app.get('/admin-edit-user/:id', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) return res.status(404).send('User not found');
+        res.render('admin_edit_user', { user });
+    } catch (err) {
+        res.status(500).send('Error loading user for edit');
+    }
+});
+app.put('/admin-edit-user/:id', async (req, res) => {
+    try {
+        const { FullName, Email, Phone, Password, licence, Registeration, car } = req.body;
+        await User.findByIdAndUpdate(req.params.id, {
+            FullName, Email, Phone, Password, licence, Registeration, car
+        });
+        res.send(`<script>window.top.location.href='/all-users';</script>`);
+    } catch (err) {
+        res.status(500).send('Error updating user');
+    }
+});
+
 app.get('/car-image/:id', async (req, res) => {
     const car = await Cars.findById(req.params.id);
     if (car && car.image && car.image.data) {

@@ -179,11 +179,12 @@ form {
      <script>
      function showPopup(page) {
     Swal.fire({
-        html: `<iframe src="${page}" style="width:100%;height:70vh;min-height:500px;max-height:80vh;overflow:auto;" frameborder="0" scrolling="yes"></iframe>`,
+        html: `<iframe src="${page}" style="width:100%;height:70vh;min-height:700px;max-height:80vh;overflow:auto;" frameborder="0" scrolling="yes"></iframe>`,
         width: '60vw', // Make the popup wider
         heightAuto: false, // Prevent SweetAlert2 from auto-adjusting height
         showCloseButton: true,
         showConfirmButton: false,
+        scrollable: true,
         focusConfirm: false,
         customClass: {
             popup: 'swal2-signup-modal'

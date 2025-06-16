@@ -7,11 +7,24 @@ const Cars = require('./Models/carsSchema');
 const User = require('./Models/dataUsersSchema');
 const Rent_Order = require('./Models/rentOrders');
 const multer = require('multer');
-const upload = multer();
+const methodOverride = require('method-override');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, 'public', 'Images'));
+    },
+    filename: function (req, file, cb) {
+        // Save with unique name
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage: storage });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
 
 app.set('views', path.join(__dirname, 'Views'));
 app.set("view engine", "ejs");
@@ -122,8 +135,12 @@ app.post('/login', async (req, res) => {
         const user = await User.findOne({ Email, Password });
         if (user) {
             req.session.user = user; // Save user in session
-            // Always open dashboard in the top window
-            res.send(`<script>window.top.location.href='/User_Dashboard';</script>`);
+            // Redirect based on role
+            if (user.Role === 'admin') {
+                res.send(`<script>window.top.location.href='/admin-dashboard';</script>`);
+            } else {
+                res.send(`<script>window.top.location.href='/User_Dashboard';</script>`);
+            }
         } else {
             res.status(401).send('<span style="color: red;">Invalid email or password</span>');
         }
@@ -188,15 +205,15 @@ app.get('/showroom', async (req, res) => {
 app.post('/showroom/add', upload.single('image'), async (req, res) => {
     try {
         const { Name, Price, Category } = req.body;
-        const image = req.file
-            ? { data: req.file.buffer, contentType: req.file.mimetype }
-            : undefined;
-
+        let imagePath;
+        if (req.file) {
+            imagePath = '/Images/' + req.file.filename;
+        }
         const car = new Cars({
             Name,
             Price,
             Category,
-            image
+            ImagePath: imagePath // Save the path, not the buffer
         });
         await car.save();
         res.json({ success: true });
@@ -297,20 +314,27 @@ app.get('/edit-car-popup/:id', async (req, res) => {
     }
 });
 
-app.post('/edit-car/:id', async (req, res) => {
+app.put('/edit-car/:id', upload.single('image'), async (req, res) => {
     try {
-        const { name, brand, type, category, status, price, image, ratings, redirectTo } = req.body;
-        await Cars.findByIdAndUpdate(req.params.id, {
+        const { name, brand, type, category, status, price, ratings } = req.body;
+        let updateData = {
             Name: name,
             Brand: brand,
             Type: type,
             Category: category,
             Status: status,
             Price: price,
-            Image: image,
             Ratings: ratings ? ratings.split(',').map(r => Number(r.trim())).filter(r => !isNaN(r)) : []
-        });
-        res.redirect(redirectTo || req.get('referer') || '/all-cars');
+        };
+
+        // If a new image was uploaded, save its relative path
+        if (req.file) {
+            updateData.ImagePath = '/Images/' + req.file.filename;
+        }
+
+        await Cars.findByIdAndUpdate(req.params.id, updateData);
+        // Instead of res.redirect(...), use:
+        res.send(`<script>window.top.location.href='/showroom';</script>`);
     } catch (err) {
         console.error("Error updating car:", err);
         res.status(500).send("Error updating car");

@@ -15,27 +15,32 @@
     </header>
     <section style="margin-top: 19px;">
     <h1 style="font-family: fantasy;font-weight: 700; font-size: 50px; color: orange;">Cars Showroom</h1>
-    <!-- Add Car Button (admin only, optional) -->
-    <a href="/addcar" style="color:orange; margin-left:8px;">
-        <i class='bx bx-add'></i>
-    </a>
+    
+    <!-- Move Add Car Button (admin only) below the heading -->
+    <% if (user && user.Role === 'admin') { %>
+        <div style="margin: 20px 0 10px 0;">
+            <a href="/addcar" style="color:orange; font-size:2em;">
+                <i class='bx bx-add'></i> Add Car
+            </a>
+        </div>
+    <% } %>
 
     <div class="car-list">
         <% if (cars && cars.length) { %>
             <% cars.forEach(car => { %>
                 <div class="car-container">
                     <div class="car">
-                        <img src="/car-image/<%= car._id %>" alt="<%= car.Name %>">
+                        <img src="<%= car.ImagePath %>" alt="Car Image">
                         <div class="container">
                             <div>Name: <%= car.Name %></div>
                             <div>Price: <%= car.Price %> EGP per Day</div>
                             <div>Category: <%= car.Category %></div>
-                            <% if (user && user._id) { %>
+                            <% if (user && user.Role !== 'admin' && user._id) { %>
                                 <button type="button" class="button"
                                     onclick="showPopup('/car-contract-popup?carId=<%= car._id %>&userId=<%= user._id %>')">
                                     Rent
                                 </button>
-                            <% } else { %>
+                            <% } else if (!user) { %>
                                 <button type="button" class="button" disabled title="Please log in to rent">Rent</button>
                             <% } %>
                             <% if (user && user.Role === 'admin') { %>
@@ -61,6 +66,19 @@
             <p>No cars found.</p>
         <% } %>
     </div>
+    <% if (user) { %>
+    <div style="margin-bottom: 20px;">
+        <% if (user.Role === 'admin') { %>
+            <a href="/admin-dashboard" class="button" style="background: #222; color: orange;">
+                <i class='bx bx-arrow-back'></i> Back to Dashboard
+            </a>
+        <% } else { %>
+            <a href="/User_Dashboard" class="button" style="background: #222; color: orange;">
+                <i class='bx bx-arrow-back'></i> Back to Dashboard
+            </a>
+        <% } %>
+    </div>
+<% } %>
 </section>
 <footer>
     <%- include('Nfooter') %>

@@ -22,10 +22,19 @@ body::before {
 }
 
 /* Car container styling */
+.car-container {
+    display: inline;      /* Make each car inline */
+    vertical-align: top;        /* Align to the top */
+    margin: 10px;
+}
+
+/* Car card styling */
 .car {
-    display: inline-block;
+    width: 250px;               /* Fixed width */
+    min-height: 300px;          /* Optional: set a min height for uniformity */
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    width: 250px;
     margin: 10px;
     padding: 10px;
     background-color: #fff;
@@ -45,10 +54,12 @@ body::before {
 
 /* Car image styling */
 .car img {
-    width: 100%;
-    height: auto;
+    width: 220px;               /* Fixed width */
+    height: 140px;              /* Fixed height */
+    object-fit: cover;          /* Crop and fill the box */
     border-radius: 5px;
-    align-items: center;
+    display: block;
+    margin: 0 auto;
 }
 
 /* Container inside car */
@@ -106,8 +117,8 @@ select {
 
 /* Styling for the car section */
 .car-container {
-    display: inline;
-    flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
     align-items: center;
     margin-top: 30px;
 
@@ -156,4 +167,20 @@ select {
 .delete-btn i {
     font-size: 16px;
     vertical-align: middle;
+}
+
+/* Make the car list a horizontal flex row */
+.car-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    gap: 20px; /* space between cards */
+    padding-bottom: 20px;
+}
+
+/* Each car card stays its size */
+.car-container {
+    flex: 0 0 auto;
+    margin: 0;
 }

@@ -5,12 +5,7 @@ const Schema =mongoose.Schema;
      Name: String,
      Price: Number,
     Category: String,
-     image:{
-        data:Buffer,
-        contentType:String
-     }  
-
-    
+    ImagePath: String, 
  });
 
  const Cars =mongoose.model("myCar",AddCar);

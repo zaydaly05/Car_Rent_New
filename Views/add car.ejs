@@ -12,11 +12,11 @@
     <form id="addCarForm" enctype="multipart/form-data">
       <div class="inputbox">
         <label for="Name">Car Name:</label>
-        <input type="text" id="Name" name="Name" placeholder="e.g., Toyota Corolla" required>
+        <input type="text" id="Name" name="Name" required>
       </div>
       <div>
         <label for="Category">Car Category:</label>
-        <select id="Category" name="Category" class="select" required>
+        <select id="Category" name="Category" required>
           <option value="">Select Category</option>
           <option value="Economy">Economy</option>
           <option value="Luxury">Luxury</option>
@@ -25,7 +25,7 @@
       </div>
       <div class="inputbox">
         <label for="Price">Price:</label>
-        <input type="number" id="Price" name="Price" placeholder="e.g., 650" required>
+        <input type="number" id="Price" name="Price" required>
       </div>
       <div class="inputbox">
         <label for="image">Upload Car Photo:</label>
@@ -33,10 +33,30 @@
       </div>
       <button type="submit" class="btn">Add Car</button>
     </form>
-
     <div id="preview"></div>
   </div>
+  <script>
+document.getElementById('addCarForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
 
-  <script src="/js/add car.js"></script>
+    try {
+        const res = await fetch('/showroom/add', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert('Car added successfully!');
+            window.location.href = '/showroom';
+        } else {
+            alert(data.error || 'Error adding car');
+        }
+    } catch (err) {
+        alert('Error adding car');
+    }
+});
+</script>
 </body>
 </html>

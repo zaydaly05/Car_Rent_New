@@ -1,9 +1,10 @@
 <div class="backg" id="editCarPopup" style="display:flex; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:2000; justify-content:center; align-items:center;">
   <link rel="stylesheet" href="/css/forms-edit-car.css">
   <div class="wrapper" style="position:relative;">
-    <button onclick="closeEditPopup()" class="clsbtn" style="position:absolute; top:10px; right:10px;">&times;</button>
+
     <h1>Edit Car</h1>
-    <form method="POST" action="/edit-car/<%= car._id %>">
+    <form method="POST" action="/edit-car/<%= car._id %>?_method=PUT" enctype="multipart/form-data">
+      <input type="hidden" name="_method" value="PUT">
       <input type="hidden" name="redirectTo" value="<%= redirectTo %>">
       <div class="inputbox">
         <label for="name">Car Name:</label>
@@ -17,10 +18,6 @@
         <label for="type">Type:</label>
         <input type="text" id="type" name="type" value="<%= car.type %>" required>
       </div>
-      <!-- <div class="inputbox">
-        <label for="category">Category:</label>
-        <input type="text" id="category" name="category" value="<%= car.category %>" required>
-      </div> -->
       <div class="inputbox">
         <label for="status">Status:</label>
         <select id="status" name="status" class="select" required>
@@ -33,8 +30,8 @@
         <input type="number" id="price" name="price" value="<%= car.price %>" required>
       </div>
       <div class="inputbox">
-        <label for="image">Image URL:</label>
-        <input type="text" id="image" name="image" value="<%= car.image %>">
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image">
       </div>
       <div class="inputbox">
         <label for="ratings">Ratings (comma separated):</label>

@@ -144,3 +144,22 @@
 #editCarPopup .inputbox .select option:first-child {
     color: white;
 }
+
+/* Make labels black */
+#editCarPopup .inputbox label {
+    color: #000;
+}
+
+/* Make input borders and text black for price, image, and ratings */
+#editCarPopup #price,
+#editCarPopup #image,
+#editCarPopup #ratings,
+#editCarPopup #createdAt {
+    border: 1.5px solid #000;
+    color: #000;
+}
+
+/* Optional: Make the file input text black (for some browsers) */
+#editCarPopup input[type="file"] {
+    color: #000;
+}

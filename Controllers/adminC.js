@@ -45,7 +45,7 @@ const getAddUser = (req, res) => {
 const postaddUser = async (req, res) => {
   if (!req.file) return res.status(400).send('No file uploaded.');
   try {
-    const exists = await Car.findOne({ Name: req.body.Name });
+    const exists = await User.findOne({ Name: req.body.Name });
     if (exists) return res.status(400).json({ message: 'User already exists.' });
 
     const newUser = new User({
